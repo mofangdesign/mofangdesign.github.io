@@ -161,11 +161,17 @@
   .portfolio-item {
     position:relative; aspect-ratio:4/3; overflow:hidden; cursor:pointer;
     background:#1a1a1a; border-radius:2px;
+    touch-action: manipulation; /* 消除手机 300ms 点击延迟 */
+    -webkit-tap-highlight-color: rgba(200,164,92,.2);
   }
   .portfolio-item.hidden { display:none; }
   .portfolio-img {
     width:100%; height:100%; object-fit:cover; transition:transform .6s;
+    background:#1a1a1a; /* 占位符背景 */
+    opacity:0; /* 初始透明 */
+    transition:transform .6s, opacity .5s; /* 添加淡入过渡 */
   }
+  .portfolio-img.loaded { opacity:1; } /* 加载完成后淡入 */
   .portfolio-item:hover .portfolio-img { transform:scale(1.05); }
   .portfolio-overlay {
     position:absolute; inset:0;
@@ -190,6 +196,8 @@
     .portfolio-grid { grid-template-columns:repeat(2,1fr); gap:4px; }
     .portfolio-overlay { opacity:1; padding:12px; }
     .portfolio-name { font-size:14px; }
+    /* 最后一个奇数项占满整行 */
+    .portfolio-item:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio:16/7; }
   }
   @media (max-width:480px) {
     .portfolio-grid { grid-template-columns:1fr 1fr; }
@@ -205,6 +213,7 @@
   .lightbox-close {
     position:absolute; top:20px; right:24px; font-size:32px; color:#fff;
     background:none; border:none; cursor:pointer; z-index:10000;
+    touch-action: manipulation;
   }
   .lightbox-content {
     max-width:90vw; max-height:85vh; display:flex; flex-direction:column; align-items:center;
@@ -228,12 +237,37 @@
   .lightbox-info p { font-size:14px; color:#888; }
   .lightbox-nav {
     position:absolute; top:50%; transform:translateY(-50%);
-    font-size:40px; color:#fff; background:none; border:none;
-    cursor:pointer; padding:20px; transition:color .3s;
+    font-size:40px; color:#fff; background:rgba(0,0,0,.4); border:none;
+    cursor:pointer; padding:16px 20px; transition:all .3s; border-radius:4px;
+    line-height:1; z-index:10001;
   }
-  .lightbox-nav:hover { color:#c8a45c; }
-  .lightbox-prev { left:24px; }
-  .lightbox-next { right:24px; }
+  .lightbox-nav:hover { color:#c8a45c; background:rgba(0,0,0,.7); }
+  .lightbox-prev { left:16px; }
+  .lightbox-next { right:16px; }
+
+  /* 手机端：隐藏桌面浮动按钮，只用底部按钮 */
+  @media (max-width:768px) {
+    /* 隐藏桌面左右浮动按钮（id=lightboxPrev/Next） */
+    #lightboxPrev, #lightboxNext { display:none !important; }
+    /* 显示底部横排按钮 */
+    .lightbox-bottom-nav {
+      display:flex; gap:12px; margin-top:12px; justify-content:center; width:100%;
+    }
+    /* 底部按钮样式 */
+    .lightbox-bottom-nav .lightbox-nav {
+      position:static; top:auto; transform:none;
+      font-size:18px; padding:12px 28px;
+      background:rgba(255,255,255,.12); border-radius:6px;
+      color:#fff; border:none; cursor:pointer; flex:1; max-width:160px;
+    }
+    /* 图片高度适配手机 */
+    .lightbox-img { max-height:55vh; }
+    /* 内容区可滚动 */
+    .lightbox-content { max-height:90vh; overflow-y:auto; padding:0 12px 16px; }
+  }
+  @media (min-width:769px) {
+    .lightbox-bottom-nav { display:none; }
+  }
 
   /* === CRAFT === */
   .craft-grid {
@@ -258,8 +292,64 @@
   .craft-card h3 { font-size:18px; color:#f5f5f5; margin-bottom:12px; font-weight:600; }
   .craft-card p { font-size:14px; color:#888; line-height:1.8; }
 
+  /* === CRAFT GALLERY === */
+  .craft-gallery { margin-top:80px; }
+  .craft-gallery-item {
+    display:flex; gap:48px; align-items:center; margin-bottom:80px;
+  }
+  .craft-gallery-item:nth-child(even) { flex-direction:row-reverse; }
+  .craft-gallery-img {
+    flex:1; aspect-ratio:4/3; background:#111; border:1px solid #1a1a1a;
+    border-radius:2px; overflow:hidden; position:relative;
+    display:flex; align-items:center; justify-content:center;
+    min-width:0;
+  }
+  .craft-gallery-img img {
+    width:100%; height:100%; object-fit:cover; opacity:.85;
+  }
+  .craft-gallery-img .placeholder {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; color:#333;
+  }
+  .craft-gallery-img .placeholder svg { width:48px; height:48px; margin-bottom:12px; opacity:.3; }
+  .craft-gallery-img .placeholder span { font-size:13px; letter-spacing:2px; }
+  .craft-gallery-text { flex:1; min-width:0; }
+  .craft-gallery-text .step-num {
+    font-size:64px; font-weight:800; color:rgba(200,164,92,.08); line-height:1;
+    margin-bottom:8px;
+  }
+  .craft-gallery-text h3 { font-size:24px; color:#f5f5f5; margin-bottom:16px; font-weight:600; }
+  .craft-gallery-text p { font-size:15px; color:#999; line-height:1.9; margin-bottom:16px; }
+  .craft-gallery-text .checklist {
+    list-style:none; display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .craft-gallery-text .checklist li {
+    font-size:12px; color:#666; background:rgba(200,164,92,.06);
+    padding:4px 12px; border-radius:2px; border:1px solid rgba(200,164,92,.1);
+    letter-spacing:1px;
+  }
+
+  /* 工艺亮点卡片 */
+  .craft-banners { margin-top:80px; display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .craft-banner {
+    background:linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    border:1px solid #1a1a1a; border-radius:2px; padding:48px 32px;
+    text-align:center; transition:all .3s;
+  }
+  .craft-banner:hover { border-color:#333; transform:translateY(-2px); }
+  .craft-banner .badge-num { font-size:36px; font-weight:800; color:#c8a45c; margin-bottom:8px; }
+  .craft-banner .badge-unit { font-size:13px; color:#c8a45c; letter-spacing:2px; margin-bottom:8px; }
+  .craft-banner p { font-size:14px; color:#888; }
+
   @media (max-width:768px) {
     .craft-grid { grid-template-columns:1fr; gap:20px; }
+    .craft-gallery-item, .craft-gallery-item:nth-child(even) {
+      flex-direction:column; gap:24px; margin-bottom:56px;
+    }
+    .craft-gallery-img { width:100%; aspect-ratio:16/11; }
+    .craft-gallery-text h3 { font-size:20px; }
+    .craft-gallery-text .step-num { font-size:48px; }
+    .craft-banners { grid-template-columns:1fr; gap:16px; }
   }
 
   /* === SERVICE === */
@@ -282,7 +372,7 @@
     display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;
   }
   .about-visual {
-    position:relative; aspect-ratio:1; max-width:400px; margin:0 auto;
+    position:relative; aspect-ratio:1; max-width:500px; margin:0 auto;
   }
   .about-cube-grid {
     display:grid; grid-template-columns:repeat(2,1fr); gap:12px; width:100%; height:100%;
@@ -291,18 +381,18 @@
     background:linear-gradient(135deg, #1a1a1a, #111);
     border:1px solid #2a2a2a; border-radius:4px;
     display:flex; align-items:center; justify-content:center;
-    font-size:13px; color:#c8a45c; aspect-ratio:1;
+    font-size:20px; color:#c8a45c; aspect-ratio:1; font-weight:700; letter-spacing:2px;
     transition:all .3s;
   }
   .about-cube:hover { border-color:#c8a45c; transform:scale(1.03); }
-  .about-cube.highlight { background:linear-gradient(135deg, #c8a45c, #b8944a); border-color:#c8a45c; color:#0a0a0a; font-weight:700; }
+  .about-cube.highlight { background:linear-gradient(135deg, #c8a45c, #b8944a); border-color:#c8a45c; color:#0a0a0a; font-weight:800; font-size:24px; }
   .about-text .section-label { margin-bottom:16px; }
   .about-text .section-title { margin-bottom:20px; }
   .about-text p { color:#999; margin-bottom:24px; font-size:15px; line-height:1.9; }
 
   @media (max-width:768px) {
     .about-content { grid-template-columns:1fr; gap:40px; }
-    .about-visual { max-width:280px; }
+    .about-visual { max-width:340px; }
   }
 
   /* === CTA / CONTACT === */
@@ -416,16 +506,16 @@
       <span style="font-size:14px;color:#c8a45c;letter-spacing:4px;">MAGIC CUBE</span>
     </div>
     <h1 class="hero-title">
-      让每一个空间<br>都成为<span class="hl">作品</span>
+      重塑空间美学<br>焕新<span class="hl">理想人居</span>
     </h1>
     <p class="hero-desc">
       广州番禺 · 独立设计团队<br>
-      家装 & 工装 · 全案落地 · 细节控
+      家装 & 工装 · 全案设计施工落地
     </p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num">8+</div>
-        <div class="hero-stat-label">年经验</div>
+        <div class="hero-stat-num">15+</div>
+        <div class="hero-stat-label">年设计经验</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num">200+</div>
@@ -433,7 +523,7 @@
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num">100%</div>
-        <div class="hero-stat-label">口碑转介</div>
+        <div class="hero-stat-label">客户满意度</div>
       </div>
     </div>
     <div class="hero-btns">
@@ -471,6 +561,11 @@
       <h3 id="lightboxTitle"></h3>
       <p id="lightboxDesc"></p>
     </div>
+    <!-- 手机端底部导航 -->
+    <div class="lightbox-bottom-nav">
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrevMobile">&#8249; 上一张</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNextMobile">下一张 &#8250;</button>
+    </div>
   </div>
 </div>
 
@@ -480,9 +575,10 @@
     <div class="section-header fade-in">
       <div class="section-label">CRAFTSMANSHIP</div>
       <h2 class="section-title">匠心工艺</h2>
-      <p class="section-desc" style="margin:0 auto;">不做表面功夫，每一道工序都经得起放大镜</p>
+      <p class="section-desc" style="margin:0 auto;">不做表面功夫，每一道工序都经得起放大镜审视</p>
     </div>
 
+    <!-- 工艺概览卡片 -->
     <div class="craft-grid">
       <div class="craft-card fade-in">
         <div class="craft-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="9"/><circle cx="7" cy="14" r="1.5"/><circle cx="14" cy="14" r="1.5"/></svg></div>
@@ -496,8 +592,8 @@
       </div>
       <div class="craft-card fade-in">
         <div class="craft-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="12" rx="2"/><path d="M2 9v6a2 2 0 002 2h1"/><path d="M22 9v6a2 2 0 01-2 2h-1"/><line x1="10" y1="15" x2="14" y2="15"/></svg></div>
-        <h3>木工 & 定制柜体</h3>
-        <p>现场制作+品牌定制双方案。ENF级环保板材，封边工艺细腻，收口处理干净利落，细节见真章。</p>
+        <h3>木工造型</h3>
+        <p>天花造型、墙面造型均为现场精细制作，线条流畅、层次分明。轻钢龙骨吊顶+双层板材错缝，转角整板套割防开裂，结构稳固。</p>
       </div>
       <div class="craft-card fade-in">
         <div class="craft-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="12" rx="1"/><path d="M2 20h20"/><path d="M6 16v4"/><path d="M18 16v4"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg></div>
@@ -513,6 +609,126 @@
         <div class="craft-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="8 11 11 14 16 9"/></svg></div>
         <h3>监理验收 & 售后保障</h3>
         <p>专职监理全程把控，关键节点三方验收。竣工交付不是结束，3年基础+5年水电质保，随叫随到。</p>
+      </div>
+    </div>
+
+    <!-- 五大核心工艺详解 (带图片位) -->
+    <div class="craft-gallery">
+
+      <!-- 1. 水电工艺 -->
+      <div class="craft-gallery-item fade-in">
+        <div class="craft-gallery-img">
+          <img src="cases/工艺展示/craft-01-dianshui.jpg" alt="水电工艺" loading="lazy">
+        </div>
+        <div class="craft-gallery-text">
+          <div class="step-num">01</div>
+          <h3>水电隐蔽 — 家的血管神经</h3>
+          <p>隐蔽工程是装修的生命线。我们坚持横平竖直走线、强弱电分色分管、点位精准定位、回路独立控制。每一条线路完工后拍照留档，形成完整「水电档案」交付业主，十年后维修也能一眼定位。</p>
+          <ul class="checklist">
+            <li>强弱电分管分色</li>
+            <li>线管横平竖直</li>
+            <li>点位精准定位</li>
+            <li>打压测试≥0.8MPa</li>
+            <li>全景拍照存档</li>
+            <li>终身可查</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2. 泥瓦工艺 -->
+      <div class="craft-gallery-item fade-in">
+        <div class="craft-gallery-img">
+          <img src="cases/工艺展示/craft-02-niwa.jpg" alt="泥瓦工艺" loading="lazy">
+        </div>
+        <div class="craft-gallery-text">
+          <div class="step-num">02</div>
+          <h3>泥瓦铺贴 — 毫厘之间的平整</h3>
+          <p>地面找平误差控制在2mm以内，墙面垂直度激光校准。瓷砖铺贴平整密实，杜绝空鼓脱落。阴阳角处理方正笔直，美缝颜色与砖面统一调配。</p>
+          <ul class="checklist">
+            <li>激光水平校准</li>
+            <li>铺贴平整密实</li>
+            <li>平整度≤2mm</li>
+            <li>48h闭水试验</li>
+            <li>美缝同色定制</li>
+            <li>空鼓率＜3%</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. 木工工艺 -->
+      <div class="craft-gallery-item fade-in">
+        <div class="craft-gallery-img">
+          <img src="cases/工艺展示/craft-03-mugong.jpg" alt="木工工艺" loading="lazy">
+        </div>
+        <div class="craft-gallery-text">
+          <div class="step-num">03</div>
+          <h3>木工造型 — 天花与墙面的立体美学</h3>
+          <p>吊顶采用轻钢龙骨+双层板材错缝安装，转角整板套割防开裂。天花造型、墙面造型均为现场精细制作，线条流畅、层次分明。板材选用高品质环保材料，结构稳固不变形。</p>
+          <ul class="checklist">
+            <li>轻钢龙骨吊顶</li>
+            <li>双层板材错缝</li>
+            <li>转角整板套割</li>
+            <li>天花墙面造型</li>
+            <li>环保板材</li>
+            <li>结构稳固防变形</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4. 涂装工艺 -->
+      <div class="craft-gallery-item fade-in">
+        <div class="craft-gallery-img">
+          <img src="cases/工艺展示/craft-04-tuzhuang.jpg" alt="涂装工艺" loading="lazy">
+        </div>
+        <div class="craft-gallery-text">
+          <div class="step-num">04</div>
+          <h3>墙面涂装 — 光影下的完美肌理</h3>
+          <p>腻子三遍分层打磨——粗找平、精找平、收光打磨。底漆一遍+面漆两遍，多道打磨后漆面光滑细腻，墙面平整无瑕。多乐士/立邦/芬琳品牌涂料直供，环保认证即刷即住。</p>
+          <ul class="checklist">
+            <li>腻子三遍打磨</li>
+            <li>底漆+双面漆</li>
+            <li>强光侧照验收</li>
+            <li>阴阳角90°笔直</li>
+            <li>品牌环保涂料</li>
+            <li>即刷即住</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5. 成品保护 -->
+      <div class="craft-gallery-item fade-in">
+        <div class="craft-gallery-img">
+          <img src="cases/工艺展示/craft-05-baohu.jpg" alt="成品保护" loading="lazy">
+        </div>
+        <div class="craft-gallery-text">
+          <div class="step-num">05</div>
+          <h3>成品保护 & 竣工验收</h3>
+          <p>每一个施工阶段完成后立即进行成品保护：地面覆盖保护膜、门窗包覆护角、柜体覆膜防尘。竣工验收时由监理、工长、业主三方到场，逐项核对验收清单，确保零缺陷交付。</p>
+          <ul class="checklist">
+            <li>地面保护膜覆盖</li>
+            <li>门窗护角包覆</li>
+            <li>柜体防尘覆膜</li>
+            <li>三方现场验收</li>
+            <li>逐项核对清单</li>
+            <li>竣工资料交付</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 承诺保障看板 -->
+    <div class="craft-banners fade-in">
+      <div class="craft-banner">
+        <div class="badge-num">3<span class="badge-unit">年</span></div>
+        <p>基础工程质保</p>
+      </div>
+      <div class="craft-banner">
+        <div class="badge-num">5<span class="badge-unit">年</span></div>
+        <p>水电隐蔽工程质保</p>
+      </div>
+      <div class="craft-banner">
+        <div class="badge-num">24<span class="badge-unit">小时</span></div>
+        <p>售后响应，随叫随到</p>
       </div>
     </div>
   </div>
@@ -576,7 +792,7 @@
         <div class="section-label">ABOUT US</div>
         <h2 class="section-title">关于魔方设计</h2>
         <p>
-          坐标广州番禺，一支小而美的设计施工团队。我们不做千篇一律的模板化装修，每一个项目都是量身定制的作品。
+          坐标广州番禺，一支小而美的设计施工团队。深耕行业十五年，不做千篇一律的模板化装修，每一个项目都是量身定制的作品。
         </p>
         <p>
           团队虽小，五脏俱全——从主案设计到施工落地，从监理验收到售后保障，全链路自营，不转包、不外包。
@@ -725,51 +941,120 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // === PORTFOLIO DATA ===
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/mofangdesign/mofangdesign.github.io@main/mofang-showcase/';
+
+// === IMGURL MAPPING (国内图床加速) ===
+const IMGURL_MAP = {
+    "cases\中信山语湖\微信图片_2026-03-15_200208_495.jpg": "https://s3.bmp.ovh/2026/06/12/rJ6S5PFO.jpg",
+    "cases\中信山语湖\微信图片_2026-03-15_200219_168.jpg": "https://s3.bmp.ovh/2026/06/12/JJWeVv3L.jpg",
+    "cases\中信山语湖\微信图片_2026-03-15_200237_071.jpg": "https://s3.bmp.ovh/2026/06/12/chEEtLqe.jpg",
+    "cases\云山壹号\微信图片_20240513151702.jpg": "https://s3.bmp.ovh/2026/06/12/Bi5p2fqT.jpg",
+    "cases\云山壹号\微信图片_20240513151705.jpg": "https://s3.bmp.ovh/2026/06/12/uo9j8pm2.jpg",
+    "cases\云山壹号\微信图片_20240513151706.jpg": "https://s3.bmp.ovh/2026/06/12/ZEwfqZSJ.jpg",
+    "cases\云梯山庄\微信图片_20250519104214.jpg": "https://s3.bmp.ovh/2026/06/12/gyjxiCzk.jpg",
+    "cases\云梯山庄\微信图片_20250519104239.jpg": "https://s3.bmp.ovh/2026/06/12/LuXL9ZNx.jpg",
+    "cases\亚运城山海湾\03.jpg": "https://s3.bmp.ovh/2026/06/12/gBMz9xS5.jpg",
+    "cases\亚运城山海湾\05.jpg": "https://s3.bmp.ovh/2026/06/12/9nEGyceT.jpg",
+    "cases\亚运城山海湾\08.jpg": "https://s3.bmp.ovh/2026/06/12/vUjfB38l.jpg",
+    "cases\亭岗正升星荟店-美容院\休息室_output.jpg": "https://s3.bmp.ovh/2026/06/12/qxuEwCtP.jpg",
+    "cases\亭岗正升星荟店-美容院\卫生间_output.jpg": "https://s3.bmp.ovh/2026/06/12/fzXbIe0o.jpg",
+    "cases\亭岗正升星荟店-美容院\双人包间002_output.jpg": "https://s3.bmp.ovh/2026/06/12/4mkFUGy5.jpg",
+    "cases\亭岗正升星荟店-美容院\总_output.jpg": "https://s3.bmp.ovh/2026/06/12/t4NXLOuA.jpg",
+    "cases\天河匹克球\000.jpg": "https://s3.bmp.ovh/2026/06/12/1DiR6jIh.jpg",
+    "cases\天河匹克球\222.jpg": "https://s3.bmp.ovh/2026/06/12/J6m1C6Ft.jpg",
+    "cases\惠州饭堂\微信图片_20240516112143.jpg": "https://s3.bmp.ovh/2026/06/12/C6i0HYSe.jpg",
+    "cases\惠州饭堂\微信图片_20240516112144.jpg": "https://s3.bmp.ovh/2026/06/12/4jMFOx7X.jpg",
+    "cases\湛江自建房\微信图片_2026-03-17_201112_202.jpg": "https://s3.bmp.ovh/2026/06/12/oOzLpuUQ.jpg",
+    "cases\湛江自建房\微信图片_20260317201053.jpg": "https://s3.bmp.ovh/2026/06/12/qHqqHHTd.jpg",
+    "cases\缦云广州\微信图片_20250329144618.jpg": "https://s3.bmp.ovh/2026/06/12/9kmKOlAv.jpg",
+    "cases\缦云广州\微信图片_20250410174455.jpg": "https://s3.bmp.ovh/2026/06/12/tYDmusVu.jpg",
+    "cases\缦云广州\微信图片_20250410174456.jpg": "https://s3.bmp.ovh/2026/06/12/hWZGmW52.jpg",
+    "cases\自建房别墅\第10页-17.jpg": "https://s3.bmp.ovh/2026/06/12/jmOHPuE6.jpg",
+    "cases\自建房别墅\第11页-20.jpg": "https://s3.bmp.ovh/2026/06/12/arkIlnJO.jpg",
+    "cases\自建房别墅\第12页-23.jpg": "https://s3.bmp.ovh/2026/06/12/NTZlgVIl.jpg",
+    "cases\自建房别墅\第14页-28.jpg": "https://s3.bmp.ovh/2026/06/12/laSrXDi8.jpg",
+    "cases\自建房别墅\第15页-30.jpg": "https://s3.bmp.ovh/2026/06/12/1xUdHxWM.jpg",
+    "cases\工艺展示\952878f736907ca4261dbe7e2b105998.jpg": "https://s3.bmp.ovh/2026/06/13/7vv6pW24.jpg",
+    "cases\工艺展示\craft-01-dianshui.jpg": "https://s3.bmp.ovh/2026/06/13/v3USLgX2.jpg",
+    "cases\工艺展示\craft-02-niwa.jpg": "https://s3.bmp.ovh/2026/06/13/wOADQJRp.jpg",
+    "cases\工艺展示\craft-03-mugong.jpg": "https://s3.bmp.ovh/2026/06/13/ZL0dgtVg.jpg",
+    "cases\工艺展示\craft-04-tuzhuang.jpg": "https://s3.bmp.ovh/2026/06/13/mazdpwfr.jpg",
+    "cases\工艺展示\craft-05-baohu.jpg": "https://s3.bmp.ovh/2026/06/13/7vv6pW24.jpg",
+    "cases\自建房别墅\第16页-33.jpg": "https://s3.bmp.ovh/2026/06/13/dm78QTUr.jpg",
+    "cases\自建房外观\微信图片_2026-03-17_201232_227.jpg": "https://s3.bmp.ovh/2026/06/13/sguYW9vC.jpg",
+    "cases\自建房外观\微信图片_2026-03-17_201239_775.jpg": "https://s3.bmp.ovh/2026/06/13/ovvu75Fi.jpg",
+    "cases\自建房外观\微信图片_2026-03-17_201251_901.jpg": "https://s3.bmp.ovh/2026/06/13/d33aIbSg.jpg",
+    "cases\自建房外观设计\056e6675ce41830c9590f9438c2ca5d3.jpg": "https://s3.bmp.ovh/2026/06/13/LfXhgmvF.jpg",
+    "cases\自建房外观设计\0f16d8939fc3f6295241e2dab72c776a.jpg": "https://s3.bmp.ovh/2026/06/13/oPxLB6RM.jpg",
+    "cases\自建房外观设计\37bb94c6fc2e12fc4f947b451d3d8793.jpg": "https://s3.bmp.ovh/2026/06/13/DuJcVU6T.jpg",
+    "cases\自建房外观设计\85462f07b9459bee5bacf2d21aa2d65d.jpg": "https://s3.bmp.ovh/2026/06/13/pVEEk99K.jpg",
+    "cases\自建房外观设计\fada9719f2bcc0f65ae7f4c471f74207.jpg": "https://s3.bmp.ovh/2026/06/13/xq9mOF5o.jpg",
+    "cases\花都别墅\微信图片_20250519104218.jpg": "https://s3.bmp.ovh/2026/06/13/p43WOsd3.jpg",
+    "cases\花都别墅\微信图片_20250519104231.jpg": "https://s3.bmp.ovh/2026/06/13/QyTqIayi.jpg",
+    "cases\花都别墅\微信图片_20250519104234.jpg": "https://s3.bmp.ovh/2026/06/13/JNoknKTE.jpg",
+    "cases\西方大院\1d7db295bc5d46e5b1d0a40bc633bed.jpg": "https://s3.bmp.ovh/2026/06/13/kowoIkPu.jpg",
+    "cases\西方大院\2d0111ca660991d2cb038e7f8004efc.jpg": "https://s3.bmp.ovh/2026/06/13/wMzLdezM.jpg",
+    "cases\西方大院\59c3c1ec4ed6d9033b0ee47e4850d3d.jpg": "https://s3.bmp.ovh/2026/06/13/cG5o2qoi.jpg",
+    "cases\金海岸\微信图片_20250117155700.jpg": "https://s3.bmp.ovh/2026/06/12/RPuuBLpi.jpg",
+    "cases\金海岸\微信图片_20250117155703.jpg": "https://s3.bmp.ovh/2026/06/13/R5EmhNtl.jpg",
+    "cases\雅居乐上善若水\微信图片_202111010840301.jpg": "https://s3.bmp.ovh/2026/06/13/ezbUMmss.jpg",
+    "cases\雅居乐上善若水\微信图片_202111010840302.jpg": "https://s3.bmp.ovh/2026/06/13/sP27esho.jpg",
+  };
+
+function resolveUrl(url) {
+  // 提取相对路径部分，尝试匹配 imgurl 映射
+  if (url.startsWith(CDN_BASE)) {
+    var path = url.substring(CDN_BASE.length);
+    if (IMGURL_MAP[path]) return IMGURL_MAP[path];
+  }
+  return url;
+}
+
 const portfolioData = [
   { id:1, cat:'家装', style:'现代轻奢', name:'中信山语湖', area:'560㎡', desc:'560㎡临湖别墅，全景落地窗引景入室。开放式客餐厅设计，大理石与木饰面冷暖交织，地下娱乐层配备影音室与酒窖，演绎现代轻奢人居典范。', images:[
-    'cases/中信山语湖/微信图片_2026-03-15_200208_495.jpg','cases/中信山语湖/微信图片_2026-03-15_200219_168.jpg','cases/中信山语湖/微信图片_2026-03-15_200237_071.jpg'
+    CDN_BASE+'cases/中信山语湖/微信图片_2026-03-15_200208_495.jpg',CDN_BASE+'cases/中信山语湖/微信图片_2026-03-15_200219_168.jpg',CDN_BASE+'cases/中信山语湖/微信图片_2026-03-15_200237_071.jpg'
   ]},
   { id:2, cat:'家装', style:'现代简约', name:'云山壹号', area:'500㎡', desc:'500㎡山景大平层，极简白调为底，木纹温润点缀。客餐厅一体化设计延展视觉空间，主卧套房配备独立衣帽间，每个角落都诠释着"少即是多"的生活哲学。', images:[
-    'cases/云山壹号/微信图片_20240513151702.jpg','cases/云山壹号/微信图片_20240513151705.jpg','cases/云山壹号/微信图片_20240513151706.jpg'
+    CDN_BASE+'cases/云山壹号/微信图片_20240513151702.jpg',CDN_BASE+'cases/云山壹号/微信图片_20240513151705.jpg',CDN_BASE+'cases/云山壹号/微信图片_20240513151706.jpg'
   ]},
   { id:3, cat:'家装', style:'新中式', name:'云梯山庄', area:'750㎡', desc:'750㎡山庄别墅，将东方意境融入现代居住。屏风、木格栅、青石板等元素层层递进，庭前院落与室内空间虚实相生，呈现"虽由人作，宛自天开"的中式美学。', images:[
-    'cases/云梯山庄/微信图片_20250519104214.jpg','cases/云梯山庄/微信图片_20250519104239.jpg'
+    CDN_BASE+'cases/云梯山庄/微信图片_20250519104214.jpg',CDN_BASE+'cases/云梯山庄/微信图片_20250519104239.jpg'
   ]},
   { id:4, cat:'家装', style:'新中式', name:'亚运城山海湾', area:'240㎡', desc:'240㎡江景大宅，新中式风格致敬东方雅致生活。客厅对称布局配以实木家具，背景墙以山水纹大理石铺陈，餐厅与茶室相连，演绎"一茶一坐，一器一物"的禅意空间。', images:[
-    'cases/亚运城山海湾/03.jpg','cases/亚运城山海湾/05.jpg','cases/亚运城山海湾/08.jpg'
+    CDN_BASE+'cases/亚运城山海湾/03.jpg',CDN_BASE+'cases/亚运城山海湾/05.jpg',CDN_BASE+'cases/亚运城山海湾/08.jpg'
   ]},
   { id:5, cat:'工装', style:'现代轻奢', name:'正升星荟·美容院', area:'240㎡', desc:'240㎡高端美容会所，以柔和的弧形线条消解空间棱角。包间采用私密性设计，休息区以浅色调营造放松氛围，灯光层次丰富，让每位顾客都能享受专属的宁静时光。', images:[
-    'cases/亭岗正升星荟店-美容院/休息室_output.jpg','cases/亭岗正升星荟店-美容院/卫生间_output.jpg','cases/亭岗正升星荟店-美容院/双人包间002_output.jpg','cases/亭岗正升星荟店-美容院/总_output.jpg'
+    CDN_BASE+'cases/亭岗正升星荟店-美容院/休息室_output.jpg',CDN_BASE+'cases/亭岗正升星荟店-美容院/卫生间_output.jpg',CDN_BASE+'cases/亭岗正升星荟店-美容院/双人包间002_output.jpg',CDN_BASE+'cases/亭岗正升星荟店-美容院/总_output.jpg'
   ]},
   { id:6, cat:'工装', style:'现代简约', name:'匹克球运动馆', area:'230㎡', desc:'230㎡运动场馆，现代简约风格赋能专业运动体验。场地动线流畅，专业运动地板搭配防眩光照明，观赛区与运动区合理分区，以简洁设计凸显运动本身的激情与美感。', images:[
-    'cases/天河匹克球/000.jpg','cases/天河匹克球/222.jpg'
+    CDN_BASE+'cases/天河匹克球/000.jpg',CDN_BASE+'cases/天河匹克球/222.jpg'
   ]},
   { id:7, cat:'工装', style:'现代简约', name:'惠州饭堂', area:'1200㎡', desc:'1200㎡大型员工食堂，现代简约设计提升用餐体验。取餐区动线科学规划，就餐区以暖色调烘托温馨氛围，模块化座椅布局灵活适应高峰人流，让每一次用餐都舒适从容。', images:[
-    'cases/惠州饭堂/微信图片_20240516112143.jpg','cases/惠州饭堂/微信图片_20240516112144.jpg'
+    CDN_BASE+'cases/惠州饭堂/微信图片_20240516112143.jpg',CDN_BASE+'cases/惠州饭堂/微信图片_20240516112144.jpg'
   ]},
   { id:8, cat:'家装', style:'现代简约', name:'湛江自建房', area:'500㎡', desc:'500㎡自建房外观设计，现代简约美学重塑乡村建筑形态。白色外墙搭配深色线条，大面积采光窗引入自然光线，露台与庭院联动设计，呈现新时代乡村居住范式。', images:[
-    'cases/湛江自建房/微信图片_2026-03-17_201112_202.jpg','cases/湛江自建房/微信图片_20260317201053.jpg'
+    CDN_BASE+'cases/湛江自建房/微信图片_2026-03-17_201112_202.jpg',CDN_BASE+'cases/湛江自建房/微信图片_20260317201053.jpg'
   ]},
   { id:9, cat:'家装', style:'现代简约', name:'缦云广州', area:'200㎡', desc:'200㎡都市精装大平层，现代简约风格诠释高品质居住。客餐厅开放式布局引入充足采光，主卧以酒店式套房为标准，衣帽间、主卫分区明确，在简约中藏纳生活的所有精致。', images:[
-    'cases/缦云广州/微信图片_20250329144618.jpg','cases/缦云广州/微信图片_20250410174455.jpg','cases/缦云广州/微信图片_20250410174456.jpg'
+    CDN_BASE+'cases/缦云广州/微信图片_20250329144618.jpg',CDN_BASE+'cases/缦云广州/微信图片_20250410174455.jpg',CDN_BASE+'cases/缦云广州/微信图片_20250410174456.jpg'
   ]},
   { id:10, cat:'家装', style:'现代简约', name:'自建房别墅', area:'600㎡', desc:'600㎡自建房内部空间设计，现代简约风格兼顾实用与美学。首层公共区域开阔通透，卧室区以舒适为核心，露台与阳台穿插其中，让乡村生活也能拥有都市品质。', images:[
-    'cases/自建房别墅/第10页-17.PNG','cases/自建房别墅/第11页-20.PNG','cases/自建房别墅/第12页-23.PNG','cases/自建房别墅/第14页-28.PNG','cases/自建房别墅/第15页-30.PNG','cases/自建房别墅/第16页-33.PNG'
+    'cases/自建房别墅/第10页-17.jpg','cases/自建房别墅/第11页-20.jpg','cases/自建房别墅/第12页-23.jpg','cases/自建房别墅/第14页-28.jpg','cases/自建房别墅/第15页-30.jpg','cases/自建房别墅/第16页-33.jpg'
   ]},
   { id:11, cat:'家装', style:'现代简约', name:'自建房外观', area:'500㎡', desc:'500㎡自建房外观及庭院设计，极简白搭配深色线条勾勒建筑轮廓。前庭后院因地制宜，露台、阳光房、庭院景观层层递进，让建筑与自然和谐共生。', images:[
-    'cases/自建房外观/微信图片_2026-03-17_201232_227.jpg','cases/自建房外观/微信图片_2026-03-17_201239_775.jpg','cases/自建房外观/微信图片_2026-03-17_201251_901.jpg','cases/自建房外观设计/056e6675ce41830c9590f9438c2ca5d3.jpg','cases/自建房外观设计/0f16d8939fc3f6295241e2dab72c776a.jpg','cases/自建房外观设计/37bb94c6fc2e12fc4f947b451d3d8793.jpg','cases/自建房外观设计/85462f07b9459bee5bacf2d21aa2d65d.jpg','cases/自建房外观设计/fada9719f2bcc0f65ae7f4c471f74207.jpg'
+    CDN_BASE+'cases/自建房外观/微信图片_2026-03-17_201232_227.jpg',CDN_BASE+'cases/自建房外观/微信图片_2026-03-17_201239_775.jpg',CDN_BASE+'cases/自建房外观/微信图片_2026-03-17_201251_901.jpg',CDN_BASE+'cases/自建房外观设计/056e6675ce41830c9590f9438c2ca5d3.jpg',CDN_BASE+'cases/自建房外观设计/0f16d8939fc3f6295241e2dab72c776a.jpg',CDN_BASE+'cases/自建房外观设计/37bb94c6fc2e12fc4f947b451d3d8793.jpg',CDN_BASE+'cases/自建房外观设计/85462f07b9459bee5bacf2d21aa2d65d.jpg',CDN_BASE+'cases/自建房外观设计/fada9719f2bcc0f65ae7f4c471f74207.jpg'
   ]},
   { id:12, cat:'工装', style:'现代简约', name:'西方大院', area:'240㎡', desc:'240㎡商业院落改造，现代简约风格延续建筑原有肌理。院落景观与室内空间互为借景，材料以本土石材与原木为主，灯光设计营造夜间氛围，打造具有辨识度的商业地标。', images:[
-    'cases/西方大院/1d7db295bc5d46e5b1d0a40bc633bed.jpg','cases/西方大院/2d0111ca660991d2cb038e7f8004efc.jpg','cases/西方大院/59c3c1ec4ed6d9033b0ee47e4850d3d.jpg'
+    CDN_BASE+'cases/西方大院/1d7db295bc5d46e5b1d0a40bc633bed.jpg',CDN_BASE+'cases/西方大院/2d0111ca660991d2cb038e7f8004efc.jpg',CDN_BASE+'cases/西方大院/59c3c1ec4ed6d9033b0ee47e4850d3d.jpg'
   ]},
   { id:13, cat:'家装', style:'现代简约', name:'金海岸', area:'80㎡', desc:'80㎡紧凑户型，现代简约风格实现小空间大利用。客餐厅一体化设计延展视觉，嵌入式收纳保持空间整洁，浅色调搭配原木元素，让小家也能拥有通透感与温度感。', images:[
-    'cases/金海岸/微信图片_20250117155700.jpg','cases/金海岸/微信图片_20250117155703.jpg'
+    CDN_BASE+'cases/金海岸/微信图片_20250117155700.jpg',CDN_BASE+'cases/金海岸/微信图片_20250117155703.jpg'
   ]},
   { id:14, cat:'家装', style:'日式原木', name:'雅居乐上善若水', area:'230㎡', desc:'230㎡日式原木风住宅，以"上善若水"为灵感，空间流动如水的轨迹。全屋原木家具搭配留白墙面，榻榻米茶室与开放式厨房相邻，将自然、宁静、禅意融入日常起居。', images:[
-    'cases/雅居乐上善若水/微信图片_202111010840301.jpg','cases/雅居乐上善若水/微信图片_202111010840302.jpg'
+    CDN_BASE+'cases/雅居乐上善若水/微信图片_202111010840301.jpg',CDN_BASE+'cases/雅居乐上善若水/微信图片_202111010840302.jpg'
   ]},
   { id:15, cat:'家装', style:'现代简约', name:'花都别墅', area:'700㎡', desc:'700㎡现代简约别墅，以纯净白调与温润木饰面构建空间底色。挑空客厅引光入室，旋转楼梯成为视觉焦点，庭院与露台联动，让每一次归家都是一场与自然的和解。', images:[
-    'cases/花都别墅/微信图片_20250519104218.jpg','cases/花都别墅/微信图片_20250519104231.jpg','cases/花都别墅/微信图片_20250519104234.jpg'
+    CDN_BASE+'cases/花都别墅/微信图片_20250519104218.jpg',CDN_BASE+'cases/花都别墅/微信图片_20250519104231.jpg',CDN_BASE+'cases/花都别墅/微信图片_20250519104234.jpg'
   ]},
 ];
 
@@ -813,7 +1098,8 @@ portfolioData.forEach((p,i) => {
   item.dataset.style = p.style;
   item.dataset.index = i;
   item.innerHTML = `
-    <img class="portfolio-img no-save" src="${coverImg}" alt="${p.name}" loading="${i<6?'eager':'lazy'}" draggable="false">
+    <img class="portfolio-img no-save" data-src="${resolveUrl(coverImg)}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3C/svg%3E" alt="${p.name}" draggable="false">
+    <noscript><img class="portfolio-img no-save" src="${resolveUrl(coverImg)}" alt="${p.name}" draggable="false"></noscript>
     ${imgCount > 1 ? `<div class="portfolio-badge">${imgCount}张</div>` : ''}
     <div class="portfolio-overlay">
       <div class="portfolio-cat">${p.cat} · ${p.style}</div>
@@ -849,14 +1135,43 @@ function openLightbox(i) {
   document.body.style.overflow = 'hidden';
 }
 
+// === IMAGE PRELOADING ===
+const preloadCache = {};
+function preloadImage(src) {
+  if (preloadCache[src]) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => { preloadCache[src] = true; resolve(); };
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
 function updateLightbox() {
   const p = portfolioData[currentIndex];
   const total = p.images.length;
-  lightboxImg.src = p.images[currentImgIdx];
+  const fullSrc = resolveUrl(p.images[currentImgIdx]);
+  
+  // Show loading indicator
+  lightboxImg.style.opacity = '0.3';
+  
+  // Preload and display
+  preloadImage(fullSrc).then(() => {
+    lightboxImg.src = fullSrc;
+    lightboxImg.style.opacity = '1';
+  }).catch(() => {
+    lightboxImg.src = fullSrc;
+    lightboxImg.style.opacity = '1';
+  });
+  
   lightboxTitle.textContent = p.name + (total > 1 ? ` (${currentImgIdx + 1}/${total})` : '');
   lightboxDesc.textContent = `${p.cat} · ${p.style} · ${p.area}` + (p.desc ? ` — ${p.desc}` : '');
   lightboxPrev.style.opacity = (currentImgIdx === 0 && currentIndex === 0) ? '0.3' : '1';
   lightboxNext.style.opacity = (currentImgIdx === total - 1 && currentIndex === portfolioData.length - 1) ? '0.3' : '1';
+  
+  // Preload next image
+  const nextIdx = currentImgIdx + 1 < total ? currentImgIdx + 1 : 0;
+  preloadImage(resolveUrl(p.images[nextIdx]));
 }
 
 function closeLightbox() {
@@ -888,6 +1203,9 @@ function prevLightbox() {
 lightboxClose.addEventListener('click', closeLightbox);
 lightboxNext.addEventListener('click', nextLightbox);
 lightboxPrev.addEventListener('click', prevLightbox);
+// 手机端底部按钮
+document.getElementById('lightboxPrevMobile').addEventListener('click', prevLightbox);
+document.getElementById('lightboxNextMobile').addEventListener('click', nextLightbox);
 lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('active')) return;
@@ -895,6 +1213,22 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') nextLightbox();
   if (e.key === 'ArrowLeft') prevLightbox();
 });
+// 触摸滑动支持
+(function() {
+  let touchStartX = 0;
+  let touchStartY = 0;
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  lightbox.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      dx < 0 ? nextLightbox() : prevLightbox();
+    }
+  }, { passive: true });
+})();
 
 // === IMAGE PROTECTION ===
 // 禁用右键菜单（图片区域）
@@ -1168,5 +1502,49 @@ if (window.innerWidth >= 769) {
   document.querySelector('.fab-text').style.display = 'inline';
 }
 </script>
+
+<!-- 懒加载脚本 -->
+<script>
+(function() {
+  // 使用 IntersectionObserver 实现懒加载
+  if ('IntersectionObserver' in window) {
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: '400px 0px', // 提前 400px 开始加载（约一屏距离）
+      threshold: 0.01
+    });
+
+    lazyImages.forEach(function(img) {
+      imageObserver.observe(img);
+    });
+  } else {
+    // 降级方案：直接加载所有图片
+    document.querySelectorAll('img[data-src]').forEach(function(img) {
+      img.src = img.dataset.src;
+    });
+  }
+})();
+</script>
+
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c37d62f1652c90315d30f2816b10840d";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 </body>
 </html>
