@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全案设计维度 | 魔方设计</title>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --gold: #c8a45c; --gold-dark: #a8853a;
+      --bg: #0a0a0a; --bg-card: #111111; --bg-card2: #181818;
+      --text: #e8e8e8; --text-dim: #999999; --border: #222222;
+    }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family: 'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;
+      background:var(--bg); color:var(--text); line-height:1.8;
+    }
+    a { color:var(--gold); text-decoration:none; }
+
+    /* Nav */
+    .nav {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background:rgba(10,10,10,.92); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px; height:64px;
+    }
+    .nav-logo { font-size:20px; font-weight:700; color:var(--gold); letter-spacing:2px; }
+    .nav-links { display:flex; gap:32px; }
+    .nav-links a { color:var(--text-dim); font-size:14px; transition:color .3s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+    .nav-cta {
+      background:var(--gold); color:#0a0a0a; padding:8px 20px; border-radius:4px;
+      font-size:13px; font-weight:600; transition:background .3s;
+    }
+    .nav-cta:hover { background:var(--gold-dark); }
+    .nav-mobile-toggle { display:none; background:none; border:none; color:var(--gold); font-size:24px; cursor:pointer; }
+    @media(max-width:768px) {
+      .nav { padding:0 20px; }
+      .nav-links { display:none; }
+      .nav-links.open { display:flex; flex-direction:column; position:absolute; top:64px; left:0; right:0; background:rgba(10,10,10,.98); padding:20px; gap:20px; border-bottom:1px solid var(--border); }
+      .nav-mobile-toggle { display:block; }
+    }
+
+    /* Hero */
+    .hero {
+      padding:160px 40px 80px; text-align:center;
+      background:linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
+    }
+    .hero-badge {
+      display:inline-block; padding:6px 20px; border:1px solid var(--gold);
+      border-radius:20px; font-size:12px; color:var(--gold); letter-spacing:2px; margin-bottom:24px;
+    }
+    .hero h1 { font-size:48px; font-weight:300; margin-bottom:20px; }
+    .hero h1 span { color:var(--gold); font-weight:600; }
+    .hero p { color:var(--text-dim); font-size:16px; max-width:640px; margin:0 auto 40px; }
+    .hero-stats { display:flex; justify-content:center; gap:60px; margin-top:48px; }
+    .hero-stat-num { font-size:36px; font-weight:700; color:var(--gold); }
+    .hero-stat-label { font-size:13px; color:var(--text-dim); margin-top:4px; }
+
+    /* Section */
+    .section { padding:80px 40px; }
+    .section-alt { background:var(--bg-card); }
+    .section-alt { background:var(--bg-card); }
+    .section-header { text-align:center; margin-bottom:60px; }
+    .section-header .tag { display:inline-block; font-size:11px; letter-spacing:3px; color:var(--gold); margin-bottom:12px; }
+    .section-header h2 { font-size:36px; font-weight:300; }
+    .section-header h2 span { color:var(--gold); font-weight:600; }
+    .section-header p { color:var(--text-dim); margin-top:16px; max-width:560px; margin-left:auto; margin-right:auto; }
+
+    /* Design Grid */
+    .design-grid {
+      display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:1000px; margin:0 auto;
+    }
+    @media(max-width:768px) { .design-grid { grid-template-columns:1fr; } }
+
+    .design-card {
+      background:var(--bg-card2); border:1px solid var(--border); border-radius:16px;
+      padding:36px 32px; cursor:pointer; transition:all .35s; position:relative; overflow:hidden;
+    }
+    .design-card::before {
+      content:''; position:absolute; top:0; left:0; width:4px; height:100%;
+      background:var(--gold); opacity:0; transition:opacity .35s;
+    }
+    .design-card:hover { border-color:rgba(200,164,92,.3); transform:translateY(-3px); box-shadow:0 8px 32px rgba(0,0,0,.4); }
+    .design-card:hover::before { opacity:1; }
+    .design-card.expanded { border-color:var(--gold); }
+    .design-card.expanded::before { opacity:1; }
+
+    .design-card-head { display:flex; align-items:flex-start; gap:18px; margin-bottom:12px; }
+    .design-card-icon {
+      width:56px; height:56px; border-radius:14px; background:rgba(200,164,92,.08);
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .design-card-icon svg { width:28px; height:28px; stroke:var(--gold); }
+    .design-card-head-text { flex:1; }
+    .design-card h3 { font-size:18px; font-weight:600; margin-bottom:4px; }
+    .design-card .design-sub { font-size:12px; color:var(--gold); }
+    .design-card .design-desc { font-size:14px; color:var(--text-dim); line-height:1.8; }
+
+    .design-card-body {
+      max-height:0; overflow:hidden; transition:max-height .5s ease, margin .3s;
+    }
+    .design-card.expanded .design-card-body { max-height:700px; margin-top:20px; }
+    .design-card-body-inner {
+      padding-top:20px; border-top:1px solid var(--border);
+      font-size:14px; color:var(--text-dim); line-height:2;
+    }
+    .design-card-body-inner strong { color:var(--text); }
+    .design-toggle-hint {
+      font-size:11px; color:var(--text-dim); margin-top:16px; display:flex; align-items:center; gap:4px;
+    }
+    .design-toggle-hint::after { content:'点击展开详情 →'; font-size:11px; color:rgba(200,164,92,.6); }
+    .design-card.expanded .design-toggle-hint::after { content:'点击收起 ↑'; }
+
+    /* Service Timeline */
+    .service-timeline { display:flex; justify-content:center; gap:0; position:relative; max-width:1000px; margin:0 auto; }
+    .service-step { flex:1; text-align:center; position:relative; padding:0 16px; }
+    .service-step::after {
+      content:''; position:absolute; top:28px; left:50%; width:100%; height:2px;
+      background:var(--border); z-index:0;
+    }
+    .service-step:last-child::after { display:none; }
+    .service-icon {
+      width:56px; height:56px; border-radius:50%; background:var(--bg-card2);
+      border:2px solid var(--border); display:flex; align-items:center; justify-content:center;
+      margin:0 auto 16px; position:relative; z-index:1; transition:all .3s;
+    }
+    .service-step:hover .service-icon { border-color:var(--gold); background:rgba(200,164,92,.1); }
+    .service-icon svg { width:24px; height:24px; stroke:var(--gold); }
+    .service-step h3 { font-size:15px; font-weight:600; margin-bottom:6px; }
+    .service-step p { font-size:12px; color:var(--text-dim); line-height:1.6; }
+
+    /* CTA */
+    .cta-section {
+      text-align:center; padding:80px 40px; background:linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
+    }
+    .cta-section h2 { font-size:32px; font-weight:300; margin-bottom:16px; }
+    .cta-section h2 span { color:var(--gold); font-weight:600; }
+    .cta-section p { color:var(--text-dim); margin-bottom:32px; }
+    .cta-btn {
+      display:inline-block; padding:14px 40px; background:var(--gold); color:#0a0a0a;
+      border-radius:4px; font-size:15px; font-weight:600; transition:all .3s;
+    }
+    .cta-btn:hover { background:var(--gold-dark); transform:translateY(-2px); box-shadow:0 8px 24px rgba(200,164,92,.3); }
+
+    /* Footer */
+    .footer { text-align:center; padding:40px; border-top:1px solid var(--border); color:var(--text-dim); font-size:13px; }
+
+    @media(max-width:768px) {
+      .hero { padding:120px 20px 60px; }
+      .hero h1 { font-size:28px; }
+      .hero-stats { gap:32px; }
+      .hero-stat-num { font-size:28px; }
+      .section { padding:60px 20px; }
+      .section-header h2 { font-size:24px; }
+      .design-card { padding:28px 24px; }
+      .service-timeline { flex-wrap:wrap; gap:20px; }
+      .service-step { flex:0 0 33.33%; min-width:100px; }
+      .service-step::after { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-logo">MAGIC CUBE · 魔方设计</div>
+    <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="index.html">作品案例</a>
+      <a href="design-dimensions.html" class="active">设计维度</a>
+      <a href="craft-process.html">工艺流程</a>
+      <a href="index.html#service">服务项目</a>
+      <a href="index.html#about">关于我们</a>
+      <a href="index.html#contact">立即咨询</a>
+    </div>
+    <a href="index.html#contact" class="nav-cta">预约咨询</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">DESIGN DIMENSIONS</div>
+    <h1>不只是画图<br>是对<span>生活方式</span>的深度思考</h1>
+    <p>从动线到收纳、色彩到灯光——8大设计维度 + 6步标准服务流程，每一步都是专业与用心的体现。全案落地，一站交付。</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">大设计维度</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">步服务流程</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">360°</div>
+        <div class="hero-stat-label">全案覆盖</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="design-grid">
+
+      <!-- 动线设计 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>动线设计</h3>
+            <div class="design-sub">满足生活需求</div>
+          </div>
+        </div>
+        <div class="design-desc">科学规划访客动线、家务动线、私密动线，三线互不干扰，让空间流畅高效。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>三大动线体系：</strong><br>
+            · 访客动线：入户→客厅→餐厅→卫生间，避免穿越私密区域<br>
+            · 家务动线：厨房→餐厅/洗衣→晾晒，缩短步行距离，提升效率<br>
+            · 私密动线：卧室→衣帽间→主卫，保障隐私不受打扰<br>
+            · 设计师会根据您的家庭结构与生活习惯，量身定制动线方案<br>
+            · 确保"走得顺、用得爽"，生活规律自然形成
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+      <!-- 收纳设计 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>收纳设计</h3>
+            <div class="design-sub">满足功能需求</div>
+          </div>
+        </div>
+        <div class="design-desc">按区域按品类精细规划收纳空间，让每一件物品都有自己的"家"，告别杂乱无章。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>分区收纳体系：</strong><br>
+            · 玄关：鞋柜/挂衣/包包/钥匙，回家一秒归位<br>
+            · 厨房：碗碟/调料/锅具/小家电分区分层，操作顺手<br>
+            · 卧室：挂衣区/叠放区/抽屉分隔，换季衣物有序管理<br>
+            · 卫浴：镜柜+浴室柜，瓶瓶罐罐整整齐齐<br>
+            · 阳台：清洁工具/杂物收纳，不浪费每一寸<br>
+            · 收纳面积占比建议≥12%，让空间"越住越大"
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+      <!-- 色彩设计 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="11.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>色彩设计</h3>
+            <div class="design-sub">满足视觉效果 · 呼应法</div>
+          </div>
+        </div>
+        <div class="design-desc">主色、辅色、点缀色黄金比例搭配，运用色彩呼应法串联空间，营造和谐统一的视觉美感。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>色彩法则：</strong><br>
+            · 60-30-10黄金比例：背景色60%+主题色30%+点缀色10%<br>
+            · 色彩呼应法：窗帘与抱枕、挂画与地毯之间色彩呼应<br>
+            · 冷暖搭配：北向用暖色补光，南向用冷色降温<br>
+            · 质感进阶：同色系不同材质（哑光/亮光/纹理）丰富层次<br>
+            · 根据审美偏好和户型特点，量身定制专属色彩方案
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+      <!-- 采光通风 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>采光通风</h3>
+            <div class="design-sub">自然光 · 空气流通</div>
+          </div>
+        </div>
+        <div class="design-desc">对每个空间进行采光与通风科学分析，为平面布局和材质选择提供有力依据，提升居住舒适度。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>采光通风分析：</strong><br>
+            · 采光分析：评估各空间自然光照射能力，决定功能区布局<br>
+            · 通风分析：结合气候和朝向，优化门窗位置形成自然对流<br>
+            · 材质辅助：高光材质反射补光，浅色墙面提升亮度<br>
+            · 绿植搭配：根据光照选植物，美化环境调节微气候<br>
+            · 科学的采光通风分析，让家真正"会呼吸"
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+      <!-- 灯光设计 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>灯光设计</h3>
+            <div class="design-sub">专业照明方案</div>
+          </div>
+        </div>
+        <div class="design-desc">对光源类型、色温、点位、瓦数进行专业规划，营造良好照明氛围，兼顾美观与节能。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>vs 无专业灯光：</strong>材料浪费 ❌ 美观度差 ❌ 电费飙升 ❌<br>
+            <strong>魔方灯光设计：</strong>精准布光 ✅ 氛围满分 ✅ 节能省电 ✅<br><br>
+            <strong>灯光分层体系：</strong><br>
+            · 基础照明：主灯/筒灯，保证空间亮度<br>
+            · 重点照明：射灯/轨道灯，突出装饰焦点<br>
+            · 氛围照明：灯带/壁灯/落地灯，营造温馨层次<br>
+            · 功能照明：厨柜灯/镜前灯/阅读灯，精准服务<br>
+            · 色温：客厅3500-4000K / 卧室2700-3000K / 厨房4000-5000K
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+      <!-- 风水分析 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>风水分析</h3>
+            <div class="design-sub">环境勘察 · 趋吉避凶</div>
+          </div>
+        </div>
+        <div class="design-desc">勘察居住空间周边及室内环境，发现不利风水因素，提供专业解决方案，找到财神方位并融入方案设计。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>风水勘察涵盖：</strong><br>
+            · 周边环境：道路冲煞/尖角煞/反弓水等外部因素识别<br>
+            · 室内布局：门对门/门对窗/横梁压顶等格局优化<br>
+            · 财位定位：找到住房财神方位，设计时重点布局<br>
+            · 化解方案：屏风/绿植/镜面/造型等专业手法化解<br>
+            · 注意事项：床头朝向、厨房水火位置、卫生间方位<br>
+            · 风水是对人居环境的深度理解——好风水=住得安心
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+      <!-- 软装设计 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>软装设计</h3>
+            <div class="design-sub">全案搭配方案</div>
+          </div>
+        </div>
+        <div class="design-desc">方案设计完成后，对家具、窗帘、挂画、摆件、植物等进行合理搭配，提供完整的软装解决方案。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>全案软装内容：</strong><br>
+            · 家具选型：沙发/床/餐桌/书桌，风格统一、尺寸精准<br>
+            · 窗帘布艺：面料/颜色/遮光度，匹配空间功能与氛围<br>
+            · 灯饰搭配：吊灯/台灯/落地灯，既是照明也是艺术品<br>
+            · 挂画饰品：画作/镜子/摆件，点缀空间注入灵魂<br>
+            · 地毯抱枕：柔软元素增加温度感与层次感<br>
+            · 绿植花艺：注入生命力，净化空气<br>
+            · 硬装是骨架，软装是血肉——全案落地，一步到位
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+      <!-- 安全设计 -->
+      <div class="design-card" onclick="this.classList.toggle('expanded')">
+        <div class="design-card-head">
+          <div class="design-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="design-card-head-text">
+            <h3>安全设计</h3>
+            <div class="design-sub">全方位安全考量</div>
+          </div>
+        </div>
+        <div class="design-desc">从防滑、防撞、防火、用电安全到适老化设计，每一个细节都为家人的安全预先考虑。</div>
+        <div class="design-card-body">
+          <div class="design-card-body-inner">
+            <strong>安全设计要点：</strong><br>
+            · 防滑：卫生间/厨房防滑地砖 + 淋浴区防滑垫<br>
+            · 防撞：家具圆角/防撞条，走道宽度≥80cm<br>
+            · 用电：插座安全门 + 等电位联结 + 漏电保护全覆盖<br>
+            · 防火：阻燃材料 + 厨房灭火器预留位<br>
+            · 适老化：门槛斜坡/扶手加固/开关高度适宜<br>
+            · 儿童安全：窗户限位器/抽屉防夹手/阳台防护网<br>
+            · 安全是最基本的底线，魔方从源头守护您和家人
+          </div>
+        </div>
+        <div class="design-toggle-hint"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Service Flow -->
+  <section class="section section-alt">
+    <div class="section-header">
+      <div class="tag">SERVICE FLOW</div>
+      <h2>全案服务流程</h2>
+      <p>6步标准化服务，让装修这件事——清晰、安心、有保障</p>
+    </div>
+    <div class="service-timeline">
+      <div class="service-step">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+        </div>
+        <h3>上门量房</h3>
+        <p>免费上门，精准测量户型尺寸，记录采光、朝向、管道位置等细节</p>
+      </div>
+      <div class="service-step">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        </div>
+        <h3>需求沟通</h3>
+        <p>深度了解您的家庭成员、生活习惯、风格偏好与预算规划</p>
+      </div>
+      <div class="service-step">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+        </div>
+        <h3>方案设计</h3>
+        <p>输出平面方案+3D效果图，空间布局、材质搭配、灯光设计一体呈现</p>
+      </div>
+      <div class="service-step">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <h3>预算报价</h3>
+        <p>透明报价单，项目清晰、单价明确，无隐形增项，签约价即结算价</p>
+      </div>
+      <div class="service-step">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3>合同签订</h3>
+        <p>标准装修合同，材料品牌/型号/工艺标准白纸黑字写入合同</p>
+      </div>
+      <div class="service-step">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+        </div>
+        <h3>施工交付</h3>
+        <p>全程项目经理负责制，阶段验收+竣工保洁，钥匙交付入住</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>想了解<span>您的专属设计方案</span>？</h2>
+    <p>免费上门量房，我们会根据您的户型、需求和审美偏好，为您量身打造全案设计方案</p>
+    <a href="index.html#contact" class="cta-btn">预约免费量房 →</a>
+  </section>
+
+  <footer class="footer">
+    <p>© 2024 魔方设计工作室 MAGIC CUBE DESIGN · 广州番禺</p>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('.nav');
+      nav.style.background = window.scrollY > 50 ? 'rgba(10,10,10,.96)' : 'rgba(10,10,10,.92)';
+    });
+  </script>
+</body>
+</html>
