@@ -84,36 +84,51 @@
     }
     body.unlocked .craft-gallery { display:flex; }
 
-    .lock-gate {
-      text-align:center; padding:32px 20px; margin-bottom:24px;
+    /* ===== Lock trigger (subtle) ===== */
+    .lock-trigger {
+      text-align:center; margin-top:-12px; margin-bottom:24px;
     }
-    .lock-gate .lock-icon {
-      width:48px; height:48px; margin:0 auto 16px;
-      border:2px solid var(--gold); border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
+    .lock-trigger span {
+      font-size:11px; color:#444; cursor:pointer; letter-spacing:1px;
+      transition:color .3s; user-select:none;
     }
-    .lock-gate .lock-icon svg { width:22px; height:22px; fill:var(--gold); }
-    .lock-gate p { color:var(--text-dim); font-size:13px; margin-bottom:16px; }
-    .lock-gate .pw-row {
-      display:inline-flex; gap:8px; align-items:center;
+    .lock-trigger span:hover { color:#666; }
+    body.unlocked .lock-trigger { display:none; }
+
+    /* ===== PW Modal ===== */
+    .pw-modal-overlay {
+      position:fixed; top:0; left:0; right:0; bottom:0; z-index:9000;
+      background:rgba(0,0,0,.75); display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity .25s;
     }
-    .lock-gate input {
-      width:160px; padding:8px 14px; border-radius:6px; border:1px solid var(--border);
-      background:var(--bg-card); color:var(--text); font-size:13px; outline:none;
+    .pw-modal-overlay.active { opacity:1; pointer-events:auto; }
+    .pw-modal {
+      background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+      padding:32px 40px; text-align:center; max-width:360px; width:90vw;
+    }
+    .pw-modal h3 {
+      font-size:16px; font-weight:400; color:var(--text); margin-bottom:4px;
+    }
+    .pw-modal .sub { font-size:12px; color:var(--text-dim); margin-bottom:20px; }
+    .pw-modal .pw-row {
+      display:flex; gap:8px; justify-content:center;
+    }
+    .pw-modal input {
+      width:160px; padding:10px 14px; border-radius:8px; border:1px solid var(--border);
+      background:var(--bg-card2); color:var(--text); font-size:14px; outline:none;
       font-family:inherit; text-align:center; letter-spacing:4px;
     }
-    .lock-gate input:focus { border-color:var(--gold); }
-    .lock-gate button {
-      padding:8px 20px; border-radius:6px; border:none; cursor:pointer;
+    .pw-modal input:focus { border-color:var(--gold); }
+    .pw-modal button {
+      padding:10px 22px; border-radius:8px; border:none; cursor:pointer;
       background:var(--gold); color:#0a0a0a; font-size:13px; font-weight:500;
       transition:opacity .3s;
     }
-    .lock-gate button:hover { opacity:.85; }
-    .lock-gate .hint {
+    .pw-modal button:hover { opacity:.85; }
+    .pw-modal .hint {
       display:block; margin-top:10px; font-size:11px; color:#555; transition:color .3s;
     }
-    .lock-gate .hint.error { color:#c0392b; }
-    body.unlocked .lock-gate { display:none; }
+    .pw-modal .hint.error { color:#c0392b; }
     .craft-gallery-item {
       width:calc(25% - 7.5px); aspect-ratio:4/3; border-radius:8px; overflow:hidden;
       cursor:pointer; position:relative; background:var(--bg-card2);
@@ -478,16 +493,21 @@
       <p>点击每个阶段，展开查看详细工艺标准与验收要点</p>
     </div>
 
-    <div class="lock-gate">
-      <div class="lock-icon">
-        <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 118 0v4" fill="none" stroke="#c8a45c" stroke-width="2"/></svg>
+    <div class="lock-trigger">
+      <span onclick="openPwModal()">✦ 内部资料</span>
+    </div>
+
+    <!-- Password Modal -->
+    <div class="pw-modal-overlay" id="pwModal">
+      <div class="pw-modal">
+        <h3>内部资料验证</h3>
+        <div class="sub">仅供团队内部使用</div>
+        <div class="pw-row">
+          <input type="password" id="pwInput" placeholder="输入密码" maxlength="20" onkeydown="if(event.key==='Enter')unlockCheck()">
+          <button onclick="unlockCheck()">确认</button>
+        </div>
+        <span class="hint" id="pwHint"></span>
       </div>
-      <p>工艺照片已加密，输入密码后查看</p>
-      <div class="pw-row">
-        <input type="password" id="pwInput" placeholder="输入密码" maxlength="20" onkeydown="if(event.key==='Enter')unlockCheck()">
-        <button onclick="unlockCheck()">解锁</button>
-      </div>
-      <span class="hint" id="pwHint"></span>
     </div>
 
     <div class="craft-timeline">
@@ -1072,6 +1092,16 @@
         craftObserver.observe(img);
       });
     }
+    function openPwModal() {
+      document.getElementById('pwModal').classList.add('active');
+      document.getElementById('pwInput').focus();
+    }
+    function closePwModal() {
+      document.getElementById('pwModal').classList.remove('active');
+    }
+    document.getElementById('pwModal').addEventListener('click', function(e) {
+      if (e.target === this) closePwModal();
+    });
     function unlockCheck() {
       var input = document.getElementById('pwInput');
       var hint  = document.getElementById('pwHint');
@@ -1079,6 +1109,7 @@
         document.body.classList.add('unlocked');
         sessionStorage.setItem('craft_unlocked', '1');
         loadCraftImages();
+        closePwModal();
         hint.textContent = '';
         hint.className = 'hint';
       } else {
