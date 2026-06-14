@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -80,8 +80,40 @@
 
     /* ===== Craft Gallery ===== */
     .craft-gallery {
-      display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;
+      display:none; gap:10px; flex-wrap:wrap; margin-bottom:16px;
     }
+    body.unlocked .craft-gallery { display:flex; }
+
+    .lock-gate {
+      text-align:center; padding:32px 20px; margin-bottom:24px;
+    }
+    .lock-gate .lock-icon {
+      width:48px; height:48px; margin:0 auto 16px;
+      border:2px solid var(--gold); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .lock-gate .lock-icon svg { width:22px; height:22px; fill:var(--gold); }
+    .lock-gate p { color:var(--text-dim); font-size:13px; margin-bottom:16px; }
+    .lock-gate .pw-row {
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .lock-gate input {
+      width:160px; padding:8px 14px; border-radius:6px; border:1px solid var(--border);
+      background:var(--bg-card); color:var(--text); font-size:13px; outline:none;
+      font-family:inherit; text-align:center; letter-spacing:4px;
+    }
+    .lock-gate input:focus { border-color:var(--gold); }
+    .lock-gate button {
+      padding:8px 20px; border-radius:6px; border:none; cursor:pointer;
+      background:var(--gold); color:#0a0a0a; font-size:13px; font-weight:500;
+      transition:opacity .3s;
+    }
+    .lock-gate button:hover { opacity:.85; }
+    .lock-gate .hint {
+      display:block; margin-top:10px; font-size:11px; color:#555; transition:color .3s;
+    }
+    .lock-gate .hint.error { color:#c0392b; }
+    body.unlocked .lock-gate { display:none; }
     .craft-gallery-item {
       width:calc(25% - 7.5px); aspect-ratio:4/3; border-radius:8px; overflow:hidden;
       cursor:pointer; position:relative; background:var(--bg-card2);
@@ -101,6 +133,20 @@
     }
     @media(max-width:768px) {
       .craft-gallery-item { width:calc(50% - 5px); }
+    }
+
+    /* ===== Flow Card (Snake Pattern) ===== */
+    .reno-section { padding:60px 30px; background:var(--bg); }
+    .flow-card-wrap {
+      max-width:960px; margin:0 auto; padding:16px;
+    }
+    .flow-svg {
+      width:100%; height:auto; display:block;
+    }
+
+    @media(max-width:768px) {
+      .reno-section { padding:40px 16px; }
+      .flow-card-wrap { padding:8px; }
     }
 
     /* ===== Lightbox ===== */
@@ -255,11 +301,11 @@
   <section class="hero">
     <div class="hero-badge">透 明 施 工 · 匠 心 工 艺</div>
     <h1>看得见的标准<br><span>放心把家交给我们</span></h1>
-    <p>从打拆保护到竣工验收——每一步都透明、规范、可溯源。7大施工阶段，100+项验收标准，点击展开查看工艺细节与实拍图片。</p>
+    <p>从毛坯到精装——27步全流程一目了然。7大施工阶段，100+项验收标准，点击展开查看工艺细节与实拍图片。</p>
     <div class="hero-stats">
       <div>
-        <div class="hero-stat-num">7</div>
-        <div class="hero-stat-label">大施工阶段</div>
+        <div class="hero-stat-num">27</div>
+        <div class="hero-stat-label">步装修全流程</div>
       </div>
       <div>
         <div class="hero-stat-num">100+</div>
@@ -272,6 +318,158 @@
     </div>
   </section>
 
+  <!-- 27-Step Renovation Flow (Snake SVG) -->
+  <section class="reno-section">
+    <div class="section-header">
+      <div class="tag">RENOVATION FLOW</div>
+      <h2>毛坯房装修<span>27步</span>全流程</h2>
+      <p>从设计图纸到拎包入住，一目了然的装修通关地图</p>
+    </div>
+    <div class="flow-card-wrap">
+      <svg class="flow-svg" viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d4b46a"/>
+            <stop offset="100%" stop-color="#9a7428"/>
+          </linearGradient>
+          <linearGradient id="goldGradLight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e0c880"/>
+            <stop offset="100%" stop-color="#b8923b"/>
+          </linearGradient>
+        </defs>
+
+        <!-- === LINES === -->
+        <!-- r=16 => rightEdge=cx+16, leftEdge=cx-16 -->
+        <!-- Gap: line starts +4 from edge, ends with space for 12px arrow -->
+        <g fill="none" stroke="#c8a45c" stroke-width="1.6" opacity="0.7">
+
+          <!-- Row 1 → | y=72 | cx:55,220,385,550,715,880,1045 -->
+          <line x1="75" y1="72" x2="200" y2="72"/>
+          <line x1="240" y1="72" x2="365" y2="72"/>
+          <line x1="405" y1="72" x2="530" y2="72"/>
+          <line x1="570" y1="72" x2="695" y2="72"/>
+          <line x1="735" y1="72" x2="860" y2="72"/>
+          <line x1="900" y1="72" x2="1025" y2="72"/>
+
+          <!-- Snake R1→R2: 07→08 | ←arrow tip=1065 (=rightEdge+4, same as straight lines) -->
+          <path d="M1061,72 h14 q10,0 10,10 v93 q0,10 -10,10 h-10" stroke-linejoin="round"/>
+
+          <!-- Row 2 ← | y=185 | flows: 08→09→10→11→12→13→14 -->
+          <line x1="1025" y1="185" x2="900" y2="185"/>
+          <line x1="860" y1="185" x2="735" y2="185"/>
+          <line x1="695" y1="185" x2="570" y2="185"/>
+          <line x1="530" y1="185" x2="405" y2="185"/>
+          <line x1="365" y1="185" x2="240" y2="185"/>
+          <line x1="200" y1="185" x2="75" y2="185"/>
+
+          <!-- Snake R2→R3: 14→15 | →arrow tip=35 (=leftEdge-4, same as straight lines) -->
+          <path d="M39,185 h-14 q-10,0 -10,10 v93 q0,10 10,10 h10" stroke-linejoin="round"/>
+
+          <!-- Row 3 → | y=298 | cx:55,220,385,550,715,880,1045 -->
+          <line x1="75" y1="298" x2="200" y2="298"/>
+          <line x1="240" y1="298" x2="365" y2="298"/>
+          <line x1="405" y1="298" x2="530" y2="298"/>
+          <line x1="570" y1="298" x2="695" y2="298"/>
+          <line x1="735" y1="298" x2="860" y2="298"/>
+          <line x1="900" y1="298" x2="1025" y2="298"/>
+
+          <!-- Snake R3→R4: 21→22 | ←arrow tip=985 (=rightEdge+4, same as straight lines) -->
+          <path d="M1061,298 h14 q10,0 10,10 v93 q0,10 -10,10 h-90" stroke-linejoin="round"/>
+
+          <!-- Row 4 ← | y=411 | flows: 22→23→24→25→26→27 | cx: 140,305,470,635,800,965 -->
+          <line x1="945" y1="411" x2="820" y2="411"/>
+          <line x1="780" y1="411" x2="655" y2="411"/>
+          <line x1="615" y1="411" x2="490" y2="411"/>
+          <line x1="450" y1="411" x2="325" y2="411"/>
+          <line x1="285" y1="411" x2="160" y2="411"/>
+        </g>
+
+        <!-- === ARROWHEADS (polygons drawn LAST, always on top) === -->
+        <!-- → triangle: (tip_x, cy), (tip_x-12, cy-5), (tip_x-12, cy+5) -->
+        <!-- ← triangle: (tip_x, cy), (tip_x+12, cy-5), (tip_x+12, cy+5) -->
+        <g fill="#d4b46a">
+          <!-- Row 1 → arrows -->
+          <polygon points="200,72 188,67 188,77"/>
+          <polygon points="365,72 353,67 353,77"/>
+          <polygon points="530,72 518,67 518,77"/>
+          <polygon points="695,72 683,67 683,77"/>
+          <polygon points="860,72 848,67 848,77"/>
+          <polygon points="1025,72 1013,67 1013,77"/>
+
+          <!-- Snake R1→R2 arrow ← into 08 (tip=1065, 4px from rightEdge) -->
+          <polygon points="1065,185 1077,180 1077,190"/>
+
+          <!-- Row 2 ← arrows -->
+          <polygon points="900,185 912,180 912,190"/>
+          <polygon points="735,185 747,180 747,190"/>
+          <polygon points="570,185 582,180 582,190"/>
+          <polygon points="405,185 417,180 417,190"/>
+          <polygon points="240,185 252,180 252,190"/>
+          <polygon points="75,185 87,180 87,190"/>
+
+          <!-- Snake R2→R3 arrow → into 15 (tip=35, 4px from leftEdge) -->
+          <polygon points="35,298 23,293 23,303"/>
+
+          <!-- Row 3 → arrows -->
+          <polygon points="200,298 188,293 188,303"/>
+          <polygon points="365,298 353,293 353,303"/>
+          <polygon points="530,298 518,293 518,303"/>
+          <polygon points="695,298 683,293 683,303"/>
+          <polygon points="860,298 848,293 848,303"/>
+          <polygon points="1025,298 1013,293 1013,303"/>
+
+          <!-- Snake R3→R4 arrow ← into 22 (tip=985, 4px from rightEdge) -->
+          <polygon points="985,411 997,406 997,416"/>
+
+          <!-- Row 4 ← arrows -->
+          <polygon points="820,411 832,406 832,416"/>
+          <polygon points="655,411 667,406 667,416"/>
+          <polygon points="490,411 502,406 502,416"/>
+          <polygon points="325,411 337,406 337,416"/>
+          <polygon points="160,411 172,406 172,416"/>
+        </g>
+
+        <!-- === NODES === -->
+        <g font-family="'PingFang SC','Microsoft YaHei',sans-serif">
+          <!-- Row 1 → | y=72 | 01-07 -->
+          <circle cx="55" cy="72" r="16" fill="url(#goldGradLight)"/><text x="55" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">01</text><text x="55" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">确定装修风格</text>
+          <circle cx="220" cy="72" r="16" fill="url(#goldGrad)"/><text x="220" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">02</text><text x="220" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">量房设计图纸</text>
+          <circle cx="385" cy="72" r="16" fill="url(#goldGradLight)"/><text x="385" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">03</text><text x="385" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">砸墙铲墙拆砌</text>
+          <circle cx="550" cy="72" r="16" fill="url(#goldGrad)"/><text x="550" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">04</text><text x="550" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">封阳台封窗</text>
+          <circle cx="715" cy="72" r="16" fill="url(#goldGradLight)"/><text x="715" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">05</text><text x="715" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">改造全屋水电</text>
+          <circle cx="880" cy="72" r="16" fill="url(#goldGrad)"/><text x="880" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">06</text><text x="880" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">下水隔音棉</text>
+          <circle cx="1045" cy="72" r="16" fill="url(#goldGradLight)"/><text x="1045" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">07</text><text x="1045" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">厨卫防水涂刷</text>
+
+          <!-- Row 2 ← | y=185 | 14-08 -->
+          <circle cx="55" cy="185" r="16" fill="url(#goldGrad)"/><text x="55" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">14</text><text x="55" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">刮腻子</text>
+          <circle cx="220" cy="185" r="16" fill="url(#goldGradLight)"/><text x="220" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">13</text><text x="220" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">全屋定制量尺</text>
+          <circle cx="385" cy="185" r="16" fill="url(#goldGrad)"/><text x="385" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">12</text><text x="385" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">木工进场做吊顶</text>
+          <circle cx="550" cy="185" r="16" fill="url(#goldGradLight)"/><text x="550" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">11</text><text x="550" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">贴地面保护膜</text>
+          <circle cx="715" cy="185" r="16" fill="url(#goldGrad)"/><text x="715" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">10</text><text x="715" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">全屋瓷砖美缝</text>
+          <circle cx="880" cy="185" r="16" fill="url(#goldGradLight)"/><text x="880" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">09</text><text x="880" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">铺贴全屋瓷砖</text>
+          <circle cx="1045" cy="185" r="16" fill="url(#goldGrad)"/><text x="1045" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">08</text><text x="1045" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">铺设地暖</text>
+
+          <!-- Row 3 → | y=298 | 15-21 -->
+          <circle cx="55" cy="298" r="16" fill="url(#goldGradLight)"/><text x="55" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">15</text><text x="55" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">乳胶漆涂刷</text>
+          <circle cx="220" cy="298" r="16" fill="url(#goldGrad)"/><text x="220" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">16</text><text x="220" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">柜体安装</text>
+          <circle cx="385" cy="298" r="16" fill="url(#goldGradLight)"/><text x="385" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">17</text><text x="385" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">木门安装</text>
+          <circle cx="550" cy="298" r="16" fill="url(#goldGrad)"/><text x="550" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">18</text><text x="550" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">开关插座面板</text>
+          <circle cx="715" cy="298" r="16" fill="url(#goldGradLight)"/><text x="715" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">19</text><text x="715" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">灯具安装</text>
+          <circle cx="880" cy="298" r="16" fill="url(#goldGrad)"/><text x="880" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">20</text><text x="880" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">卫浴洁具安装</text>
+          <circle cx="1045" cy="298" r="16" fill="url(#goldGradLight)"/><text x="1045" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">21</text><text x="1045" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">五金挂件安装</text>
+
+          <!-- Row 4 ← | y=411 | 27-22 (6 nodes) -->
+          <circle cx="140" cy="411" r="16" fill="url(#goldGrad)"/><text x="140" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">27</text><text x="140" y="447" text-anchor="middle" fill="#c8a45c" font-size="12" font-weight="600">通风除醛·竣工·入住</text>
+          <circle cx="305" cy="411" r="16" fill="url(#goldGradLight)"/><text x="305" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">26</text><text x="305" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">窗帘安装</text>
+          <circle cx="470" cy="411" r="16" fill="url(#goldGrad)"/><text x="470" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">25</text><text x="470" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">家电安装</text>
+          <circle cx="635" cy="411" r="16" fill="url(#goldGradLight)"/><text x="635" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">24</text><text x="635" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">软装家具进场</text>
+          <circle cx="800" cy="411" r="16" fill="url(#goldGrad)"/><text x="800" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">23</text><text x="800" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">开荒保洁</text>
+          <circle cx="965" cy="411" r="16" fill="url(#goldGradLight)"/><text x="965" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">22</text><text x="965" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">美缝修补</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
   <!-- Craft Process -->
   <section class="section section-alt">
     <div class="section-header">
@@ -279,6 +477,19 @@
       <h2>施工工艺全流程</h2>
       <p>点击每个阶段，展开查看详细工艺标准与验收要点</p>
     </div>
+
+    <div class="lock-gate">
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 118 0v4" fill="none" stroke="#c8a45c" stroke-width="2"/></svg>
+      </div>
+      <p>工艺照片已加密，输入密码后查看</p>
+      <div class="pw-row">
+        <input type="password" id="pwInput" placeholder="输入密码" maxlength="20" onkeydown="if(event.key==='Enter')unlockCheck()">
+        <button onclick="unlockCheck()">解锁</button>
+      </div>
+      <span class="hint" id="pwHint"></span>
+    </div>
+
     <div class="craft-timeline">
 
       <!-- Step 1: 打拆 -->
@@ -297,23 +508,23 @@
             <div class="craft-card-body-inner">
               <div class="craft-gallery">
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-01',0)">
-                  <img src="cases/工艺展示/craft-01-daichai-1.jpg" alt="打拆保护-1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage01/stage01-1.jpg" alt="打拆保护-1" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">01</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-01',1)">
-                  <img src="cases/工艺展示/craft-01-daichai-2.jpg" alt="打拆保护-2" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage01/stage01-2.jpg" alt="打拆保护-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-01',2)">
-                  <img src="cases/工艺展示/craft-01-daichai-3.jpg" alt="打拆保护-3" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage01/stage01-3.jpg" alt="打拆保护-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-01',3)">
-                  <img src="cases/工艺展示/craft-01-daichai-4.jpg" alt="打拆保护-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage01/stage01-4.jpg" alt="打拆保护-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-01',4)">
-                  <img src="cases/工艺展示/craft-01-daichai-5.jpg" alt="打拆保护-5" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage01/stage01-5.jpg" alt="打拆保护-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
                 </div>
               </div>
@@ -347,23 +558,56 @@
             <div class="craft-card-body-inner">
               <div class="craft-gallery">
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',0)">
-                  <img src="cases/工艺展示/craft-02-dianshui-1.jpg" alt="水电工程-1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage02/stage02-1.png" alt="水电工程-1" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">01</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',1)">
-                  <img src="cases/工艺展示/craft-02-dianshui-2.jpg" alt="水电工程-2" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage02/stage02-2.png" alt="水电工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',2)">
-                  <img src="cases/工艺展示/craft-02-dianshui-3.jpg" alt="水电工程-3" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage02/stage02-3.png" alt="水电工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',3)">
-                  <img src="cases/工艺展示/craft-02-dianshui-4.jpg" alt="水电工程-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage02/stage02-4.png" alt="水电工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',4)">
-                  <img src="cases/工艺展示/craft-02-dianshui-5.jpg" alt="水电工程-5" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage02/stage02-5.png" alt="水电工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',5)">
+                  <img src="cases/工艺展示/stage02/stage02-6.png" alt="水电工程-6" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">06</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',6)">
+                  <img src="cases/工艺展示/stage02/stage02-7.png" alt="水电工程-7" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">07</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',7)">
+                  <img src="cases/工艺展示/stage02/stage02-8.png" alt="水电工程-8" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">08</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',8)">
+                  <img src="cases/工艺展示/stage02/stage02-9.png" alt="水电工程-9" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">09</span>待上传</div>
+                </div>
+              </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',1)">
+                  <img src="cases/工艺展示/stage02/stage02-2.jpg" alt="水电工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',2)">
+                  <img src="cases/工艺展示/stage02/stage02-3.jpg" alt="水电工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',3)">
+                  <img src="cases/工艺展示/stage02/stage02-4.jpg" alt="水电工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-02',4)">
+                  <img src="cases/工艺展示/stage02/stage02-5.jpg" alt="水电工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
                 </div>
               </div>
@@ -398,23 +642,40 @@
             <div class="craft-card-body-inner">
               <div class="craft-gallery">
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',0)">
-                  <img src="cases/工艺展示/craft-03-fangshui-1.jpg" alt="防水工程-1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage03/stage03-1.png" alt="防水工程-1" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">01</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',1)">
-                  <img src="cases/工艺展示/craft-03-fangshui-2.jpg" alt="防水工程-2" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage03/stage03-2.png" alt="防水工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',2)">
-                  <img src="cases/工艺展示/craft-03-fangshui-3.jpg" alt="防水工程-3" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage03/stage03-3.png" alt="防水工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',3)">
-                  <img src="cases/工艺展示/craft-03-fangshui-4.jpg" alt="防水工程-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage03/stage03-4.png" alt="防水工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',4)">
-                  <img src="cases/工艺展示/craft-03-fangshui-5.jpg" alt="防水工程-5" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage03/stage03-5.png" alt="防水工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
+                </div>
+              </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',1)">
+                  <img src="cases/工艺展示/stage03/stage03-2.jpg" alt="防水工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',2)">
+                  <img src="cases/工艺展示/stage03/stage03-3.jpg" alt="防水工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',3)">
+                  <img src="cases/工艺展示/stage03/stage03-4.jpg" alt="防水工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-03',4)">
+                  <img src="cases/工艺展示/stage03/stage03-5.jpg" alt="防水工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
                 </div>
               </div>
@@ -451,23 +712,84 @@
             <div class="craft-card-body-inner">
               <div class="craft-gallery">
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',0)">
-                  <img src="cases/工艺展示/craft-04-niwa-1.jpg" alt="泥瓦工程-1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage04/stage04-1.png" alt="泥瓦工程-1" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">01</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',1)">
-                  <img src="cases/工艺展示/craft-04-niwa-2.jpg" alt="泥瓦工程-2" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage04/stage04-2.png" alt="泥瓦工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',2)">
-                  <img src="cases/工艺展示/craft-04-niwa-3.jpg" alt="泥瓦工程-3" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage04/stage04-3.png" alt="泥瓦工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',3)">
-                  <img src="cases/工艺展示/craft-04-niwa-4.jpg" alt="泥瓦工程-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage04/stage04-4.png" alt="泥瓦工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',4)">
-                  <img src="cases/工艺展示/craft-04-niwa-5.jpg" alt="泥瓦工程-5" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage04/stage04-5.png" alt="泥瓦工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',5)">
+                  <img src="cases/工艺展示/stage04/stage04-6.png" alt="泥瓦工程-6" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">06</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',6)">
+                  <img src="cases/工艺展示/stage04/stage04-7.png" alt="泥瓦工程-7" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">07</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',7)">
+                  <img src="cases/工艺展示/stage04/stage04-8.png" alt="泥瓦工程-8" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">08</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',8)">
+                  <img src="cases/工艺展示/stage04/stage04-9.png" alt="泥瓦工程-9" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">09</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',9)">
+                  <img src="cases/工艺展示/stage04/stage04-10.png" alt="泥瓦工程-10" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">10</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',10)">
+                  <img src="cases/工艺展示/stage04/stage04-11.png" alt="泥瓦工程-11" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">11</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',11)">
+                  <img src="cases/工艺展示/stage04/stage04-12.png" alt="泥瓦工程-12" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">12</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',12)">
+                  <img src="cases/工艺展示/stage04/stage04-13.png" alt="泥瓦工程-13" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">13</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',13)">
+                  <img src="cases/工艺展示/stage04/stage04-14.png" alt="泥瓦工程-14" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">14</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',14)">
+                  <img src="cases/工艺展示/stage04/stage04-15.png" alt="泥瓦工程-15" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">15</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',15)">
+                  <img src="cases/工艺展示/stage04/stage04-16.png" alt="泥瓦工程-16" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">16</span>待上传</div>
+                </div>
+              </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',1)">
+                  <img src="cases/工艺展示/stage04/stage04-2.jpg" alt="泥瓦工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',2)">
+                  <img src="cases/工艺展示/stage04/stage04-3.jpg" alt="泥瓦工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',3)">
+                  <img src="cases/工艺展示/stage04/stage04-4.jpg" alt="泥瓦工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-04',4)">
+                  <img src="cases/工艺展示/stage04/stage04-5.jpg" alt="泥瓦工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
                 </div>
               </div>
@@ -502,23 +824,52 @@
             <div class="craft-card-body-inner">
               <div class="craft-gallery">
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',0)">
-                  <img src="cases/工艺展示/craft-05-mugong-1.jpg" alt="木工造型-1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage05/stage05-1.png" alt="木工造型-1" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">01</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',1)">
-                  <img src="cases/工艺展示/craft-05-mugong-2.jpg" alt="木工造型-2" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage05/stage05-2.png" alt="木工造型-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',2)">
-                  <img src="cases/工艺展示/craft-05-mugong-3.jpg" alt="木工造型-3" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage05/stage05-3.png" alt="木工造型-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',3)">
-                  <img src="cases/工艺展示/craft-05-mugong-4.jpg" alt="木工造型-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage05/stage05-4.png" alt="木工造型-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',4)">
-                  <img src="cases/工艺展示/craft-05-mugong-5.jpg" alt="木工造型-5" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage05/stage05-5.png" alt="木工造型-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',5)">
+                  <img src="cases/工艺展示/stage05/stage05-6.png" alt="木工造型-6" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">06</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',6)">
+                  <img src="cases/工艺展示/stage05/stage05-7.png" alt="木工造型-7" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">07</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',7)">
+                  <img src="cases/工艺展示/stage05/stage05-8.png" alt="木工造型-8" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">08</span>待上传</div>
+                </div>
+              </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',1)">
+                  <img src="cases/工艺展示/stage05/stage05-2.jpg" alt="木工造型-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',2)">
+                  <img src="cases/工艺展示/stage05/stage05-3.jpg" alt="木工造型-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',3)">
+                  <img src="cases/工艺展示/stage05/stage05-4.jpg" alt="木工造型-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-05',4)">
+                  <img src="cases/工艺展示/stage05/stage05-5.jpg" alt="木工造型-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
                 </div>
               </div>
@@ -553,23 +904,44 @@
             <div class="craft-card-body-inner">
               <div class="craft-gallery">
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',0)">
-                  <img src="cases/工艺展示/craft-06-tuzhuang-1.jpg" alt="涂装工程-1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage06/stage06-1.png" alt="涂装工程-1" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">01</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',1)">
-                  <img src="cases/工艺展示/craft-06-tuzhuang-2.jpg" alt="涂装工程-2" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage06/stage06-2.png" alt="涂装工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',2)">
-                  <img src="cases/工艺展示/craft-06-tuzhuang-3.jpg" alt="涂装工程-3" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage06/stage06-3.png" alt="涂装工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',3)">
-                  <img src="cases/工艺展示/craft-06-tuzhuang-4.jpg" alt="涂装工程-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage06/stage06-4.png" alt="涂装工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',4)">
-                  <img src="cases/工艺展示/craft-06-tuzhuang-5.jpg" alt="涂装工程-5" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage06/stage06-5.png" alt="涂装工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',5)">
+                  <img src="cases/工艺展示/stage06/stage06-6.png" alt="涂装工程-6" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">06</span>待上传</div>
+                </div>
+              </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',1)">
+                  <img src="cases/工艺展示/stage06/stage06-2.jpg" alt="涂装工程-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',2)">
+                  <img src="cases/工艺展示/stage06/stage06-3.jpg" alt="涂装工程-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',3)">
+                  <img src="cases/工艺展示/stage06/stage06-4.jpg" alt="涂装工程-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-06',4)">
+                  <img src="cases/工艺展示/stage06/stage06-5.jpg" alt="涂装工程-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
                 </div>
               </div>
@@ -604,23 +976,56 @@
             <div class="craft-card-body-inner">
               <div class="craft-gallery">
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',0)">
-                  <img src="cases/工艺展示/craft-07-anzhuang-1.jpg" alt="安装交付-1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage07/stage07-1.png" alt="安装交付-1" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">01</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',1)">
-                  <img src="cases/工艺展示/craft-07-anzhuang-2.jpg" alt="安装交付-2" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage07/stage07-2.png" alt="安装交付-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',2)">
-                  <img src="cases/工艺展示/craft-07-anzhuang-3.jpg" alt="安装交付-3" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage07/stage07-3.png" alt="安装交付-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',3)">
-                  <img src="cases/工艺展示/craft-07-anzhuang-4.jpg" alt="安装交付-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage07/stage07-4.png" alt="安装交付-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
                 </div>
                 <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',4)">
-                  <img src="cases/工艺展示/craft-07-anzhuang-5.jpg" alt="安装交付-5" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                  <img src="cases/工艺展示/stage07/stage07-5.png" alt="安装交付-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',5)">
+                  <img src="cases/工艺展示/stage07/stage07-6.png" alt="安装交付-6" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">06</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',6)">
+                  <img src="cases/工艺展示/stage07/stage07-7.png" alt="安装交付-7" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">07</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',7)">
+                  <img src="cases/工艺展示/stage07/stage07-8.png" alt="安装交付-8" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">08</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',8)">
+                  <img src="cases/工艺展示/stage07/stage07-9.png" alt="安装交付-9" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">09</span>待上传</div>
+                </div>
+              </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',1)">
+                  <img src="cases/工艺展示/stage07/stage07-2.jpg" alt="安装交付-2" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">02</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',2)">
+                  <img src="cases/工艺展示/stage07/stage07-3.jpg" alt="安装交付-3" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">03</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',3)">
+                  <img src="cases/工艺展示/stage07/stage07-4.jpg" alt="安装交付-4" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
+                  <div class="placeholder" style="display:none"><span class="num">04</span>待上传</div>
+                </div>
+                <div class="craft-gallery-item" onclick="event.stopPropagation();openLightbox('craft-07',4)">
+                  <img src="cases/工艺展示/stage07/stage07-5.jpg" alt="安装交付-5" loading="lazy" onerror="this.closest('.craft-gallery-item').style.display='none'">
                   <div class="placeholder" style="display:none"><span class="num">05</span>待上传</div>
                 </div>
               </div>
@@ -736,6 +1141,29 @@
         nav.style.background = 'rgba(10,10,10,.92)';
       }
     });
+
+    // === Password gate for craft photos ===
+    var CRAFT_PW = 'mofang2024';
+    (function() {
+      if (sessionStorage.getItem('craft_unlocked') === '1') {
+        document.body.classList.add('unlocked');
+      }
+    })();
+    function unlockCheck() {
+      var input = document.getElementById('pwInput');
+      var hint  = document.getElementById('pwHint');
+      if (input.value === CRAFT_PW) {
+        document.body.classList.add('unlocked');
+        sessionStorage.setItem('craft_unlocked', '1');
+        hint.textContent = '';
+        hint.className = 'hint';
+      } else {
+        hint.textContent = '密码错误，请重试';
+        hint.className = 'hint error';
+        input.value = '';
+        input.focus();
+      }
+    }
   </script>
 </body>
 </html>
