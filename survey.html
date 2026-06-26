@@ -892,7 +892,10 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     </div>
   </nav>
 
-  <form id="surveyForm" action="https://1410489691-gicj1y22l.ap-guangzhou.tencentcs.com" method="POST" novalidate>
+  <form id="surveyForm" action="https://formsubmit.co/714162042@qq.com" method="POST" novalidate>
+    <input type="hidden" name="_subject" value="魔方设计 - 新客户需求调查表">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_next" value="https://mofangdesign.github.io/survey.html?sent=1">
     <input type="hidden" name="装修模式" id="hidBudgetMode" value="half">
     <input type="hidden" name="施工+辅材费用" id="hidConstruction" value="">
@@ -1721,6 +1724,29 @@ form.addEventListener('submit', function(e) {
     }
     data._uploadedFiles = uploadedFiles.map(f => f.name);
     sessionStorage.setItem('mofangFormData', JSON.stringify(data));
+
+    // Send to DingTalk (fire-and-forget, won't block form submit)
+    let dingMsg = '魔方设计 - 新客户需求调查表\n\n';
+    dingMsg += '【基本信息】\n';
+    dingMsg += '姓名：' + (data['姓名']||'-') + '\n';
+    dingMsg += '电话：' + (data['联系电话']||'-') + '\n';
+    dingMsg += '楼盘：' + (data['楼盘名称']||'-') + '\n';
+    dingMsg += '面积：' + (data['套内面积(平方米)']||'-') + '㎡\n';
+    dingMsg += '户型：' + (data['户型']||'-') + '\n';
+    dingMsg += '楼层/朝向：' + (data['楼层/朝向']||'-') + '\n\n';
+    dingMsg += '【风格偏好】\n';
+    dingMsg += '风格：' + (data['风格偏好']||'-') + '\n';
+    dingMsg += '装修模式：' + (data['装修模式']||'-') + '\n';
+    dingMsg += '施工费用：' + (data['施工+辅材费用']?'¥'+data['施工+辅材费用']:'-') + '\n';
+    dingMsg += '软装费用：' + (data['软装费用']?'¥'+data['软装费用']:'-') + '\n\n';
+    dingMsg += '提交时间：' + new Date().toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'});
+
+    fetch('https://oapi.dingtalk.com/robot/send?access_token=c9c0d002a4e198198675f8056c08c35acbea5e77563b98d308e0d841409f49ae', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ msgtype: 'text', text: { content: dingMsg } })
+    }).catch(function(){}); // silently ignore errors, email is the backup
+
   } catch(err) {}
 
   // Valid — let form submit natively
