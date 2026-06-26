@@ -875,9 +875,13 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     </div>
   </nav>
 
-  <form id="surveyForm" action="https://formsubmit.co/ajax/714162042@qq.com" method="POST" novalidate>
+  <form id="surveyForm" action="https://formsubmit.co/714162042@qq.com" method="POST" novalidate>
     <input type="hidden" name="_subject" value="魔方设计 - 新客户需求调查表">
     <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://mofangdesign.github.io/survey.html?sent=1">
+    <input type="hidden" name="budgetMode" id="hidBudgetMode" value="half">
+    <input type="hidden" name="budgetConstruction" id="hidConstruction" value="">
+    <input type="hidden" name="budgetSoftFurnishing" id="hidSoft" value="">
 
     <!-- ===== Section 1: Basic Info ===== -->
     <section class="section" id="sec-basic" data-section="1">
@@ -1518,6 +1522,7 @@ let currentBudgetMode = 'half';
 
 function selectBudgetMode(mode) {
   currentBudgetMode = mode;
+  document.getElementById('hidBudgetMode').value = mode;
   document.querySelectorAll('.budget-mode-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.mode === mode);
   });
@@ -1581,6 +1586,10 @@ function calcBudget() {
   document.getElementById('breakdownConstruction').textContent = formatMoneyShort(construction);
   document.getElementById('breakdownMaterial').textContent = formatMoneyShort(material);
   document.getElementById('breakdownSoft').textContent = formatMoneyShort(soft);
+
+  // Sync hidden fields for form submission
+  document.getElementById('hidConstruction').value = construction || '';
+  document.getElementById('hidSoft').value = soft || '';
 }
 
 // ===== Progress Navigation =====
@@ -1654,8 +1663,7 @@ const form = document.getElementById('surveyForm');
 const btnSubmit = document.getElementById('btnSubmit');
 const successModal = document.getElementById('successModal');
 
-form.addEventListener('submit', async function(e) {
-  e.preventDefault();
+form.addEventListener('submit', function(e) {
 
   // Basic validation for required fields
   const requiredInputs = form.querySelectorAll('[required]');
@@ -1672,6 +1680,7 @@ form.addEventListener('submit', async function(e) {
   });
 
   if (!valid) {
+    e.preventDefault();
     const firstInvalid = form.querySelector('input[required]:invalid, select[required]:invalid');
     if (firstInvalid) {
       firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1680,57 +1689,30 @@ form.addEventListener('submit', async function(e) {
     return;
   }
 
+  // Valid — let form submit natively (no CORS, most reliable)
   btnSubmit.classList.add('loading');
+  // DO NOT preventDefault — browser handles the POST natively
+});
 
-  // Collect form data
-  const fd = new FormData(form);
-  const data = {};
-  fd.forEach((v, k) => {
-    if (data[k]) { data[k] = Array.isArray(data[k]) ? [...data[k], v] : [data[k], v]; }
-    else data[k] = v;
-  });
-
-  // Add budget calculator data
-  data.budgetMode = currentBudgetMode;
-  data.budgetConstruction = parseInt(document.getElementById('inpConstruction').value) || 0;
-  data.budgetMaterial = parseInt(document.getElementById('inpMaterial').value) || 0;
-  data.budgetSoft = parseInt(document.getElementById('inpSoft').value) || 0;
-  data.budgetTotal = (data.budgetConstruction || 0) + (currentBudgetMode === 'full' ? 0 : (data.budgetMaterial || 0)) + (data.budgetSoft || 0);
-
-  // Submit to FormSubmit email service
-  try {
-    const res = await fetch(form.action, {
-      method: 'POST',
-      body: fd,
-      headers: { 'Accept': 'application/json' }
-    });
-    const result = await res.json();
-    if (result.success !== 'true' && result.success !== true) {
-      throw new Error(result.message || '提交失败');
-    }
-  } catch (err) {
-    console.error('提交错误：', err);
-    btnSubmit.classList.remove('loading');
-    alert('提交失败，请稍后重试或直接联系客服。\n电话：19124356919\n微信：CHENMEIEN_');
-    return;
-  }
-
-  btnSubmit.classList.remove('loading');
+// Show success modal on return from FormSubmit redirect
+if (window.location.search.includes('sent=1')) {
   successModal.classList.add('show');
-  // Reset form
+  window.history.replaceState({}, '', window.location.pathname);
   form.reset();
   uploadedFiles = [];
   fileChips.innerHTML = '';
-  // Reset styles
   document.querySelectorAll('.style-row.selected').forEach(r => {
     r.classList.remove('selected');
     r.querySelector('input[type="checkbox"]').checked = false;
   });
-  // Reset budget
   selectBudgetMode('half');
   document.getElementById('inpConstruction').value = '';
   document.getElementById('inpMaterial').value = '';
   document.getElementById('inpSoft').value = '';
+}
+
+// Clean up old manual reset code — no longer needed since native submit navigates away
+
   calcBudget();
   updateActiveNav();
 });
