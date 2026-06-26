@@ -1141,7 +1141,7 @@ portfolioData.forEach((p,i) => {
   item.dataset.style = p.style;
   item.dataset.index = i;
   item.innerHTML = `
-    <img class="portfolio-img no-save" data-src="${resolveUrl(coverImg)}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3C/svg%3E" alt="${p.name}" draggable="false" onerror="imgRetry(this)">
+    <img class="portfolio-img no-save" data-src="${resolveUrl(coverImg)}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3C/svg%3E" alt="${p.name}" draggable="false" decoding="async" onerror="imgRetry(this)">
     <noscript><img class="portfolio-img no-save" src="${resolveUrl(coverImg)}" alt="${p.name}" draggable="false"></noscript>
     ${imgCount > 1 ? `<div class="portfolio-badge">${imgCount}张</div>` : ''}
     <div class="portfolio-overlay">
@@ -1173,6 +1173,13 @@ let currentImgIdx = 0;
 function openLightbox(i) {
   currentIndex = i;
   currentImgIdx = 0;
+  // 打开灯箱时立即预加载当前案例的全部图片
+  var p = portfolioData[i];
+  var allUrls = [];
+  for (var j = 0; j < p.images.length; j++) {
+    allUrls.push(p.images[j]);
+  }
+  preloadQueue(allUrls);
   updateLightbox();
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -1195,8 +1202,10 @@ function updateLightbox() {
   const total = p.images.length;
   const fullSrc = resolveUrl(p.images[currentImgIdx]);
   
-  // Show loading indicator
-  lightboxImg.style.opacity = '0.3';
+  // Show loading indicator (only if not already cached)
+  if (!preloadCache[fullSrc]) {
+    lightboxImg.style.opacity = '0.3';
+  }
   
   // Preload and display
   preloadImage(fullSrc).then(() => {
@@ -1212,9 +1221,38 @@ function updateLightbox() {
   lightboxPrev.style.opacity = (currentImgIdx === 0 && currentIndex === 0) ? '0.3' : '1';
   lightboxNext.style.opacity = (currentImgIdx === total - 1 && currentIndex === portfolioData.length - 1) ? '0.3' : '1';
   
-  // Preload next image
-  const nextIdx = currentImgIdx + 1 < total ? currentImgIdx + 1 : 0;
-  preloadImage(resolveUrl(p.images[nextIdx]));
+  // 激进预加载：当前案例的全部图片 + 前后各2张（以当前图为中心扩散）
+  var queue = [];
+  // 当前图之后的图片
+  for (var j = 1; j < total; j++) {
+    queue.push(p.images[(currentImgIdx + j) % total]);
+  }
+  // 异步逐张预加载
+  preloadQueue(queue);
+}
+
+// 异步队列预加载，避免同时发起大量请求
+var _preloadQueueRunning = false;
+var _preloadQueue = [];
+var _preloadQueued = {}; // 去重
+function preloadQueue(urls) {
+  for (var i = 0; i < urls.length; i++) {
+    var u = resolveUrl(urls[i]);
+    if (!_preloadQueued[u] && !preloadCache[u]) {
+      _preloadQueued[u] = true;
+      _preloadQueue.push(u);
+    }
+  }
+  if (!_preloadQueueRunning) processPreloadQueue();
+}
+function processPreloadQueue() {
+  if (_preloadQueue.length === 0) { _preloadQueueRunning = false; return; }
+  _preloadQueueRunning = true;
+  var url = _preloadQueue.shift();
+  preloadImage(url).finally(function() {
+    // 每张间隔50ms，避免阻塞主线程
+    setTimeout(processPreloadQueue, 50);
+  });
 }
 
 function closeLightbox() {
@@ -1563,13 +1601,42 @@ if (window.innerWidth >= 769) {
         }
       });
     }, {
-      rootMargin: '400px 0px', // 提前 400px 开始加载（约一屏距离）
+      rootMargin: '600px 0px', // 提前 600px 开始加载
       threshold: 0.01
     });
 
     lazyImages.forEach(function(img) {
       imageObserver.observe(img);
     });
+
+    // === 后台渐进式预加载 ===
+    // 页面加载完后，在后台逐张预加载所有案例封面图
+    // 确保用户滚动到任何案例时封面已缓存
+    var _bgQueue = [];
+    var _bgRunning = false;
+    // 收集所有封面图URL
+    for (var k = 0; k < portfolioData.length; k++) {
+      _bgQueue.push(resolveUrl(portfolioData[k].images[0]));
+    }
+    // 使用 requestIdleCallback 在浏览器空闲时预加载
+    function bgPreloadNext() {
+      if (_bgQueue.length === 0) { _bgRunning = false; return; }
+      _bgRunning = true;
+      var url = _bgQueue.shift();
+      if (preloadCache[url]) { bgPreloadNext(); return; }
+      preloadImage(url).finally(function() {
+        setTimeout(bgPreloadNext, 100);
+      });
+    }
+    function startBgPreload() {
+      if (window.requestIdleCallback) {
+        requestIdleCallback(function() { bgPreloadNext(); });
+      } else {
+        setTimeout(bgPreloadNext, 2000);
+      }
+    }
+    // 等可见图片开始加载后，延迟1秒启动后台预加载
+    setTimeout(startBgPreload, 1000);
   } else {
     // 降级方案：直接加载所有图片
     document.querySelectorAll('img[data-src]').forEach(function(img) {

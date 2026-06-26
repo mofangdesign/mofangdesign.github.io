@@ -999,7 +999,16 @@
     function toggleCraft(card) {
       const isExpanded = card.classList.contains('expanded');
       document.querySelectorAll('.craft-card.expanded').forEach(c => c.classList.remove('expanded'));
-      if (!isExpanded) card.classList.add('expanded');
+      if (!isExpanded) {
+        card.classList.add('expanded');
+        // 展开后立即预加载该卡片内全部缩略图
+        setTimeout(function() {
+          card.querySelectorAll('img[data-src]').forEach(function(img) {
+            var src = img.getAttribute('data-src');
+            if (src) preloadCraftImage(src);
+          });
+        }, 50);
+      }
     }
 
     // Lightbox
@@ -1008,7 +1017,19 @@
 
     function getGalleryImages(stageId) {
       const items = document.querySelectorAll(`.craft-gallery-item[onclick*="${stageId}"] img`);
-      return Array.from(items).map(img => img.src);
+      return Array.from(items).map(function(img) {
+        // 优先读 src（已懒加载的），回退到 data-src（尚未加载的缩略图）
+        return img.src || img.getAttribute('data-src') || '';
+      });
+    }
+
+    // 图片预加载缓存
+    var _craftPreloadCache = {};
+    function preloadCraftImage(src) {
+      if (!src || _craftPreloadCache[src]) return;
+      _craftPreloadCache[src] = true;
+      var p = new Image();
+      p.src = src;
     }
 
     function openLightbox(stageId, index) {
@@ -1016,6 +1037,11 @@
       if (images.length === 0) return;
       lightboxStage = stageId;
       lightboxIndex = index;
+      // 立即预加载当前工序全部图片（优先级：当前→后续→前面）
+      for (var j = 0; j < images.length; j++) {
+        var idx = (index + j) % images.length;
+        preloadCraftImage(images[idx]);
+      }
       updateLightbox(images);
       document.getElementById('lightbox').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -1024,7 +1050,21 @@
     function updateLightbox(images) {
       const img = document.getElementById('lightbox-img');
       img.src = images[lightboxIndex];
+      // 在灯箱图片上添加 onerror 回退
+      img.onerror = function() {
+        if (this.src && this.src.indexOf('jsdelivr') < 0) {
+          var m = this.src.match(/cases\/craft-process\/.+/);
+          if (m) this.src = 'https://cdn.jsdelivr.net/gh/mofangdesign/mofangdesign.github.io@main/' + m[0];
+        }
+      };
       document.getElementById('lightbox-counter').textContent = `${lightboxIndex + 1} / ${images.length}`;
+      // 额外确保：预加载前后各2张
+      var total = images.length;
+      for (var d = -2; d <= 2; d++) {
+        if (d === 0) continue;
+        var idx = (lightboxIndex + d + total) % total;
+        preloadCraftImage(images[idx]);
+      }
     }
 
     function lightboxPrev() {
@@ -1103,14 +1143,28 @@
           if (entry.isIntersecting) {
             var img = entry.target;
             img.src = img.getAttribute('data-src');
+            img.decoding = 'async';
             img.removeAttribute('data-src');
             craftObserver.unobserve(img);
           }
         });
-      }, { rootMargin: '300px' });
+      }, { rootMargin: '600px' });
       document.querySelectorAll('.craft-gallery img[data-src]').forEach(function(img) {
         craftObserver.observe(img);
       });
+      // 后台预加载：可见缩略图加载后，逐步预加载其余的
+      setTimeout(function() {
+        var allImgs = document.querySelectorAll('.craft-gallery img[data-src]');
+        var idx = 0;
+        function bgNext() {
+          if (idx >= allImgs.length) return;
+          var src = allImgs[idx].getAttribute('data-src');
+          if (src) preloadCraftImage(src);
+          idx++;
+          setTimeout(bgNext, 80);
+        }
+        bgNext();
+      }, 1500);
     }
     function openPwModal() {
       document.getElementById('pwModal').classList.add('active');
