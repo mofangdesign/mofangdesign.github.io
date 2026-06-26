@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计需求调查表 · 魔方设计</title>
+<style>
+/* ===== Design System: Premium Minimal ===== */
+:root {
+  --bg: #FAF8F5;
+  --surface: #FFFFFF;
+  --surface-hover: #F9F7F2;
+  --gold: #C4A265;
+  --gold-light: #E8DBC4;
+  --gold-subtle: #F6F1E7;
+  --sage: #7C9A6E;
+  --sage-light: #EDF2E9;
+  --text: #2D2D2D;
+  --text-secondary: #6B6358;
+  --text-tertiary: #9E968A;
+  --border: #EBE5DB;
+  --border-light: #F2EDE5;
+  --shadow: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+  --radius: 6px;
+  --radius-lg: 10px;
+  --transition: 0.2s ease;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "STSong", "SimSun", "Georgia", "Times New Roman", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* ===== Header ===== */
+.header {
+  text-align: center;
+  padding: 56px 20px 50px;
+}
+.header-logo {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.header-line {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 24px;
+}
+.header h1 {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+.header .subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  letter-spacing: 0.03em;
+}
+
+/* ===== Progress Nav ===== */
+.progress-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250,248,245,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+.progress-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.progress-inner::-webkit-scrollbar { display: none; }
+.progress-item {
+  flex-shrink: 0;
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.progress-item:hover { color: var(--text-secondary); }
+.progress-item.active {
+  color: var(--text);
+  font-weight: 600;
+  border-bottom-color: var(--gold);
+}
+.progress-item.done {
+  color: var(--sage);
+  border-bottom-color: var(--sage);
+}
+
+/* ===== Section Cards ===== */
+.section {
+  margin-bottom: 24px;
+  scroll-margin-top: 60px;
+}
+.section-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 44px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+.section-card:hover { box-shadow: var(--shadow-md); }
+.section-number {
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.03em;
+  margin-bottom: 4px;
+}
+.section-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
+  font-weight: 300;
+  margin-bottom: 36px;
+}
+.divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: 36px 0 32px;
+}
+.sub-heading {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.03em;
+  margin-bottom: 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--gold-light);
+}
+
+/* ===== Form Elements ===== */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-row.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-row.col-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.form-group { margin-bottom: 22px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-group label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+.form-group label .req {
+  color: #C07060;
+  margin-left: 2px;
+  font-weight: 400;
+}
+.form-group .hint {
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  font-weight: 300;
+  margin-left: 6px;
+}
+.form-group .hint-block {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  font-weight: 300;
+  margin-top: 4px;
+}
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 0;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--border);
+  border-radius: 0;
+  outline: none;
+  transition: var(--transition);
+  line-height: 1.6;
+}
+input:focus, select:focus, textarea:focus {
+  border-bottom-color: var(--gold);
+}
+input::placeholder, textarea::placeholder { color: #C8C0B5; }
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239E968A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  padding-right: 24px;
+  cursor: pointer;
+}
+textarea {
+  resize: vertical;
+  min-height: 90px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: #FAFAF8;
+}
+textarea:focus {
+  border-color: var(--gold);
+  background: var(--surface);
+}
+input[type="number"] { -moz-appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+/* ===== Tag Chips (multi-select) ===== */
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.tag-chip { position: relative; }
+.tag-chip input { display: none; }
+.tag-chip label {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.84rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.tag-chip label:hover {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+}
+.tag-chip input:checked + label {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ===== Radio Cards ===== */
+.radio-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.radio-card { position: relative; }
+.radio-card input { display: none; }
+.radio-card label {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 0.86rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+}
+.radio-card label:hover {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+}
+.radio-card input:checked + label {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ===== Style Grid ===== */
+.style-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.style-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+  flex-wrap: wrap;
+}
+.style-row:hover {
+  border-color: var(--gold);
+  background: #FDFBF7;
+}
+.style-row.selected {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+}
+.style-row.selected .style-name { color: var(--gold); }
+.style-row .style-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.style-row .style-name {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+}
+.style-row.selected .style-name { color: var(--gold); }
+.style-row .style-desc {
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+  margin-left: 0.5em;
+}
+.style-row input[type="checkbox"] {
+  appearance: none;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: var(--transition);
+}
+.style-row input[type="checkbox"]:checked {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.style-row input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px; top: 2px;
+  width: 6px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ===== Room Card ===== */
+.room-card {
+  background: #FAFAF8;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.room-card-title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 18px;
+  letter-spacing: 0.03em;
+}
+
+/* ===== Priority Check List ===== */
+.check-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+}
+.check-item:hover { background: #FAFAF8; }
+.check-item input[type="checkbox"] {
+  appearance: none;
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: var(--transition);
+}
+.check-item input[type="checkbox"]:checked {
+  background: var(--sage);
+  border-color: var(--sage);
+}
+.check-item input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px; top: 2px;
+  width: 6px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.check-item:has(input:checked) {
+  background: var(--sage-light);
+  color: var(--sage);
+}
+
+/* ===== File Upload ===== */
+.upload-area {
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+}
+.upload-area:hover {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+}
+.upload-area input { display: none; }
+.upload-label {
+  font-size: 0.90rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+.upload-hint {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  margin-top: 6px;
+}
+.file-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.80rem;
+  color: var(--text-secondary);
+}
+.file-chip .remove {
+  cursor: pointer;
+  color: #C08070;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: var(--transition);
+}
+.file-chip .remove:hover { color: #A05050; }
+
+/* ===== Submit ===== */
+.submit-section {
+  text-align: center;
+  padding: 52px 0 32px;
+}
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 56px;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  font-family: var(--font-sans);
+  transition: all 0.3s ease;
+}
+.btn-submit:hover {
+  background: #444;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.btn-submit:active { transform: translateY(0); }
+.btn-submit.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+.btn-submit .spinner {
+  display: none;
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.btn-submit.loading .spinner { display: block; }
+.btn-submit.loading .btn-text { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.submit-note {
+  margin-top: 16px;
+  font-size: 0.80rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.03em;
+}
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(45,45,45,0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 48px 44px 40px;
+  text-align: center;
+  max-width: 400px;
+  width: 92%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  transform: translateY(16px);
+  transition: transform 0.35s ease;
+}
+.modal-overlay.show .modal-card { transform: translateY(0); }
+.modal-check {
+  width: 56px; height: 56px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--sage-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-check svg { width: 28px; height: 28px; }
+.modal-card h2 {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.modal-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.modal-card .btn-close {
+  padding: 12px 36px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  letter-spacing: 0.04em;
+  transition: var(--transition);
+}
+.modal-card .btn-close:hover {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+/* ===== Budget Calculator ===== */
+.budget-mode {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.budget-mode-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.90rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  transition: var(--transition);
+  letter-spacing: 0.03em;
+}
+.budget-mode-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.budget-mode-btn.active {
+  border-color: var(--gold);
+  background: var(--gold-subtle);
+  color: var(--gold);
+  font-weight: 600;
+}
+.budget-mode-btn .mode-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+.budget-mode-btn.active .mode-label { color: var(--gold); }
+
+.budget-calc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.budget-item {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  transition: var(--transition);
+}
+.budget-item.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.budget-item .budget-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--gold-subtle);
+  color: var(--gold);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+.budget-item .budget-label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+.budget-item .budget-sub {
+  font-size: 0.74rem;
+  color: var(--text-tertiary);
+  font-weight: 300;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.budget-item .budget-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.budget-item .budget-input-wrap .currency {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.budget-item input[type="number"] {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  border-radius: 0;
+  outline: none;
+  font-family: var(--font-sans);
+  letter-spacing: 0.03em;
+  transition: var(--transition);
+}
+.budget-item input[type="number"]:focus {
+  border-bottom-color: var(--gold);
+}
+.budget-item input[type="number"]::placeholder { color: #D0CBC2; font-weight: 300; }
+
+.budget-total-card {
+  background: linear-gradient(135deg, #FDF8F0, var(--gold-subtle));
+  border: 1px solid var(--gold-light);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+.budget-total-card .total-header {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.budget-total-card .total-amount {
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--gold);
+  letter-spacing: 0.03em;
+  margin-bottom: 16px;
+}
+.budget-total-card .total-breakdown {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+}
+.budget-total-card .total-breakdown span {
+  display: inline-flex;
+  gap: 4px;
+}
+.budget-total-card .total-breakdown .b-label {
+  color: var(--text-tertiary);
+}
+.budget-total-card .total-breakdown .b-value {
+  font-weight: 600;
+}
+
+/* ===== Note Line ===== */
+.note-line-wrap {
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+.note-line {
+  width: 100%;
+  font-size: 0.82rem;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  outline: none;
+  font-family: var(--font-sans);
+  letter-spacing: 0.02em;
+  transition: var(--transition);
+}
+.note-line:focus { border-bottom-color: var(--gold); }
+.note-line::placeholder { color: #C8C0B5; }
+
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .container { padding: 0 14px 60px; }
+  .header { padding: 40px 12px 36px; }
+  .header h1 { font-size: 1.6rem; }
+  .section-card { padding: 24px 16px; }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+  .form-row.col-3, .form-row.col-4 { grid-template-columns: 1fr 1fr; }
+  .style-grid { grid-template-columns: 1fr; gap: 8px; }
+  .radio-cards { grid-template-columns: repeat(2, 1fr); }
+  .check-list { grid-template-columns: 1fr; }
+  .progress-item { padding: 12px 12px; font-size: 0.72rem; }
+  .progress-nav { margin: 0 -14px; padding: 0 14px; }
+  .room-card { padding: 16px 14px; }
+  .upload-area { padding: 22px 16px; }
+  .submit-section { padding: 32px 0 24px; }
+  .btn-submit { padding: 15px 36px; font-size: 0.90rem; }
+}
+
+@media (max-width: 480px) {
+  .form-row.col-3, .form-row.col-4 { grid-template-columns: 1fr; }
+  .budget-calc { grid-template-columns: 1fr; }
+  .budget-item { padding: 16px 14px; }
+  .budget-total-card { padding: 20px 16px; }
+  .budget-total-card .total-amount { font-size: 1.9rem; }
+  .modal-card { padding: 32px 20px 28px; }
+  .modal-card h2 { font-size: 1.2rem; }
+  .modal-card p { font-size: 0.82rem; }
+  textarea { min-height: 72px; }
+  .footer { padding: 18px 14px; font-size: 0.72rem; }
+  .radio-card label { padding: 11px 10px; font-size: 0.81rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-logo">Mofang Design</div>
+    <div class="header-line"></div>
+    <h1>设计需求调查表</h1>
+    <p class="subtitle">让我们深入了解您的生活方式和审美偏好，为您量身打造理想的家</p>
+  </header>
+
+  <!-- ===== Progress Nav ===== -->
+  <nav class="progress-nav" id="progressNav">
+    <div class="progress-inner">
+      <span class="progress-item active" data-target="sec-basic">基本信息</span>
+      <span class="progress-item" data-target="sec-family">家庭成员</span>
+      <span class="progress-item" data-target="sec-style">风格材料</span>
+      <span class="progress-item" data-target="sec-spaces">空间需求</span>
+      <span class="progress-item" data-target="sec-budget">预算补充</span>
+    </div>
+  </nav>
+
+  <form id="surveyForm" novalidate>
+
+    <!-- ===== Section 1: Basic Info ===== -->
+    <section class="section" id="sec-basic" data-section="1">
+      <div class="section-card">
+        <div class="section-number">01</div>
+        <h2 class="section-title">基本信息</h2>
+        <p class="section-subtitle">请告诉我们您的基本情况和房屋信息</p>
+
+        <div class="form-row">
+          <div class="form-group"><label>姓名 <span class="req">*</span></label><input type="text" name="name" placeholder="先生 / 女士" required></div>
+          <div class="form-group"><label>联系电话 <span class="req">*</span></label><input type="tel" name="phone" placeholder="手机号码" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>楼盘名称</label><input type="text" name="community" placeholder="小区名称"></div>
+          <div class="form-group"><label>职业</label><input type="text" name="occupation" placeholder="您的职业"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>套内面积（㎡）<span class="req">*</span></label><input type="number" name="floorArea" placeholder="实用面积" min="20" required></div>
+          <div class="form-group"><label>楼层 / 朝向</label><input type="text" name="floorOrientation" placeholder="如：12楼 朝南"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>户型类型 <span class="req">*</span></label>
+            <select name="housingType" required>
+              <option value="">请选择</option><option value="flat">平层</option><option value="duplex">复式</option><option value="split">错层</option><option value="townhouse">联排别墅</option><option value="villa">独栋别墅</option><option value="selfbuild">自建房</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>户型结构 <span class="req">*</span></label>
+            <select name="layout" required>
+              <option value="">请选择</option><option value="2-1-1">两房一厅一卫</option><option value="3-1-1">三房一厅一卫</option><option value="3-2-2">三房两厅两卫</option><option value="4-2-2">四房两厅两卫</option><option value="4-2-3">四房两厅三卫</option><option value="5plus">五房及以上</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>房屋状态</label>
+            <select name="propertyStatus">
+              <option value="">请选择</option><option value="rough">毛坯房</option><option value="fine">精装房（局部改造）</option><option value="old">旧房翻新</option><option value="second">二手房改造</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>预计居住年限</label>
+            <input type="text" name="liveYears" placeholder="如：5-10年，或长期自住">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>是否需要户型改造？</label>
+          <div class="tag-group">
+            <span class="tag-chip"><input type="radio" name="renovation" value="yes" id="reno-yes"><label for="reno-yes">需要改动墙体</label></span>
+            <span class="tag-chip"><input type="radio" name="renovation" value="no" id="reno-no"><label for="reno-no">不需要</label></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Section 2: Family & Lifestyle ===== -->
+    <section class="section" id="sec-family" data-section="2">
+      <div class="section-card">
+        <div class="section-number">02</div>
+        <h2 class="section-title">家庭成员与生活方式</h2>
+        <p class="section-subtitle">了解每位居住者的生活习惯，才能做出真正贴合生活的设计</p>
+
+        <div class="sub-heading">人口构成</div>
+        <div class="form-row col-3">
+          <div class="form-group"><label>常住老人</label><input type="number" name="elderlyCount" placeholder="人数" min="0"></div>
+          <div class="form-group"><label>常住成人</label><input type="number" name="adultCount" placeholder="人数" min="1"></div>
+          <div class="form-group"><label>常住儿童</label><input type="number" name="childCount" placeholder="人数" min="0"></div>
+        </div>
+
+        <div class="sub-heading">工作与生活节奏</div>
+        <div class="tag-group" style="margin-bottom: 22px;">
+          <span class="tag-chip"><input type="checkbox" name="workStyle" value="home" id="ws1"><label for="ws1">常居家办公</label></span>
+          <span class="tag-chip"><input type="checkbox" name="workStyle" value="travel" id="ws2"><label for="ws2">经常出差</label></span>
+          <span class="tag-chip"><input type="checkbox" name="workStyle" value="earlylate" id="ws3"><label for="ws3">早出晚归</label></span>
+          <span class="tag-chip"><input type="checkbox" name="workStyle" value="allhome" id="ws4"><label for="ws4">早中晚在家</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="workStyleNote" placeholder="如有其他选择，请在此补充…"></div>
+
+        <div class="sub-heading">个人兴趣与爱好</div>
+        <div class="tag-group">
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="game" id="h1"><label for="h1">游戏</label></span>
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="collect" id="h2"><label for="h2">收集手办/藏品</label></span>
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="garden" id="h3"><label for="h3">养花种草</label></span>
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="craft" id="h4"><label for="h4">手工制作</label></span>
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="fitness" id="h5"><label for="h5">居家健身</label></span>
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="books" id="h6"><label for="h6">藏书较多</label></span>
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="music" id="h7"><label for="h7">音乐/乐器</label></span>
+          <span class="tag-chip"><input type="checkbox" name="hobbies" value="movie" id="h8"><label for="h8">观影</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="hobbiesNote" placeholder="如有其他选择，请在此补充…"></div>
+
+        <div class="divider"></div>
+
+        <div class="sub-heading">宠物与留宿</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>家中宠物</label>
+            <div class="tag-group">
+              <span class="tag-chip"><input type="checkbox" name="pets" value="cat" id="p1"><label for="p1">猫</label></span>
+              <span class="tag-chip"><input type="checkbox" name="pets" value="dog" id="p2"><label for="p2">狗</label></span>
+              <span class="tag-chip"><input type="checkbox" name="pets" value="fish" id="p3"><label for="p3">鱼</label></span>
+              <span class="tag-chip"><input type="checkbox" name="pets" value="bird" id="p4"><label for="p4">鸟</label></span>
+              <span class="tag-chip"><input type="checkbox" name="pets" value="none" id="p5"><label for="p5">无</label></span>
+            </div>
+            <div class="note-line-wrap"><input type="text" class="note-line" name="petsNote" placeholder="如有其他选择，请在此补充…"></div>
+          </div>
+          <div class="form-group">
+            <label>客人留宿频率</label>
+            <div class="tag-group">
+              <span class="tag-chip"><input type="radio" name="guestFreq" value="relative" id="gf1"><label for="gf1">亲戚常来</label></span>
+              <span class="tag-chip"><input type="radio" name="guestFreq" value="friend" id="gf2"><label for="gf2">朋友常来</label></span>
+              <span class="tag-chip"><input type="radio" name="guestFreq" value="rare" id="gf3"><label for="gf3">偶尔</label></span>
+              <span class="tag-chip"><input type="radio" name="guestFreq" value="never" id="gf4"><label for="gf4">基本无</label></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub-heading">特殊收纳需求</div>
+        <div class="tag-group">
+          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="figures" id="ss1"><label for="ss1">手办/模型</label></span>
+          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="shoes" id="ss2"><label for="ss2">大量鞋</label></span>
+          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="luggage" id="ss3"><label for="ss3">大行李箱</label></span>
+          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="outdoor" id="ss4"><label for="ss4">户外装备</label></span>
+          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="bike" id="ss5"><label for="ss5">自行车/运动器材</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="specialStorageNote" placeholder="如有其他选择，请在此补充…"></div>
+
+        <div class="divider"></div>
+
+        <div class="form-group">
+          <label>旧家具安置</label>
+          <div class="tag-group" style="margin-bottom:8px;">
+            <span class="tag-chip"><input type="checkbox" name="oldFurniture" value="yes" id="of1"><label for="of1">有旧家具需保留</label></span>
+            <span class="tag-chip"><input type="checkbox" name="oldFurniture" value="no" id="of2"><label for="of2">无</label></span>
+          </div>
+          <input type="text" name="oldFurnitureDetail" placeholder="如需保留，请说明哪些家具、大概尺寸和颜色">
+        </div>
+
+        <div class="form-group">
+          <label>设计装修中是否有忌讳或禁忌？<span class="hint">（风水、颜色、材质等）</span></label>
+          <input type="text" name="taboos" placeholder="如无则不填">
+        </div>
+
+        <div class="form-group">
+          <label>您讨厌的颜色、风格或材质</label>
+          <input type="text" name="dislikes" placeholder="如：讨厌金色、不喜欢大理石、怕深色压抑……">
+        </div>
+
+        <div class="form-group">
+          <label>上一套房子最遗憾的地方？<span class="hint">或不希望再次出现的问题</span></label>
+          <textarea name="regrets" placeholder="如：收纳空间不够、厨房动线不顺手、隔音差、插座太少……" rows="3"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Section 3: Style & Materials ===== -->
+    <section class="section" id="sec-style" data-section="3">
+      <div class="section-card">
+        <div class="section-number">03</div>
+        <h2 class="section-title">设计风格与材料偏好</h2>
+        <p class="section-subtitle">帮我们理解您的审美方向，每项可多选</p>
+
+        <div class="sub-heading">整体设计风格（可多选）</div>
+        <p style="font-size:0.84rem;color:var(--text-tertiary);margin-bottom:18px;">点击选择心仪风格，选中后可在备注栏补充具体偏好</p>
+        <div class="style-grid">
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="modern"><div class="style-info"><span class="style-name">现代简约</span><span class="style-desc">极致简单，永不过时</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="cream"><div class="style-info"><span class="style-name">奶油风</span><span class="style-desc">柔和舒服，温馨治愈</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="nordic"><div class="style-info"><span class="style-name">北欧风</span><span class="style-desc">简约自然，自愈感</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="american"><div class="style-info"><span class="style-name">美式风</span><span class="style-desc">贵气时尚又大气</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="french"><div class="style-info"><span class="style-name">轻法式</span><span class="style-desc">简约空间，浪漫气息</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="japanese"><div class="style-info"><span class="style-name">日式原木</span><span class="style-desc">温馨自然，休闲惬意</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="wabisabi"><div class="style-info"><span class="style-name">侘寂风</span><span class="style-desc">纯粹质朴，隐奢艺术</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="newchinese"><div class="style-info"><span class="style-name">新中式</span><span class="style-desc">山水画境，现代古朴</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="luxury"><div class="style-info"><span class="style-name">现代轻奢</span><span class="style-desc">低调内敛，高级质感</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="midcentury"><div class="style-info"><span class="style-name">中古风</span><span class="style-desc">怀旧经典，故事感</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="european"><div class="style-info"><span class="style-name">欧式古典</span><span class="style-desc">华丽装饰，典雅大气</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="mix"><div class="style-info"><span class="style-name">混搭 / 其他</span><span class="style-desc">不拘一格，随心搭配</span></div></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sub-heading">墙面材料偏好</div>
+        <div class="tag-group" style="margin-bottom: 22px;">
+          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="latex" id="wm1"><label for="wm1">乳胶漆</label></span>
+          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="microcement" id="wm2"><label for="wm2">微水泥</label></span>
+          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="artpaint" id="wm3"><label for="wm3">艺术漆</label></span>
+          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="texture" id="wm4"><label for="wm4">肌理漆</label></span>
+          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="wallpaper" id="wm5"><label for="wm5">墙纸墙布</label></span>
+          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="panel" id="wm6"><label for="wm6">护墙板</label></span>
+          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="marbleWall" id="wm7"><label for="wm7">大理石</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="wallMaterialNote" placeholder="如有其他选择，请在此补充…"></div>
+
+        <div class="sub-heading">地面材料偏好</div>
+        <div class="tag-group" style="margin-bottom: 22px;">
+          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="wood" id="fm1"><label for="fm1">木地板</label></span>
+          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="tile" id="fm2"><label for="fm2">瓷砖</label></span>
+          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="stone" id="fm3"><label for="fm3">天然石材/岩板</label></span>
+          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="microcementF" id="fm4"><label for="fm4">微水泥</label></span>
+          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="carpet" id="fm5"><label for="fm5">地毯</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="floorMaterialNote" placeholder="如有其他选择，请在此补充…"></div>
+
+        <div class="sub-heading">天花吊顶偏好</div>
+        <div class="tag-group" style="margin-bottom: 22px;">
+          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="original" id="ct1"><label for="ct1">原顶（不吊顶）</label></span>
+          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="noMain" id="ct2"><label for="ct2">无主灯设计</label></span>
+          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="border" id="ct3"><label for="ct3">走边天花</label></span>
+          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="plaster" id="ct4"><label for="ct4">石膏线</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="ceilingTypeNote" placeholder="如有其他选择，请在此补充…"></div>
+
+        <div class="sub-heading">石材 / 瓷砖偏好</div>
+        <div class="tag-group" style="margin-bottom: 22px;">
+          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="marble" id="sp1"><label for="sp1">大理石</label></span>
+          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="travertine" id="sp2"><label for="sp2">洞石</label></span>
+          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="matte" id="sp3"><label for="sp3">亚光砖</label></span>
+          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="mosaic" id="sp4"><label for="sp4">马赛克</label></span>
+          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="terrazzo" id="sp5"><label for="sp5">水磨石</label></span>
+          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="patternTile" id="sp6"><label for="sp6">花砖</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="stonePreferenceNote" placeholder="如有其他选择，请在此补充…"></div>
+
+        <div class="sub-heading">空调与智能设备</div>
+        <div class="tag-group">
+          <span class="tag-chip"><input type="checkbox" name="equipment" value="centralAC" id="eq1"><label for="eq1">中央空调</label></span>
+          <span class="tag-chip"><input type="checkbox" name="equipment" value="freshAir" id="eq2"><label for="eq2">新风系统</label></span>
+          <span class="tag-chip"><input type="checkbox" name="equipment" value="wallAC" id="eq3"><label for="eq3">挂机空调</label></span>
+          <span class="tag-chip"><input type="checkbox" name="equipment" value="smartHome" id="eq4"><label for="eq4">智能家居系统</label></span>
+        </div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="equipmentNote" placeholder="如有其他选择，请在此补充…"></div>
+      </div>
+    </section>
+
+    <!-- ===== Section 4: Space-by-Space Needs ===== -->
+    <section class="section" id="sec-spaces" data-section="4">
+      <div class="section-card">
+        <div class="section-number">04</div>
+        <h2 class="section-title">各空间详细需求</h2>
+        <p class="section-subtitle">按空间分区，每个区域只填您关心的即可</p>
+
+        <!-- Entryway -->
+        <div class="room-card">
+          <div class="room-card-title">玄关 / 入户</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>进玄关习惯</label>
+              <div class="tag-group" style="flex-wrap:nowrap">
+                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="wash" id="eh1"><label for="eh1">先洗手</label></span>
+                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="bag" id="eh2"><label for="eh2">放包/钥匙</label></span>
+                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="change" id="eh3"><label for="eh3">换家居服</label></span>
+                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="shoe" id="eh4"><label for="eh4">脱鞋</label></span>
+              </div>
+            </div>
+          </div>
+          <div class="tag-group" style="margin-bottom:12px;">
+            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="mirror" id="en1"><label for="en1">全身镜</label></span>
+            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="bench" id="en2"><label for="en2">换鞋凳</label></span>
+            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="screen" id="en3"><label for="en3">屏风</label></span>
+            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="smartLock" id="en4"><label for="en4">智能门锁</label></span>
+            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="sensor" id="en5"><label for="en5">入户感应灯</label></span>
+          </div>
+          <div class="form-group"><label>是否介意入门直观全室？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="entryView" value="yes" id="ev1"><label for="ev1">介意</label></span><span class="tag-chip"><input type="radio" name="entryView" value="no" id="ev2"><label for="ev2">不介意</label></span></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="entrywayNote" placeholder="如有其他选择，请在此补充…"></div>
+        </div></div>
+
+        <!-- Living Room -->
+        <div class="room-card">
+          <div class="room-card-title">客厅</div>
+          <div class="form-group">
+            <label>主要功能（可多选）</label>
+            <div class="tag-group">
+              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="rest" id="lf1"><label for="lf1">家人休息</label></span>
+              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="tv" id="lf2"><label for="lf2">看电视</label></span>
+              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="music" id="lf3"><label for="lf3">听音乐</label></span>
+              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="party" id="lf4"><label for="lf4">亲友聚会</label></span>
+              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="kid" id="lf5"><label for="lf5">孩童玩耍</label></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>观影/音响设备</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="tv" id="av1"><label for="av1">电视</label></span>
+                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="projector" id="av2"><label for="av2">投影仪</label></span>
+                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="sound" id="av3"><label for="av3">音响系统</label></span>
+                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="soundbar" id="av4"><label for="av4">回音壁</label></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>饮用习惯</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="checkbox" name="drink" value="tea" id="dr1"><label for="dr1">茶</label></span>
+                <span class="tag-chip"><input type="checkbox" name="drink" value="coffee" id="dr2"><label for="dr2">咖啡</label></span>
+                <span class="tag-chip"><input type="checkbox" name="drink" value="wine" id="dr3"><label for="dr3">酒</label></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>接待客人频率</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="guestLiving" value="often" id="gl1"><label for="gl1">经常</label></span>
+                <span class="tag-chip"><input type="radio" name="guestLiving" value="sometimes" id="gl2"><label for="gl2">偶尔</label></span>
+                <span class="tag-chip"><input type="radio" name="guestLiving" value="rare" id="gl3"><label for="gl3">很少</label></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>地砖规格偏好</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="tileSize" value="800" id="ts1"><label for="ts1">800×800</label></span>
+                <span class="tag-chip"><input type="radio" name="tileSize" value="6001200" id="ts2"><label for="ts2">600×1200</label></span>
+                <span class="tag-chip"><input type="radio" name="tileSize" value="7501500" id="ts3"><label for="ts3">750×1500</label></span>
+                <span class="tag-chip"><input type="radio" name="tileSize" value="9001800" id="ts4"><label for="ts4">900×1800</label></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>是否需要封阳台？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="closeBalcony" value="yes" id="cb1"><label for="cb1">需要</label></span><span class="tag-chip"><input type="radio" name="closeBalcony" value="no" id="cb2"><label for="cb2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要佛龛？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="altar" value="yes" id="al1"><label for="al1">需要</label></span><span class="tag-chip"><input type="radio" name="altar" value="no" id="al2"><label for="al2">不需要</label></span></div></div>
+          </div>
+          <div class="form-group"><label>客厅色调偏好</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="livingColor" value="warm" id="lc1"><label for="lc1">暖色系</label></span><span class="tag-chip"><input type="radio" name="livingColor" value="cool" id="lc2"><label for="lc2">冷色系</label></span><span class="tag-chip"><input type="radio" name="livingColor" value="bw" id="lc3"><label for="lc3">黑白灰</label></span><span class="tag-chip"><input type="radio" name="livingColor" value="neutral" id="lc4"><label for="lc4">中性色</label></span></div></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="livingNote" placeholder="如有其他选择，请在此补充…"></div>
+        
+        </div>
+
+        <!-- Dining & Kitchen -->
+        <div class="room-card">
+          <div class="room-card-title">餐厨空间</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>做饭频率</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="cookFreq" value="3meals" id="cf1"><label for="cf1">一日三餐</label></span>
+                <span class="tag-chip"><input type="radio" name="cookFreq" value="1meal" id="cf2"><label for="cf2">一日一餐</label></span>
+                <span class="tag-chip"><input type="radio" name="cookFreq" value="weekend" id="cf3"><label for="cf3">周末做饭</label></span>
+                <span class="tag-chip"><input type="radio" name="cookFreq" value="rare" id="cf4"><label for="cf4">偶尔/不开火</label></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>厨房格局</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="kitchenType" value="open" id="kt1"><label for="kt1">开放式</label></span>
+                <span class="tag-chip"><input type="radio" name="kitchenType" value="half" id="kt2"><label for="kt2">半开放</label></span>
+                <span class="tag-chip"><input type="radio" name="kitchenType" value="closed" id="kt3"><label for="kt3">全封闭</label></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>做饭口味</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="cookTaste" value="light" id="cta1"><label for="cta1">清淡</label></span>
+                <span class="tag-chip"><input type="radio" name="cookTaste" value="mild" id="cta2"><label for="cta2">微辣</label></span>
+                <span class="tag-chip"><input type="radio" name="cookTaste" value="heavy" id="cta3"><label for="cta3">重口</label></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>冰箱需求</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="fridge" value="single" id="fr1"><label for="fr1">单门</label></span>
+                <span class="tag-chip"><input type="radio" name="fridge" value="double" id="fr2"><label for="fr2">双门/大冰箱</label></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>厨房电器需求</label>
+            <div class="tag-group">
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="dishwasher" id="ka1"><label for="ka1">洗碗机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="disinfect" id="ka2"><label for="ka2">消毒柜</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="waterPurifier" id="ka3"><label for="ka3">净水器</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="coffeeMachine" id="ka4"><label for="ka4">咖啡机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="microwave" id="ka5"><label for="ka5">微波炉</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="oven" id="ka6"><label for="ka6">蒸烤箱</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="integrated" id="ka7"><label for="ka7">集成灶</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="kitchenAC" id="ka8"><label for="ka8">厨房空调</label></span>
+              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="garbage" id="ka9"><label for="ka9">垃圾处理器</label></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>餐桌类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="tableType" value="long" id="tt1"><label for="tt1">长桌</label></span><span class="tag-chip"><input type="radio" name="tableType" value="round" id="tt2"><label for="tt2">圆桌</label></span><span class="tag-chip"><input type="radio" name="tableType" value="flex" id="tt3"><label for="tt3">可变桌</label></span></div></div>
+            <div class="form-group"><label>菜盆类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="sink" value="single" id="sk1"><label for="sk1">单盆</label></span><span class="tag-chip"><input type="radio" name="sink" value="double" id="sk2"><label for="sk2">双盆</label></span></div></div>
+          </div>
+          <div class="form-group"><label>经常做饭人员身高（cm）</label><input type="number" name="cookHeight" placeholder="cm" min="140" max="200"></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="kitchenNote" placeholder="如有其他选择，请在此补充…"></div>
+        </div>
+
+        <!-- Bedrooms -->
+        <div class="room-card">
+          <div class="room-card-title">卧室 & 衣帽间</div>
+          <div class="form-row">
+            <div class="form-group"><label>主卧床尺寸</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="bedSize" value="1.5" id="bs1"><label for="bs1">1.5×2m</label></span><span class="tag-chip"><input type="radio" name="bedSize" value="1.8" id="bs2"><label for="bs2">1.8×2m</label></span><span class="tag-chip"><input type="radio" name="bedSize" value="2.0" id="bs3"><label for="bs3">2×2m</label></span></div></div>
+            <div class="form-group"><label>床款式</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="bedType" value="ready" id="bt1"><label for="bt1">成品床</label></span><span class="tag-chip"><input type="radio" name="bedType" value="tatami" id="bt2"><label for="bt2">榻榻米</label></span><span class="tag-chip"><input type="radio" name="bedType" value="smartBed" id="bt3"><label for="bt3">智能床</label></span></div></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>是否需要梳妆台？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="vanity" value="yes" id="vn1"><label for="vn1">需要</label></span><span class="tag-chip"><input type="radio" name="vanity" value="no" id="vn2"><label for="vn2">不需要</label></span></div></div>
+            <div class="form-group"><label>叠衣还是挂衣多？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="clothesStyle" value="fold" id="cs1"><label for="cs1">叠衣多</label></span><span class="tag-chip"><input type="radio" name="clothesStyle" value="hang" id="cs2"><label for="cs2">挂衣多</label></span><span class="tag-chip"><input type="radio" name="clothesStyle" value="equal" id="cs3"><label for="cs3">两者平均</label></span></div></div>
+          </div>
+          <div class="form-group"><label>主卧色调偏好</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="bedroomColor" value="warm" id="bc1"><label for="bc1">暖色系</label></span><span class="tag-chip"><input type="radio" name="bedroomColor" value="beige" id="bc2"><label for="bc2">米色系</label></span><span class="tag-chip"><input type="radio" name="bedroomColor" value="cool" id="bc3"><label for="bc3">冷色系</label></span><span class="tag-chip"><input type="radio" name="bedroomColor" value="neutral" id="bc4"><label for="bc4">中性色</label></span></div></div>
+          <div class="form-row">
+            <div class="form-group"><label>衣帽间摆放几人衣物？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="closetPeople" value="1" id="cp1"><label for="cp1">1人</label></span><span class="tag-chip"><input type="radio" name="closetPeople" value="2" id="cp2"><label for="cp2">2人</label></span><span class="tag-chip"><input type="radio" name="closetPeople" value="3" id="cp3"><label for="cp3">3人</label></span><span class="tag-chip"><input type="radio" name="closetPeople" value="all" id="cp4"><label for="cp4">全家</label></span></div></div>
+            <div class="form-group">
+              <label>展示需求</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="checkbox" name="display" value="bag" id="dp1"><label for="dp1">包包展示</label></span>
+                <span class="tag-chip"><input type="checkbox" name="display" value="jewelry" id="dp2"><label for="dp2">首饰展示</label></span>
+                <span class="tag-chip"><input type="checkbox" name="display" value="shoes" id="dp3"><label for="dp3">鞋子展示</label></span>
+              </div>
+            </div>
+          </div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="bedroomNote" placeholder="如有其他选择，请在此补充…"></div>
+        </div>
+
+        <!-- Bathroom -->
+        <div class="room-card">
+          <div class="room-card-title">卫生间</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>马桶类型</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="toilet" value="normal" id="tl1"><label for="tl1">普通马桶</label></span>
+                <span class="tag-chip"><input type="radio" name="toilet" value="wall" id="tl2"><label for="tl2">壁挂马桶</label></span>
+                <span class="tag-chip"><input type="radio" name="toilet" value="smart" id="tl3"><label for="tl3">智能马桶</label></span>
+                <span class="tag-chip"><input type="radio" name="toilet" value="squat" id="tl4"><label for="tl4">蹲便器</label></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>是否需要浴缸？</label>
+              <div class="tag-group">
+                <span class="tag-chip"><input type="radio" name="bathtub" value="yes" id="btu1"><label for="btu1">需要</label></span>
+                <span class="tag-chip"><input type="radio" name="bathtub" value="no" id="btu2"><label for="btu2">不需要</label></span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>干湿分离</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="wetDry" value="yes" id="wd1"><label for="wd1">需要</label></span><span class="tag-chip"><input type="radio" name="wetDry" value="no" id="wd2"><label for="wd2">不需要</label></span><span class="tag-chip"><input type="radio" name="wetDry" value="flex" id="wd3"><label for="wd3">都可以</label></span></div></div>
+            <div class="form-group"><label>淋浴房类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="showerType" value="swing" id="st1"><label for="st1">平开门</label></span><span class="tag-chip"><input type="radio" name="showerType" value="slide" id="st2"><label for="st2">推拉门</label></span><span class="tag-chip"><input type="radio" name="showerType" value="glass" id="st3"><label for="st3">玻璃隔断</label></span></div></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>是否需要壁龛？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="niche" value="yes" id="ni1"><label for="ni1">需要</label></span><span class="tag-chip"><input type="radio" name="niche" value="no" id="ni2"><label for="ni2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要小便斗？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="urinal" value="yes" id="ur1"><label for="ur1">需要</label></span><span class="tag-chip"><input type="radio" name="urinal" value="no" id="ur2"><label for="ur2">不需要</label></span></div></div>
+          </div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="bathroomNote" placeholder="如有其他选择，请在此补充…"></div>
+        </div>
+
+        <!-- Balcony -->
+        <div class="room-card">
+          <div class="room-card-title">生活阳台</div>
+          <div class="form-group">
+            <label>阳台改造方向</label>
+            <div class="tag-group">
+              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="functional" id="bu1"><label for="bu1">功能型（洗衣晾晒）</label></span>
+              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="leisure" id="bu2"><label for="bu2">休闲/观景</label></span>
+              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="tea" id="bu3"><label for="bu3">泡茶区</label></span>
+              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="garden" id="bu4"><label for="bu4">养花/绿植</label></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>洗衣设备</label>
+            <div class="tag-group">
+              <span class="tag-chip"><input type="checkbox" name="laundry" value="front" id="la1"><label for="la1">滚筒洗衣机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="laundry" value="top" id="la2"><label for="la2">波轮洗衣机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="laundry" value="dryer" id="la3"><label for="la3">独立烘干机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="laundry" value="combo" id="la4"><label for="la4">洗烘一体机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="laundry" value="kidsWash" id="la5"><label for="la5">壁挂儿童洗衣机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="laundry" value="rack" id="la6"><label for="la6">电动晾衣架</label></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>是否需要家政柜？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="utilityCabinet" value="yes" id="uc1"><label for="uc1">需要</label></span><span class="tag-chip"><input type="radio" name="utilityCabinet" value="no" id="uc2"><label for="uc2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要扫拖机器人？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="robotVacuum" value="yes" id="rv1"><label for="rv1">需要</label></span><span class="tag-chip"><input type="radio" name="robotVacuum" value="no" id="rv2"><label for="rv2">不需要</label></span></div>
+          </div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="balconyNote" placeholder="如有其他选择，请在此补充…"></div>
+        </div>
+
+        <!-- Other Spaces -->
+        <div class="room-card">
+          <div class="room-card-title">其他功能区需求（可多选）</div>
+          <div class="check-list">
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="study">书房 / 工作区</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="guest">客房</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="homeTheater">影音室</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="gym">健身房</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="esports">电竞房</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="teaRoom">茶室</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="wineCellar">酒窖/酒柜</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="mahjong">麻将房/棋牌室</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="pet">宠物专属空间</label>
+            <label class="check-item"><input type="checkbox" name="otherRooms" value="storage">独立储物间</label>
+          </div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="otherRoomsNote" placeholder="如有其他选择，请在此补充…"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Section 5: Budget & Notes ===== -->
+    <section class="section" id="sec-budget" data-section="5">
+      <div class="section-card">
+        <div class="section-number">05</div>
+        <h2 class="section-title">装修预算计算</h2>
+        <p class="section-subtitle">明确预算分配，帮您精准把控装修投入</p>
+
+        <!-- ===== Budget Mode ===== -->
+        <div class="sub-heading">选择装修模式</div>
+        <div class="budget-mode" id="budgetMode">
+          <div class="budget-mode-btn active" data-mode="half" onclick="selectBudgetMode('half')">
+            半包模式<span class="mode-label">施工 + 辅材（业主自购主材）</span>
+          </div>
+          <div class="budget-mode-btn" data-mode="full" onclick="selectBudgetMode('full')">
+            全包模式<span class="mode-label">施工 + 辅材 + 主材</span>
+          </div>
+        </div>
+
+        <!-- ===== Budget Items ===== -->
+        <div class="budget-calc" id="budgetCalc">
+          <div class="budget-item" id="budgetConstruction">
+            <div class="budget-icon">◆</div>
+            <span class="budget-label" id="budgetLabelConstruction">施工+辅材费用</span>
+            <span class="budget-sub" id="budgetSubConstruction">含人工费、水泥沙、水电材料、木工板材、油漆辅料等</span>
+            <div class="budget-input-wrap">
+              <span class="currency">¥</span>
+              <input type="number" id="inpConstruction" placeholder="填写金额" min="0" oninput="calcBudget()">
+            </div>
+          </div>
+          <div class="budget-item" id="budgetMaterial">
+            <div class="budget-icon">◇</div>
+            <span class="budget-label" id="budgetLabelMaterial">主材费用</span>
+            <span class="budget-sub" id="budgetSubMaterial">瓷砖/地板、卫浴洁具、橱柜定制、门窗、开关插座等</span>
+            <div class="budget-input-wrap">
+              <span class="currency">¥</span>
+              <input type="number" id="inpMaterial" placeholder="填写金额" min="0" oninput="calcBudget()">
+            </div>
+          </div>
+          <div class="budget-item" id="budgetSoft">
+            <div class="budget-icon">◎</div>
+            <span class="budget-label">软装费用</span>
+            <span class="budget-sub">家具、窗帘布艺、灯具、装饰画、地毯、饰品等</span>
+            <div class="budget-input-wrap">
+              <span class="currency">¥</span>
+              <input type="number" id="inpSoft" placeholder="填写金额" min="0" oninput="calcBudget()">
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Total ===== -->
+        <div class="budget-total-card">
+          <div class="total-header">装修总预算</div>
+          <div class="total-amount" id="totalAmount">¥ 0</div>
+          <div class="total-breakdown">
+            <span><span class="b-label">施工</span><span class="b-value" id="breakdownConstruction">¥ 0</span></span>
+            <span><span class="b-label">主材</span><span class="b-value" id="breakdownMaterial">¥ 0</span></span>
+            <span><span class="b-label">软装</span><span class="b-value" id="breakdownSoft">¥ 0</span></span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sub-heading">户型图 & 参考图上传</div>
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="fileInput" multiple accept="image/*,.pdf,.dwg">
+          <div class="upload-label">点击或拖拽上传户型图、参考图片</div>
+          <div class="upload-hint">支持 JPG / PNG / PDF，单文件不超过 20MB</div>
+        </div>
+        <div class="file-chips" id="fileChips"></div>
+
+        <div class="divider"></div>
+
+        <div class="sub-heading">观察生活记录</div>
+        <p style="font-size:0.84rem;color:var(--text-tertiary);margin-bottom:16px;">请回顾您目前居住空间中的体验，帮助我们发现那些"说不出来但很在意"的细节</p>
+        <div class="form-group">
+          <label>目前住得"不舒服、不合理"的地方<span class="hint">（列举若干条）</span></label>
+          <textarea name="uncomfortable" rows="4" placeholder="如：厨房台面太低做菜腰疼、卧室衣柜不够放两人的衣服、沙发旁边没有充电口……"></textarea>
+        </div>
+        <div class="form-group">
+          <label>"好的、舒服的"希望保留的设计<span class="hint">（列举若干条）</span></label>
+          <textarea name="comfortable" rows="4" placeholder="如：现在的干湿分离很好用、阳台有洗手池很方便、客厅采光很满意……"></textarea>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>计划入住时间</label>
+            <input type="text" name="moveIn" placeholder="如：2026年12月，或越快越好">
+          </div>
+          <div class="form-group">
+            <label>了解我们的渠道</label>
+            <select name="source">
+              <option value="">请选择</option><option value="referral">朋友/邻居推荐</option><option value="social">小红书/抖音</option><option value="wechat">微信公众号</option><option value="search">搜索引擎</option><option value="community">小区看到工地</option><option value="other">其他</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>其他任何想告诉我们的</label>
+          <textarea name="additional" rows="3" placeholder="任何补充信息：特殊需求、顾虑、期望的沟通方式……"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Submit ===== -->
+    <div class="submit-section">
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <span class="btn-text">提交需求调查表</span>
+        <div class="spinner"></div>
+      </button>
+      <p class="submit-note">一砖一瓦落地美好，一朝一夕打磨品质</p>
+    </div>
+
+  </form>
+
+  <footer class="footer">广州市魔方设计装饰有限公司 · 番禺本地 · 口碑相传</footer>
+</div>
+
+<!-- ===== Success Modal ===== -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-card">
+    <div class="modal-check">
+      <svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="none" stroke="#7C9A6E" stroke-width="2"/><path d="M8 14l5 5 7-10" fill="none" stroke="#7C9A6E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>提交成功</h2>
+    <p>感谢您选择魔方设计。我们已收到您的需求调查表。一砖一瓦落地美好，一朝一夕打磨品质，我们将尽快安排专人与您联系。</p>
+    <button type="button" class="btn-close" onclick="closeModal()">好的，知道了</button>
+  </div>
+</div>
+
+<script>
+// ===== Style Row Toggle =====
+function toggleStyle(row) {
+  const cb = row.querySelector('input[type="checkbox"]');
+  cb.checked = !cb.checked;
+  row.classList.toggle('selected', cb.checked);
+}
+
+// ===== Budget Calculator =====
+let currentBudgetMode = 'half';
+
+function selectBudgetMode(mode) {
+  currentBudgetMode = mode;
+  document.querySelectorAll('.budget-mode-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === mode);
+  });
+
+  const materialItem = document.getElementById('budgetMaterial');
+  const constructionLabel = document.getElementById('budgetLabelConstruction');
+  const constructionSub = document.getElementById('budgetSubConstruction');
+  const materialLabel = document.getElementById('budgetLabelMaterial');
+  const materialSub = document.getElementById('budgetSubMaterial');
+
+  if (mode === 'half') {
+    // 半包：施工+辅材（分开）
+    constructionLabel.textContent = '施工+辅材费用';
+    constructionSub.textContent = '含人工费、水泥沙、水电材料、木工板材、油漆辅料等（不包主材）';
+    materialItem.classList.remove('disabled');
+    materialLabel.textContent = '主材费用';
+    materialSub.textContent = '瓷砖/地板、卫浴洁具、橱柜定制、门窗、开关插座等（业主自购）';
+  } else {
+    // 全包：施工+辅材+主材合并
+    constructionLabel.textContent = '施工+辅材+主材费用';
+    constructionSub.textContent = '全包包工包料：含人工、辅材、瓷砖地板、卫浴、橱柜、门窗等所有硬装';
+    materialItem.classList.add('disabled');
+    // 全包时主材归零
+    const inpMaterial = document.getElementById('inpMaterial');
+    inpMaterial.value = '';
+    materialLabel.textContent = '主材费用';
+    materialSub.textContent = '全包已包含主材，无需单独填写';
+  }
+
+  calcBudget();
+}
+
+function formatMoney(num) {
+  if (!num || num === 0) return '¥ 0';
+  const w = num / 10000;
+  if (w >= 1) {
+    return '¥ ' + w.toFixed(w % 1 === 0 ? 0 : 1) + ' 万';
+  }
+  return '¥ ' + num.toLocaleString('zh-CN');
+}
+
+function formatMoneyShort(num) {
+  if (!num || num === 0) return '¥ 0';
+  const w = num / 10000;
+  if (w >= 1) return '¥ ' + w.toFixed(w % 1 === 0 ? 0 : 1) + '万';
+  return '¥ ' + num.toLocaleString('zh-CN');
+}
+
+function calcBudget() {
+  const construction = parseInt(document.getElementById('inpConstruction').value) || 0;
+  let material = parseInt(document.getElementById('inpMaterial').value) || 0;
+  const soft = parseInt(document.getElementById('inpSoft').value) || 0;
+
+  if (currentBudgetMode === 'full') {
+    material = 0; // 全包模式下主材已含在施工费中
+  }
+
+  const total = construction + material + soft;
+
+  document.getElementById('totalAmount').textContent = formatMoney(total);
+  document.getElementById('breakdownConstruction').textContent = formatMoneyShort(construction);
+  document.getElementById('breakdownMaterial').textContent = formatMoneyShort(material);
+  document.getElementById('breakdownSoft').textContent = formatMoneyShort(soft);
+}
+
+// ===== Progress Navigation =====
+const progressNav = document.getElementById('progressNav');
+const progressItems = progressNav.querySelectorAll('.progress-item');
+const sections = document.querySelectorAll('.section[data-section]');
+
+function updateActiveNav() {
+  let activeId = null;
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= 120) activeId = section.id;
+  });
+  if (!activeId && sections.length > 0) activeId = sections[0].id;
+
+  progressItems.forEach(item => {
+    item.classList.toggle('active', item.dataset.target === activeId);
+    // Mark done: section index < active section index
+    const secIds = Array.from(sections).map(s => s.id);
+    const itemIdx = secIds.indexOf(item.dataset.target);
+    const activeIdx = secIds.indexOf(activeId);
+    item.classList.toggle('done', itemIdx >= 0 && itemIdx < activeIdx);
+  });
+}
+
+progressItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const target = document.getElementById(item.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
+
+// ===== File Upload =====
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('fileInput');
+const fileChips = document.getElementById('fileChips');
+let uploadedFiles = [];
+
+uploadArea.addEventListener('click', () => fileInput.click());
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.borderColor = 'var(--gold)'; });
+uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor = ''; });
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadArea.style.borderColor = '';
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+function handleFiles(files) {
+  Array.from(files).forEach(file => {
+    if (uploadedFiles.find(f => f.name === file.name && f.size === file.size)) return;
+    uploadedFiles.push(file);
+    const chip = document.createElement('span');
+    chip.className = 'file-chip';
+    const display = file.name.length > 24 ? file.name.substring(0,22)+'…' : file.name;
+    chip.innerHTML = `${display} <span class="remove" data-name="${file.name}" data-size="${file.size}">×</span>`;
+    chip.querySelector('.remove').addEventListener('click', function(e) {
+      e.stopPropagation();
+      uploadedFiles = uploadedFiles.filter(f => !(f.name === this.dataset.name && f.size === parseInt(this.dataset.size)));
+      chip.remove();
+    });
+    fileChips.appendChild(chip);
+  });
+}
+
+// ===== Submit =====
+const form = document.getElementById('surveyForm');
+const btnSubmit = document.getElementById('btnSubmit');
+const successModal = document.getElementById('successModal');
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // Basic validation for required fields
+  const requiredInputs = form.querySelectorAll('[required]');
+  let valid = true;
+  requiredInputs.forEach(input => {
+    if (input.type === 'radio') {
+      const name = input.getAttribute('name');
+      if (!form.querySelector(`input[name="${name}"]:checked`)) valid = false;
+    } else if (!input.value.trim()) {
+      valid = false;
+      input.style.borderBottomColor = '#C08070';
+      setTimeout(() => { input.style.borderBottomColor = ''; }, 2500);
+    }
+  });
+
+  if (!valid) {
+    const firstInvalid = form.querySelector('input[required]:invalid, select[required]:invalid');
+    if (firstInvalid) {
+      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalid.focus();
+    }
+    return;
+  }
+
+  btnSubmit.classList.add('loading');
+
+  // Collect form data
+  const fd = new FormData(form);
+  const data = {};
+  fd.forEach((v, k) => {
+    if (data[k]) { data[k] = Array.isArray(data[k]) ? [...data[k], v] : [data[k], v]; }
+    else data[k] = v;
+  });
+
+  // Add budget calculator data
+  data.budgetMode = currentBudgetMode;
+  data.budgetConstruction = parseInt(document.getElementById('inpConstruction').value) || 0;
+  data.budgetMaterial = parseInt(document.getElementById('inpMaterial').value) || 0;
+  data.budgetSoft = parseInt(document.getElementById('inpSoft').value) || 0;
+  data.budgetTotal = (data.budgetConstruction || 0) + (currentBudgetMode === 'full' ? 0 : (data.budgetMaterial || 0)) + (data.budgetSoft || 0);
+
+  await new Promise(r => setTimeout(r, 1500));
+
+  btnSubmit.classList.remove('loading');
+  successModal.classList.add('show');
+  console.log('提交数据：', data);
+  // Reset form
+  form.reset();
+  uploadedFiles = [];
+  fileChips.innerHTML = '';
+  // Reset styles
+  document.querySelectorAll('.style-row.selected').forEach(r => {
+    r.classList.remove('selected');
+    r.querySelector('input[type="checkbox"]').checked = false;
+  });
+  // Reset budget
+  selectBudgetMode('half');
+  document.getElementById('inpConstruction').value = '';
+  document.getElementById('inpMaterial').value = '';
+  document.getElementById('inpSoft').value = '';
+  calcBudget();
+  updateActiveNav();
+});
+
+function closeModal() {
+  successModal.classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
