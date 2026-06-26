@@ -875,7 +875,9 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     </div>
   </nav>
 
-  <form id="surveyForm" novalidate>
+  <form id="surveyForm" action="https://formsubmit.co/ajax/714162042@qq.com" method="POST" novalidate>
+    <input type="hidden" name="_subject" value="魔方设计 - 新客户需求调查表">
+    <input type="hidden" name="_captcha" value="false">
 
     <!-- ===== Section 1: Basic Info ===== -->
     <section class="section" id="sec-basic" data-section="1">
@@ -1695,11 +1697,26 @@ form.addEventListener('submit', async function(e) {
   data.budgetSoft = parseInt(document.getElementById('inpSoft').value) || 0;
   data.budgetTotal = (data.budgetConstruction || 0) + (currentBudgetMode === 'full' ? 0 : (data.budgetMaterial || 0)) + (data.budgetSoft || 0);
 
-  await new Promise(r => setTimeout(r, 1500));
+  // Submit to FormSubmit email service
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: fd,
+      headers: { 'Accept': 'application/json' }
+    });
+    const result = await res.json();
+    if (result.success !== 'true' && result.success !== true) {
+      throw new Error(result.message || '提交失败');
+    }
+  } catch (err) {
+    console.error('提交错误：', err);
+    btnSubmit.classList.remove('loading');
+    alert('提交失败，请稍后重试或直接联系客服。\n电话：19124356919\n微信：CHENMEIEN_');
+    return;
+  }
 
   btnSubmit.classList.remove('loading');
   successModal.classList.add('show');
-  console.log('提交数据：', data);
   // Reset form
   form.reset();
   uploadedFiles = [];
