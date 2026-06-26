@@ -1002,13 +1002,41 @@ const IMGURL_MAP = {
     "cases\雅居乐上善若水\微信图片_202111010840302.jpg": "https://s3.bmp.ovh/2026/06/13/sP27esho.jpg",
   };
 
-function resolveUrl(url) {
-  // 提取相对路径部分，尝试匹配 imgurl 映射
-  if (url.startsWith(CDN_BASE)) {
-    var path = url.substring(CDN_BASE.length);
-    if (IMGURL_MAP[path]) return IMGURL_MAP[path];
+// 预构建 IMGURL_MAP 正斜杠查找缓存（JSON 键用反斜杠，JS 路径用正斜杠）
+var IMGURL_LOOKUP = (function(){
+  var m = {};
+  for (var k in IMGURL_MAP) {
+    m[k.replace(/\\/g, '/')] = IMGURL_MAP[k];
   }
+  return m;
+})();
+
+function resolveUrl(url) {
+  // 优先使用 imgurl 图床地址（s3.bmp.ovh，国内访问快且稳定）
+  var path = url;
+  if (CDN_BASE && url.indexOf(CDN_BASE) === 0) {
+    path = url.substring(CDN_BASE.length);
+  }
+  var norm = path.replace(/\\/g, '/');
+  if (IMGURL_LOOKUP[norm]) return IMGURL_LOOKUP[norm];
   return url;
+}
+
+// 图片加载失败时自动切换到图床 fallback
+var imgRetryMark = {};
+function imgRetry(img) {
+  var src = img.src || img.dataset.src || '';
+  // 已经重试过了，不再循环
+  if (imgRetryMark[src]) return;
+  imgRetryMark[src] = true;
+  // 尝试匹配 fallback URL
+  var path = src;
+  if (CDN_BASE && src.indexOf(CDN_BASE) === 0) path = src.substring(CDN_BASE.length);
+  var norm = path.replace(/\\/g, '/');
+  var fallback = IMGURL_LOOKUP[norm];
+  if (fallback && fallback !== src) {
+    img.src = fallback;
+  }
 }
 
 const portfolioData = [
@@ -1099,7 +1127,7 @@ portfolioData.forEach((p,i) => {
   item.dataset.style = p.style;
   item.dataset.index = i;
   item.innerHTML = `
-    <img class="portfolio-img no-save" data-src="${resolveUrl(coverImg)}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3C/svg%3E" alt="${p.name}" draggable="false">
+    <img class="portfolio-img no-save" data-src="${resolveUrl(coverImg)}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3C/svg%3E" alt="${p.name}" draggable="false" onerror="imgRetry(this)">
     <noscript><img class="portfolio-img no-save" src="${resolveUrl(coverImg)}" alt="${p.name}" draggable="false"></noscript>
     ${imgCount > 1 ? `<div class="portfolio-badge">${imgCount}张</div>` : ''}
     <div class="portfolio-overlay">
@@ -1516,6 +1544,7 @@ if (window.innerWidth >= 769) {
           const img = entry.target;
           img.src = img.dataset.src;
           img.classList.add('loaded');
+          img.onerror = imgRetry;
           observer.unobserve(img);
         }
       });
@@ -1531,6 +1560,7 @@ if (window.innerWidth >= 769) {
     // 降级方案：直接加载所有图片
     document.querySelectorAll('img[data-src]').forEach(function(img) {
       img.src = img.dataset.src;
+      img.onerror = imgRetry;
     });
   }
 })();
