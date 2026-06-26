@@ -880,9 +880,9 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_next" value="https://mofangdesign.github.io/survey.html?sent=1">
-    <input type="hidden" name="budgetMode" id="hidBudgetMode" value="half">
-    <input type="hidden" name="budgetConstruction" id="hidConstruction" value="">
-    <input type="hidden" name="budgetSoftFurnishing" id="hidSoft" value="">
+    <input type="hidden" name="装修模式" id="hidBudgetMode" value="half">
+    <input type="hidden" name="施工+辅材费用" id="hidConstruction" value="">
+    <input type="hidden" name="软装费用" id="hidSoft" value="">
 
     <!-- ===== Section 1: Basic Info ===== -->
     <section class="section" id="sec-basic" data-section="1">
@@ -892,27 +892,27 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
         <p class="section-subtitle">请告诉我们您的基本情况和房屋信息</p>
 
         <div class="form-row">
-          <div class="form-group"><label>姓名 <span class="req">*</span></label><input type="text" name="name" placeholder="先生 / 女士" required></div>
-          <div class="form-group"><label>联系电话 <span class="req">*</span></label><input type="tel" name="phone" placeholder="手机号码" required></div>
+          <div class="form-group"><label>姓名 <span class="req">*</span></label><input type="text" name="姓名" placeholder="先生 / 女士" required></div>
+          <div class="form-group"><label>联系电话 <span class="req">*</span></label><input type="tel" name="联系电话" placeholder="手机号码" required></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>楼盘名称</label><input type="text" name="community" placeholder="小区名称"></div>
-          <div class="form-group"><label>职业</label><input type="text" name="occupation" placeholder="您的职业"></div>
+          <div class="form-group"><label>楼盘名称</label><input type="text" name="楼盘名称" placeholder="小区名称"></div>
+          <div class="form-group"><label>职业</label><input type="text" name="职业" placeholder="您的职业"></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>套内面积（㎡）<span class="req">*</span></label><input type="number" name="floorArea" placeholder="实用面积" min="20" required></div>
-          <div class="form-group"><label>楼层 / 朝向</label><input type="text" name="floorOrientation" placeholder="如：12楼 朝南"></div>
+          <div class="form-group"><label>套内面积（㎡）<span class="req">*</span></label><input type="number" name="套内面积(平方米)" placeholder="实用面积" min="20" required></div>
+          <div class="form-group"><label>楼层 / 朝向</label><input type="text" name="楼层/朝向" placeholder="如：12楼 朝南"></div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>户型类型 <span class="req">*</span></label>
-            <select name="housingType" required>
+            <select name="住房类型" required>
               <option value="">请选择</option><option value="flat">平层</option><option value="duplex">复式</option><option value="split">错层</option><option value="townhouse">联排别墅</option><option value="villa">独栋别墅</option><option value="selfbuild">自建房</option>
             </select>
           </div>
           <div class="form-group">
             <label>户型结构 <span class="req">*</span></label>
-            <select name="layout" required>
+            <select name="户型布局" required>
               <option value="">请选择</option><option value="2-1-1">两房一厅一卫</option><option value="3-1-1">三房一厅一卫</option><option value="3-2-2">三房两厅两卫</option><option value="4-2-2">四房两厅两卫</option><option value="4-2-3">四房两厅三卫</option><option value="5plus">五房及以上</option>
             </select>
           </div>
@@ -920,20 +920,20 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
         <div class="form-row">
           <div class="form-group">
             <label>房屋状态</label>
-            <select name="propertyStatus">
+            <select name="房屋状态">
               <option value="">请选择</option><option value="rough">毛坯房</option><option value="fine">精装房（局部改造）</option><option value="old">旧房翻新</option><option value="second">二手房改造</option>
             </select>
           </div>
           <div class="form-group">
             <label>预计居住年限</label>
-            <input type="text" name="liveYears" placeholder="如：5-10年，或长期自住">
+            <input type="text" name="居住年限" placeholder="如：5-10年，或长期自住">
           </div>
         </div>
         <div class="form-group">
           <label>是否需要户型改造？</label>
           <div class="tag-group">
-            <span class="tag-chip"><input type="radio" name="renovation" value="yes" id="reno-yes"><label for="reno-yes">需要改动墙体</label></span>
-            <span class="tag-chip"><input type="radio" name="renovation" value="no" id="reno-no"><label for="reno-no">不需要</label></span>
+            <span class="tag-chip"><input type="radio" name="是否改造墙体" value="yes" id="reno-yes"><label for="reno-yes">需要改动墙体</label></span>
+            <span class="tag-chip"><input type="radio" name="是否改造墙体" value="no" id="reno-no"><label for="reno-no">不需要</label></span>
           </div>
         </div>
       </div>
@@ -948,32 +948,32 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
         <div class="sub-heading">人口构成</div>
         <div class="form-row col-3">
-          <div class="form-group"><label>常住老人</label><input type="number" name="elderlyCount" placeholder="人数" min="0"></div>
-          <div class="form-group"><label>常住成人</label><input type="number" name="adultCount" placeholder="人数" min="1"></div>
-          <div class="form-group"><label>常住儿童</label><input type="number" name="childCount" placeholder="人数" min="0"></div>
+          <div class="form-group"><label>常住老人</label><input type="number" name="常住老人人数" placeholder="人数" min="0"></div>
+          <div class="form-group"><label>常住成人</label><input type="number" name="常住成人人数" placeholder="人数" min="1"></div>
+          <div class="form-group"><label>常住儿童</label><input type="number" name="常住儿童人数" placeholder="人数" min="0"></div>
         </div>
 
         <div class="sub-heading">工作与生活节奏</div>
         <div class="tag-group" style="margin-bottom: 22px;">
-          <span class="tag-chip"><input type="checkbox" name="workStyle" value="home" id="ws1"><label for="ws1">常居家办公</label></span>
-          <span class="tag-chip"><input type="checkbox" name="workStyle" value="travel" id="ws2"><label for="ws2">经常出差</label></span>
-          <span class="tag-chip"><input type="checkbox" name="workStyle" value="earlylate" id="ws3"><label for="ws3">早出晚归</label></span>
-          <span class="tag-chip"><input type="checkbox" name="workStyle" value="allhome" id="ws4"><label for="ws4">早中晚在家</label></span>
+          <span class="tag-chip"><input type="checkbox" name="工作节奏" value="home" id="ws1"><label for="ws1">常居家办公</label></span>
+          <span class="tag-chip"><input type="checkbox" name="工作节奏" value="travel" id="ws2"><label for="ws2">经常出差</label></span>
+          <span class="tag-chip"><input type="checkbox" name="工作节奏" value="earlylate" id="ws3"><label for="ws3">早出晚归</label></span>
+          <span class="tag-chip"><input type="checkbox" name="工作节奏" value="allhome" id="ws4"><label for="ws4">早中晚在家</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="workStyleNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="工作节奏备注" placeholder="如有其他选择，请在此补充…"></div>
 
         <div class="sub-heading">个人兴趣与爱好</div>
         <div class="tag-group">
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="game" id="h1"><label for="h1">游戏</label></span>
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="collect" id="h2"><label for="h2">收集手办/藏品</label></span>
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="garden" id="h3"><label for="h3">养花种草</label></span>
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="craft" id="h4"><label for="h4">手工制作</label></span>
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="fitness" id="h5"><label for="h5">居家健身</label></span>
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="books" id="h6"><label for="h6">藏书较多</label></span>
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="music" id="h7"><label for="h7">音乐/乐器</label></span>
-          <span class="tag-chip"><input type="checkbox" name="hobbies" value="movie" id="h8"><label for="h8">观影</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="game" id="h1"><label for="h1">游戏</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="collect" id="h2"><label for="h2">收集手办/藏品</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="garden" id="h3"><label for="h3">养花种草</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="craft" id="h4"><label for="h4">手工制作</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="fitness" id="h5"><label for="h5">居家健身</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="books" id="h6"><label for="h6">藏书较多</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="music" id="h7"><label for="h7">音乐/乐器</label></span>
+          <span class="tag-chip"><input type="checkbox" name="个人兴趣" value="movie" id="h8"><label for="h8">观影</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="hobbiesNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="个人兴趣备注" placeholder="如有其他选择，请在此补充…"></div>
 
         <div class="divider"></div>
 
@@ -982,59 +982,59 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
           <div class="form-group">
             <label>家中宠物</label>
             <div class="tag-group">
-              <span class="tag-chip"><input type="checkbox" name="pets" value="cat" id="p1"><label for="p1">猫</label></span>
-              <span class="tag-chip"><input type="checkbox" name="pets" value="dog" id="p2"><label for="p2">狗</label></span>
-              <span class="tag-chip"><input type="checkbox" name="pets" value="fish" id="p3"><label for="p3">鱼</label></span>
-              <span class="tag-chip"><input type="checkbox" name="pets" value="bird" id="p4"><label for="p4">鸟</label></span>
-              <span class="tag-chip"><input type="checkbox" name="pets" value="none" id="p5"><label for="p5">无</label></span>
+              <span class="tag-chip"><input type="checkbox" name="家中宠物" value="cat" id="p1"><label for="p1">猫</label></span>
+              <span class="tag-chip"><input type="checkbox" name="家中宠物" value="dog" id="p2"><label for="p2">狗</label></span>
+              <span class="tag-chip"><input type="checkbox" name="家中宠物" value="fish" id="p3"><label for="p3">鱼</label></span>
+              <span class="tag-chip"><input type="checkbox" name="家中宠物" value="bird" id="p4"><label for="p4">鸟</label></span>
+              <span class="tag-chip"><input type="checkbox" name="家中宠物" value="none" id="p5"><label for="p5">无</label></span>
             </div>
-            <div class="note-line-wrap"><input type="text" class="note-line" name="petsNote" placeholder="如有其他选择，请在此补充…"></div>
+            <div class="note-line-wrap"><input type="text" class="note-line" name="家中宠物备注" placeholder="如有其他选择，请在此补充…"></div>
           </div>
           <div class="form-group">
             <label>客人留宿频率</label>
             <div class="tag-group">
-              <span class="tag-chip"><input type="radio" name="guestFreq" value="relative" id="gf1"><label for="gf1">亲戚常来</label></span>
-              <span class="tag-chip"><input type="radio" name="guestFreq" value="friend" id="gf2"><label for="gf2">朋友常来</label></span>
-              <span class="tag-chip"><input type="radio" name="guestFreq" value="rare" id="gf3"><label for="gf3">偶尔</label></span>
-              <span class="tag-chip"><input type="radio" name="guestFreq" value="never" id="gf4"><label for="gf4">基本无</label></span>
+              <span class="tag-chip"><input type="radio" name="亲友留宿频率" value="relative" id="gf1"><label for="gf1">亲戚常来</label></span>
+              <span class="tag-chip"><input type="radio" name="亲友留宿频率" value="friend" id="gf2"><label for="gf2">朋友常来</label></span>
+              <span class="tag-chip"><input type="radio" name="亲友留宿频率" value="rare" id="gf3"><label for="gf3">偶尔</label></span>
+              <span class="tag-chip"><input type="radio" name="亲友留宿频率" value="never" id="gf4"><label for="gf4">基本无</label></span>
             </div>
           </div>
         </div>
 
         <div class="sub-heading">特殊收纳需求</div>
         <div class="tag-group">
-          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="figures" id="ss1"><label for="ss1">手办/模型</label></span>
-          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="shoes" id="ss2"><label for="ss2">大量鞋</label></span>
-          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="luggage" id="ss3"><label for="ss3">大行李箱</label></span>
-          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="outdoor" id="ss4"><label for="ss4">户外装备</label></span>
-          <span class="tag-chip"><input type="checkbox" name="specialStorage" value="bike" id="ss5"><label for="ss5">自行车/运动器材</label></span>
+          <span class="tag-chip"><input type="checkbox" name="特殊收纳需求" value="figures" id="ss1"><label for="ss1">手办/模型</label></span>
+          <span class="tag-chip"><input type="checkbox" name="特殊收纳需求" value="shoes" id="ss2"><label for="ss2">大量鞋</label></span>
+          <span class="tag-chip"><input type="checkbox" name="特殊收纳需求" value="luggage" id="ss3"><label for="ss3">大行李箱</label></span>
+          <span class="tag-chip"><input type="checkbox" name="特殊收纳需求" value="outdoor" id="ss4"><label for="ss4">户外装备</label></span>
+          <span class="tag-chip"><input type="checkbox" name="特殊收纳需求" value="bike" id="ss5"><label for="ss5">自行车/运动器材</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="specialStorageNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="特殊收纳需求备注" placeholder="如有其他选择，请在此补充…"></div>
 
         <div class="divider"></div>
 
         <div class="form-group">
           <label>旧家具安置</label>
           <div class="tag-group" style="margin-bottom:8px;">
-            <span class="tag-chip"><input type="checkbox" name="oldFurniture" value="yes" id="of1"><label for="of1">有旧家具需保留</label></span>
-            <span class="tag-chip"><input type="checkbox" name="oldFurniture" value="no" id="of2"><label for="of2">无</label></span>
+            <span class="tag-chip"><input type="checkbox" name="旧家具保留" value="yes" id="of1"><label for="of1">有旧家具需保留</label></span>
+            <span class="tag-chip"><input type="checkbox" name="旧家具保留" value="no" id="of2"><label for="of2">无</label></span>
           </div>
-          <input type="text" name="oldFurnitureDetail" placeholder="如需保留，请说明哪些家具、大概尺寸和颜色">
+          <input type="text" name="旧家具详情" placeholder="如需保留，请说明哪些家具、大概尺寸和颜色">
         </div>
 
         <div class="form-group">
           <label>设计装修中是否有忌讳或禁忌？<span class="hint">（风水、颜色、材质等）</span></label>
-          <input type="text" name="taboos" placeholder="如无则不填">
+          <input type="text" name="忌讳" placeholder="如无则不填">
         </div>
 
         <div class="form-group">
           <label>您讨厌的颜色、风格或材质</label>
-          <input type="text" name="dislikes" placeholder="如：讨厌金色、不喜欢大理石、怕深色压抑……">
+          <input type="text" name="讨厌的元素/材质" placeholder="如：讨厌金色、不喜欢大理石、怕深色压抑……">
         </div>
 
         <div class="form-group">
           <label>上一套房子最遗憾的地方？<span class="hint">或不希望再次出现的问题</span></label>
-          <textarea name="regrets" placeholder="如：收纳空间不够、厨房动线不顺手、隔音差、插座太少……" rows="3"></textarea>
+          <textarea name="现有居所遗憾" placeholder="如：收纳空间不够、厨房动线不顺手、隔音差、插座太少……" rows="3"></textarea>
         </div>
       </div>
     </section>
@@ -1049,72 +1049,72 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
         <div class="sub-heading">整体设计风格（可多选）</div>
         <p style="font-size:0.84rem;color:var(--text-tertiary);margin-bottom:18px;">点击选择心仪风格，选中后可在备注栏补充具体偏好</p>
         <div class="style-grid">
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="modern"><div class="style-info"><span class="style-name">现代简约</span><span class="style-desc">极致简单，永不过时</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="cream"><div class="style-info"><span class="style-name">奶油风</span><span class="style-desc">柔和舒服，温馨治愈</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="nordic"><div class="style-info"><span class="style-name">北欧风</span><span class="style-desc">简约自然，自愈感</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="american"><div class="style-info"><span class="style-name">美式风</span><span class="style-desc">贵气时尚又大气</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="french"><div class="style-info"><span class="style-name">轻法式</span><span class="style-desc">简约空间，浪漫气息</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="japanese"><div class="style-info"><span class="style-name">日式原木</span><span class="style-desc">温馨自然，休闲惬意</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="wabisabi"><div class="style-info"><span class="style-name">侘寂风</span><span class="style-desc">纯粹质朴，隐奢艺术</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="newchinese"><div class="style-info"><span class="style-name">新中式</span><span class="style-desc">山水画境，现代古朴</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="luxury"><div class="style-info"><span class="style-name">现代轻奢</span><span class="style-desc">低调内敛，高级质感</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="midcentury"><div class="style-info"><span class="style-name">中古风</span><span class="style-desc">怀旧经典，故事感</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="european"><div class="style-info"><span class="style-name">欧式古典</span><span class="style-desc">华丽装饰，典雅大气</span></div></div>
-          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="styles" value="mix"><div class="style-info"><span class="style-name">混搭 / 其他</span><span class="style-desc">不拘一格，随心搭配</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="modern"><div class="style-info"><span class="style-name">现代简约</span><span class="style-desc">极致简单，永不过时</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="cream"><div class="style-info"><span class="style-name">奶油风</span><span class="style-desc">柔和舒服，温馨治愈</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="nordic"><div class="style-info"><span class="style-name">北欧风</span><span class="style-desc">简约自然，自愈感</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="american"><div class="style-info"><span class="style-name">美式风</span><span class="style-desc">贵气时尚又大气</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="french"><div class="style-info"><span class="style-name">轻法式</span><span class="style-desc">简约空间，浪漫气息</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="japanese"><div class="style-info"><span class="style-name">日式原木</span><span class="style-desc">温馨自然，休闲惬意</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="wabisabi"><div class="style-info"><span class="style-name">侘寂风</span><span class="style-desc">纯粹质朴，隐奢艺术</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="newchinese"><div class="style-info"><span class="style-name">新中式</span><span class="style-desc">山水画境，现代古朴</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="luxury"><div class="style-info"><span class="style-name">现代轻奢</span><span class="style-desc">低调内敛，高级质感</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="midcentury"><div class="style-info"><span class="style-name">中古风</span><span class="style-desc">怀旧经典，故事感</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="european"><div class="style-info"><span class="style-name">欧式古典</span><span class="style-desc">华丽装饰，典雅大气</span></div></div>
+          <div class="style-row" onclick="toggleStyle(this)"><input type="checkbox" name="偏好风格" value="mix"><div class="style-info"><span class="style-name">混搭 / 其他</span><span class="style-desc">不拘一格，随心搭配</span></div></div>
         </div>
 
         <div class="divider"></div>
 
         <div class="sub-heading">墙面材料偏好</div>
         <div class="tag-group" style="margin-bottom: 22px;">
-          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="latex" id="wm1"><label for="wm1">乳胶漆</label></span>
-          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="microcement" id="wm2"><label for="wm2">微水泥</label></span>
-          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="artpaint" id="wm3"><label for="wm3">艺术漆</label></span>
-          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="texture" id="wm4"><label for="wm4">肌理漆</label></span>
-          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="wallpaper" id="wm5"><label for="wm5">墙纸墙布</label></span>
-          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="panel" id="wm6"><label for="wm6">护墙板</label></span>
-          <span class="tag-chip"><input type="checkbox" name="wallMaterial" value="marbleWall" id="wm7"><label for="wm7">大理石</label></span>
+          <span class="tag-chip"><input type="checkbox" name="墙面材料偏好" value="latex" id="wm1"><label for="wm1">乳胶漆</label></span>
+          <span class="tag-chip"><input type="checkbox" name="墙面材料偏好" value="microcement" id="wm2"><label for="wm2">微水泥</label></span>
+          <span class="tag-chip"><input type="checkbox" name="墙面材料偏好" value="artpaint" id="wm3"><label for="wm3">艺术漆</label></span>
+          <span class="tag-chip"><input type="checkbox" name="墙面材料偏好" value="texture" id="wm4"><label for="wm4">肌理漆</label></span>
+          <span class="tag-chip"><input type="checkbox" name="墙面材料偏好" value="wallpaper" id="wm5"><label for="wm5">墙纸墙布</label></span>
+          <span class="tag-chip"><input type="checkbox" name="墙面材料偏好" value="panel" id="wm6"><label for="wm6">护墙板</label></span>
+          <span class="tag-chip"><input type="checkbox" name="墙面材料偏好" value="marbleWall" id="wm7"><label for="wm7">大理石</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="wallMaterialNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="墙面材料备注" placeholder="如有其他选择，请在此补充…"></div>
 
         <div class="sub-heading">地面材料偏好</div>
         <div class="tag-group" style="margin-bottom: 22px;">
-          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="wood" id="fm1"><label for="fm1">木地板</label></span>
-          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="tile" id="fm2"><label for="fm2">瓷砖</label></span>
-          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="stone" id="fm3"><label for="fm3">天然石材/岩板</label></span>
-          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="microcementF" id="fm4"><label for="fm4">微水泥</label></span>
-          <span class="tag-chip"><input type="checkbox" name="floorMaterial" value="carpet" id="fm5"><label for="fm5">地毯</label></span>
+          <span class="tag-chip"><input type="checkbox" name="地面材料偏好" value="wood" id="fm1"><label for="fm1">木地板</label></span>
+          <span class="tag-chip"><input type="checkbox" name="地面材料偏好" value="tile" id="fm2"><label for="fm2">瓷砖</label></span>
+          <span class="tag-chip"><input type="checkbox" name="地面材料偏好" value="stone" id="fm3"><label for="fm3">天然石材/岩板</label></span>
+          <span class="tag-chip"><input type="checkbox" name="地面材料偏好" value="microcementF" id="fm4"><label for="fm4">微水泥</label></span>
+          <span class="tag-chip"><input type="checkbox" name="地面材料偏好" value="carpet" id="fm5"><label for="fm5">地毯</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="floorMaterialNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="地面材料备注" placeholder="如有其他选择，请在此补充…"></div>
 
         <div class="sub-heading">天花吊顶偏好</div>
         <div class="tag-group" style="margin-bottom: 22px;">
-          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="original" id="ct1"><label for="ct1">原顶（不吊顶）</label></span>
-          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="noMain" id="ct2"><label for="ct2">无主灯设计</label></span>
-          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="border" id="ct3"><label for="ct3">走边天花</label></span>
-          <span class="tag-chip"><input type="checkbox" name="ceilingType" value="plaster" id="ct4"><label for="ct4">石膏线</label></span>
+          <span class="tag-chip"><input type="checkbox" name="天花形式偏好" value="original" id="ct1"><label for="ct1">原顶（不吊顶）</label></span>
+          <span class="tag-chip"><input type="checkbox" name="天花形式偏好" value="noMain" id="ct2"><label for="ct2">无主灯设计</label></span>
+          <span class="tag-chip"><input type="checkbox" name="天花形式偏好" value="border" id="ct3"><label for="ct3">走边天花</label></span>
+          <span class="tag-chip"><input type="checkbox" name="天花形式偏好" value="plaster" id="ct4"><label for="ct4">石膏线</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="ceilingTypeNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="天花形式备注" placeholder="如有其他选择，请在此补充…"></div>
 
         <div class="sub-heading">石材 / 瓷砖偏好</div>
         <div class="tag-group" style="margin-bottom: 22px;">
-          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="marble" id="sp1"><label for="sp1">大理石</label></span>
-          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="travertine" id="sp2"><label for="sp2">洞石</label></span>
-          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="matte" id="sp3"><label for="sp3">亚光砖</label></span>
-          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="mosaic" id="sp4"><label for="sp4">马赛克</label></span>
-          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="terrazzo" id="sp5"><label for="sp5">水磨石</label></span>
-          <span class="tag-chip"><input type="checkbox" name="stonePreference" value="patternTile" id="sp6"><label for="sp6">花砖</label></span>
+          <span class="tag-chip"><input type="checkbox" name="石材/瓷砖偏好" value="marble" id="sp1"><label for="sp1">大理石</label></span>
+          <span class="tag-chip"><input type="checkbox" name="石材/瓷砖偏好" value="travertine" id="sp2"><label for="sp2">洞石</label></span>
+          <span class="tag-chip"><input type="checkbox" name="石材/瓷砖偏好" value="matte" id="sp3"><label for="sp3">亚光砖</label></span>
+          <span class="tag-chip"><input type="checkbox" name="石材/瓷砖偏好" value="mosaic" id="sp4"><label for="sp4">马赛克</label></span>
+          <span class="tag-chip"><input type="checkbox" name="石材/瓷砖偏好" value="terrazzo" id="sp5"><label for="sp5">水磨石</label></span>
+          <span class="tag-chip"><input type="checkbox" name="石材/瓷砖偏好" value="patternTile" id="sp6"><label for="sp6">花砖</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="stonePreferenceNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="石材/瓷砖备注" placeholder="如有其他选择，请在此补充…"></div>
 
         <div class="sub-heading">空调与智能设备</div>
         <div class="tag-group">
-          <span class="tag-chip"><input type="checkbox" name="equipment" value="centralAC" id="eq1"><label for="eq1">中央空调</label></span>
-          <span class="tag-chip"><input type="checkbox" name="equipment" value="freshAir" id="eq2"><label for="eq2">新风系统</label></span>
-          <span class="tag-chip"><input type="checkbox" name="equipment" value="wallAC" id="eq3"><label for="eq3">挂机空调</label></span>
-          <span class="tag-chip"><input type="checkbox" name="equipment" value="smartHome" id="eq4"><label for="eq4">智能家居系统</label></span>
+          <span class="tag-chip"><input type="checkbox" name="空调设备偏好" value="centralAC" id="eq1"><label for="eq1">中央空调</label></span>
+          <span class="tag-chip"><input type="checkbox" name="空调设备偏好" value="freshAir" id="eq2"><label for="eq2">新风系统</label></span>
+          <span class="tag-chip"><input type="checkbox" name="空调设备偏好" value="wallAC" id="eq3"><label for="eq3">挂机空调</label></span>
+          <span class="tag-chip"><input type="checkbox" name="空调设备偏好" value="smartHome" id="eq4"><label for="eq4">智能家居系统</label></span>
         </div>
-        <div class="note-line-wrap"><input type="text" class="note-line" name="equipmentNote" placeholder="如有其他选择，请在此补充…"></div>
+        <div class="note-line-wrap"><input type="text" class="note-line" name="空调设备备注" placeholder="如有其他选择，请在此补充…"></div>
       </div>
     </section>
 
@@ -1132,22 +1132,22 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
             <div class="form-group">
               <label>进玄关习惯</label>
               <div class="tag-group" style="flex-wrap:nowrap">
-                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="wash" id="eh1"><label for="eh1">先洗手</label></span>
-                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="bag" id="eh2"><label for="eh2">放包/钥匙</label></span>
-                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="change" id="eh3"><label for="eh3">换家居服</label></span>
-                <span class="tag-chip"><input type="checkbox" name="entryHabit" value="shoe" id="eh4"><label for="eh4">脱鞋</label></span>
+                <span class="tag-chip"><input type="checkbox" name="进玄关习惯" value="wash" id="eh1"><label for="eh1">先洗手</label></span>
+                <span class="tag-chip"><input type="checkbox" name="进玄关习惯" value="bag" id="eh2"><label for="eh2">放包/钥匙</label></span>
+                <span class="tag-chip"><input type="checkbox" name="进玄关习惯" value="change" id="eh3"><label for="eh3">换家居服</label></span>
+                <span class="tag-chip"><input type="checkbox" name="进玄关习惯" value="shoe" id="eh4"><label for="eh4">脱鞋</label></span>
               </div>
             </div>
           </div>
           <div class="tag-group" style="margin-bottom:12px;">
-            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="mirror" id="en1"><label for="en1">全身镜</label></span>
-            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="bench" id="en2"><label for="en2">换鞋凳</label></span>
-            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="screen" id="en3"><label for="en3">屏风</label></span>
-            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="smartLock" id="en4"><label for="en4">智能门锁</label></span>
-            <span class="tag-chip"><input type="checkbox" name="entryNeeds" value="sensor" id="en5"><label for="en5">入户感应灯</label></span>
+            <span class="tag-chip"><input type="checkbox" name="玄关功能需求" value="mirror" id="en1"><label for="en1">全身镜</label></span>
+            <span class="tag-chip"><input type="checkbox" name="玄关功能需求" value="bench" id="en2"><label for="en2">换鞋凳</label></span>
+            <span class="tag-chip"><input type="checkbox" name="玄关功能需求" value="screen" id="en3"><label for="en3">屏风</label></span>
+            <span class="tag-chip"><input type="checkbox" name="玄关功能需求" value="smartLock" id="en4"><label for="en4">智能门锁</label></span>
+            <span class="tag-chip"><input type="checkbox" name="玄关功能需求" value="sensor" id="en5"><label for="en5">入户感应灯</label></span>
           </div>
-          <div class="form-group"><label>是否介意入门直观全室？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="entryView" value="yes" id="ev1"><label for="ev1">介意</label></span><span class="tag-chip"><input type="radio" name="entryView" value="no" id="ev2"><label for="ev2">不介意</label></span></div>
-          <div class="note-line-wrap"><input type="text" class="note-line" name="entrywayNote" placeholder="如有其他选择，请在此补充…"></div>
+          <div class="form-group"><label>是否介意入门直观全室？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="是否介意入门直观全室" value="yes" id="ev1"><label for="ev1">介意</label></span><span class="tag-chip"><input type="radio" name="是否介意入门直观全室" value="no" id="ev2"><label for="ev2">不介意</label></span></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="玄关空间备注" placeholder="如有其他选择，请在此补充…"></div>
         </div></div>
 
         <!-- Living Room -->
@@ -1156,29 +1156,29 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
           <div class="form-group">
             <label>主要功能（可多选）</label>
             <div class="tag-group">
-              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="rest" id="lf1"><label for="lf1">家人休息</label></span>
-              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="tv" id="lf2"><label for="lf2">看电视</label></span>
-              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="music" id="lf3"><label for="lf3">听音乐</label></span>
-              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="party" id="lf4"><label for="lf4">亲友聚会</label></span>
-              <span class="tag-chip"><input type="checkbox" name="livingFunction" value="kid" id="lf5"><label for="lf5">孩童玩耍</label></span>
+              <span class="tag-chip"><input type="checkbox" name="客厅主要用途" value="rest" id="lf1"><label for="lf1">家人休息</label></span>
+              <span class="tag-chip"><input type="checkbox" name="客厅主要用途" value="tv" id="lf2"><label for="lf2">看电视</label></span>
+              <span class="tag-chip"><input type="checkbox" name="客厅主要用途" value="music" id="lf3"><label for="lf3">听音乐</label></span>
+              <span class="tag-chip"><input type="checkbox" name="客厅主要用途" value="party" id="lf4"><label for="lf4">亲友聚会</label></span>
+              <span class="tag-chip"><input type="checkbox" name="客厅主要用途" value="kid" id="lf5"><label for="lf5">孩童玩耍</label></span>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>观影/音响设备</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="tv" id="av1"><label for="av1">电视</label></span>
-                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="projector" id="av2"><label for="av2">投影仪</label></span>
-                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="sound" id="av3"><label for="av3">音响系统</label></span>
-                <span class="tag-chip"><input type="checkbox" name="avEquipment" value="soundbar" id="av4"><label for="av4">回音壁</label></span>
+                <span class="tag-chip"><input type="checkbox" name="视听设备" value="tv" id="av1"><label for="av1">电视</label></span>
+                <span class="tag-chip"><input type="checkbox" name="视听设备" value="projector" id="av2"><label for="av2">投影仪</label></span>
+                <span class="tag-chip"><input type="checkbox" name="视听设备" value="sound" id="av3"><label for="av3">音响系统</label></span>
+                <span class="tag-chip"><input type="checkbox" name="视听设备" value="soundbar" id="av4"><label for="av4">回音壁</label></span>
               </div>
             </div>
             <div class="form-group">
               <label>饮用习惯</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="checkbox" name="drink" value="tea" id="dr1"><label for="dr1">茶</label></span>
-                <span class="tag-chip"><input type="checkbox" name="drink" value="coffee" id="dr2"><label for="dr2">咖啡</label></span>
-                <span class="tag-chip"><input type="checkbox" name="drink" value="wine" id="dr3"><label for="dr3">酒</label></span>
+                <span class="tag-chip"><input type="checkbox" name="饮品习惯" value="tea" id="dr1"><label for="dr1">茶</label></span>
+                <span class="tag-chip"><input type="checkbox" name="饮品习惯" value="coffee" id="dr2"><label for="dr2">咖啡</label></span>
+                <span class="tag-chip"><input type="checkbox" name="饮品习惯" value="wine" id="dr3"><label for="dr3">酒</label></span>
               </div>
             </div>
           </div>
@@ -1186,27 +1186,27 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
             <div class="form-group">
               <label>接待客人频率</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="guestLiving" value="often" id="gl1"><label for="gl1">经常</label></span>
-                <span class="tag-chip"><input type="radio" name="guestLiving" value="sometimes" id="gl2"><label for="gl2">偶尔</label></span>
-                <span class="tag-chip"><input type="radio" name="guestLiving" value="rare" id="gl3"><label for="gl3">很少</label></span>
+                <span class="tag-chip"><input type="radio" name="待客频率" value="often" id="gl1"><label for="gl1">经常</label></span>
+                <span class="tag-chip"><input type="radio" name="待客频率" value="sometimes" id="gl2"><label for="gl2">偶尔</label></span>
+                <span class="tag-chip"><input type="radio" name="待客频率" value="rare" id="gl3"><label for="gl3">很少</label></span>
               </div>
             </div>
             <div class="form-group">
               <label>地砖规格偏好</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="tileSize" value="800" id="ts1"><label for="ts1">800×800</label></span>
-                <span class="tag-chip"><input type="radio" name="tileSize" value="6001200" id="ts2"><label for="ts2">600×1200</label></span>
-                <span class="tag-chip"><input type="radio" name="tileSize" value="7501500" id="ts3"><label for="ts3">750×1500</label></span>
-                <span class="tag-chip"><input type="radio" name="tileSize" value="9001800" id="ts4"><label for="ts4">900×1800</label></span>
+                <span class="tag-chip"><input type="radio" name="地砖尺寸偏好" value="800" id="ts1"><label for="ts1">800×800</label></span>
+                <span class="tag-chip"><input type="radio" name="地砖尺寸偏好" value="6001200" id="ts2"><label for="ts2">600×1200</label></span>
+                <span class="tag-chip"><input type="radio" name="地砖尺寸偏好" value="7501500" id="ts3"><label for="ts3">750×1500</label></span>
+                <span class="tag-chip"><input type="radio" name="地砖尺寸偏好" value="9001800" id="ts4"><label for="ts4">900×1800</label></span>
               </div>
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>是否需要封阳台？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="closeBalcony" value="yes" id="cb1"><label for="cb1">需要</label></span><span class="tag-chip"><input type="radio" name="closeBalcony" value="no" id="cb2"><label for="cb2">不需要</label></span></div></div>
-            <div class="form-group"><label>是否需要佛龛？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="altar" value="yes" id="al1"><label for="al1">需要</label></span><span class="tag-chip"><input type="radio" name="altar" value="no" id="al2"><label for="al2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要封阳台？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="是否封阳台" value="yes" id="cb1"><label for="cb1">需要</label></span><span class="tag-chip"><input type="radio" name="是否封阳台" value="no" id="cb2"><label for="cb2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要佛龛？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="是否需要佛龛" value="yes" id="al1"><label for="al1">需要</label></span><span class="tag-chip"><input type="radio" name="是否需要佛龛" value="no" id="al2"><label for="al2">不需要</label></span></div></div>
           </div>
           <div class="form-group"><label>客厅色调偏好</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="livingColor" value="warm" id="lc1"><label for="lc1">暖色系</label></span><span class="tag-chip"><input type="radio" name="livingColor" value="cool" id="lc2"><label for="lc2">冷色系</label></span><span class="tag-chip"><input type="radio" name="livingColor" value="bw" id="lc3"><label for="lc3">黑白灰</label></span><span class="tag-chip"><input type="radio" name="livingColor" value="neutral" id="lc4"><label for="lc4">中性色</label></span></div></div>
-          <div class="note-line-wrap"><input type="text" class="note-line" name="livingNote" placeholder="如有其他选择，请在此补充…"></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="客厅空间备注" placeholder="如有其他选择，请在此补充…"></div>
         
         </div>
 
@@ -1217,18 +1217,18 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
             <div class="form-group">
               <label>做饭频率</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="cookFreq" value="3meals" id="cf1"><label for="cf1">一日三餐</label></span>
-                <span class="tag-chip"><input type="radio" name="cookFreq" value="1meal" id="cf2"><label for="cf2">一日一餐</label></span>
-                <span class="tag-chip"><input type="radio" name="cookFreq" value="weekend" id="cf3"><label for="cf3">周末做饭</label></span>
-                <span class="tag-chip"><input type="radio" name="cookFreq" value="rare" id="cf4"><label for="cf4">偶尔/不开火</label></span>
+                <span class="tag-chip"><input type="radio" name="做饭频率" value="3meals" id="cf1"><label for="cf1">一日三餐</label></span>
+                <span class="tag-chip"><input type="radio" name="做饭频率" value="1meal" id="cf2"><label for="cf2">一日一餐</label></span>
+                <span class="tag-chip"><input type="radio" name="做饭频率" value="weekend" id="cf3"><label for="cf3">周末做饭</label></span>
+                <span class="tag-chip"><input type="radio" name="做饭频率" value="rare" id="cf4"><label for="cf4">偶尔/不开火</label></span>
               </div>
             </div>
             <div class="form-group">
               <label>厨房格局</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="kitchenType" value="open" id="kt1"><label for="kt1">开放式</label></span>
-                <span class="tag-chip"><input type="radio" name="kitchenType" value="half" id="kt2"><label for="kt2">半开放</label></span>
-                <span class="tag-chip"><input type="radio" name="kitchenType" value="closed" id="kt3"><label for="kt3">全封闭</label></span>
+                <span class="tag-chip"><input type="radio" name="厨房形式" value="open" id="kt1"><label for="kt1">开放式</label></span>
+                <span class="tag-chip"><input type="radio" name="厨房形式" value="half" id="kt2"><label for="kt2">半开放</label></span>
+                <span class="tag-chip"><input type="radio" name="厨房形式" value="closed" id="kt3"><label for="kt3">全封闭</label></span>
               </div>
             </div>
           </div>
@@ -1236,51 +1236,51 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
             <div class="form-group">
               <label>做饭口味</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="cookTaste" value="light" id="cta1"><label for="cta1">清淡</label></span>
-                <span class="tag-chip"><input type="radio" name="cookTaste" value="mild" id="cta2"><label for="cta2">微辣</label></span>
-                <span class="tag-chip"><input type="radio" name="cookTaste" value="heavy" id="cta3"><label for="cta3">重口</label></span>
+                <span class="tag-chip"><input type="radio" name="烹饪口味" value="light" id="cta1"><label for="cta1">清淡</label></span>
+                <span class="tag-chip"><input type="radio" name="烹饪口味" value="mild" id="cta2"><label for="cta2">微辣</label></span>
+                <span class="tag-chip"><input type="radio" name="烹饪口味" value="heavy" id="cta3"><label for="cta3">重口</label></span>
               </div>
             </div>
             <div class="form-group">
               <label>冰箱需求</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="fridge" value="single" id="fr1"><label for="fr1">单门</label></span>
-                <span class="tag-chip"><input type="radio" name="fridge" value="double" id="fr2"><label for="fr2">双门/大冰箱</label></span>
+                <span class="tag-chip"><input type="radio" name="冰箱类型" value="single" id="fr1"><label for="fr1">单门</label></span>
+                <span class="tag-chip"><input type="radio" name="冰箱类型" value="double" id="fr2"><label for="fr2">双门/大冰箱</label></span>
               </div>
             </div>
           </div>
           <div class="form-group">
             <label>厨房电器需求</label>
             <div class="tag-group">
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="dishwasher" id="ka1"><label for="ka1">洗碗机</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="disinfect" id="ka2"><label for="ka2">消毒柜</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="waterPurifier" id="ka3"><label for="ka3">净水器</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="coffeeMachine" id="ka4"><label for="ka4">咖啡机</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="microwave" id="ka5"><label for="ka5">微波炉</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="oven" id="ka6"><label for="ka6">蒸烤箱</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="integrated" id="ka7"><label for="ka7">集成灶</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="kitchenAC" id="ka8"><label for="ka8">厨房空调</label></span>
-              <span class="tag-chip"><input type="checkbox" name="kitchenAppliances" value="garbage" id="ka9"><label for="ka9">垃圾处理器</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="dishwasher" id="ka1"><label for="ka1">洗碗机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="disinfect" id="ka2"><label for="ka2">消毒柜</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="waterPurifier" id="ka3"><label for="ka3">净水器</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="coffeeMachine" id="ka4"><label for="ka4">咖啡机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="microwave" id="ka5"><label for="ka5">微波炉</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="oven" id="ka6"><label for="ka6">蒸烤箱</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="integrated" id="ka7"><label for="ka7">集成灶</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="kitchenAC" id="ka8"><label for="ka8">厨房空调</label></span>
+              <span class="tag-chip"><input type="checkbox" name="厨房电器" value="garbage" id="ka9"><label for="ka9">垃圾处理器</label></span>
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>餐桌类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="tableType" value="long" id="tt1"><label for="tt1">长桌</label></span><span class="tag-chip"><input type="radio" name="tableType" value="round" id="tt2"><label for="tt2">圆桌</label></span><span class="tag-chip"><input type="radio" name="tableType" value="flex" id="tt3"><label for="tt3">可变桌</label></span></div></div>
-            <div class="form-group"><label>菜盆类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="sink" value="single" id="sk1"><label for="sk1">单盆</label></span><span class="tag-chip"><input type="radio" name="sink" value="double" id="sk2"><label for="sk2">双盆</label></span></div></div>
+            <div class="form-group"><label>餐桌类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="餐桌类型" value="long" id="tt1"><label for="tt1">长桌</label></span><span class="tag-chip"><input type="radio" name="餐桌类型" value="round" id="tt2"><label for="tt2">圆桌</label></span><span class="tag-chip"><input type="radio" name="餐桌类型" value="flex" id="tt3"><label for="tt3">可变桌</label></span></div></div>
+            <div class="form-group"><label>菜盆类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="菜盆类型" value="single" id="sk1"><label for="sk1">单盆</label></span><span class="tag-chip"><input type="radio" name="菜盆类型" value="double" id="sk2"><label for="sk2">双盆</label></span></div></div>
           </div>
-          <div class="form-group"><label>经常做饭人员身高（cm）</label><input type="number" name="cookHeight" placeholder="cm" min="140" max="200"></div>
-          <div class="note-line-wrap"><input type="text" class="note-line" name="kitchenNote" placeholder="如有其他选择，请在此补充…"></div>
+          <div class="form-group"><label>经常做饭人员身高（cm）</label><input type="number" name="经常做饭人员身高(cm)" placeholder="cm" min="140" max="200"></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="餐厨空间备注" placeholder="如有其他选择，请在此补充…"></div>
         </div>
 
         <!-- Bedrooms -->
         <div class="room-card">
           <div class="room-card-title">卧室 & 衣帽间</div>
           <div class="form-row">
-            <div class="form-group"><label>主卧床尺寸</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="bedSize" value="1.5" id="bs1"><label for="bs1">1.5×2m</label></span><span class="tag-chip"><input type="radio" name="bedSize" value="1.8" id="bs2"><label for="bs2">1.8×2m</label></span><span class="tag-chip"><input type="radio" name="bedSize" value="2.0" id="bs3"><label for="bs3">2×2m</label></span></div></div>
-            <div class="form-group"><label>床款式</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="bedType" value="ready" id="bt1"><label for="bt1">成品床</label></span><span class="tag-chip"><input type="radio" name="bedType" value="tatami" id="bt2"><label for="bt2">榻榻米</label></span><span class="tag-chip"><input type="radio" name="bedType" value="smartBed" id="bt3"><label for="bt3">智能床</label></span></div></div>
+            <div class="form-group"><label>主卧床尺寸</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="主卧床尺寸" value="1.5" id="bs1"><label for="bs1">1.5×2m</label></span><span class="tag-chip"><input type="radio" name="主卧床尺寸" value="1.8" id="bs2"><label for="bs2">1.8×2m</label></span><span class="tag-chip"><input type="radio" name="主卧床尺寸" value="2.0" id="bs3"><label for="bs3">2×2m</label></span></div></div>
+            <div class="form-group"><label>床款式</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="床款式" value="ready" id="bt1"><label for="bt1">成品床</label></span><span class="tag-chip"><input type="radio" name="床款式" value="tatami" id="bt2"><label for="bt2">榻榻米</label></span><span class="tag-chip"><input type="radio" name="床款式" value="smartBed" id="bt3"><label for="bt3">智能床</label></span></div></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>是否需要梳妆台？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="vanity" value="yes" id="vn1"><label for="vn1">需要</label></span><span class="tag-chip"><input type="radio" name="vanity" value="no" id="vn2"><label for="vn2">不需要</label></span></div></div>
-            <div class="form-group"><label>叠衣还是挂衣多？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="clothesStyle" value="fold" id="cs1"><label for="cs1">叠衣多</label></span><span class="tag-chip"><input type="radio" name="clothesStyle" value="hang" id="cs2"><label for="cs2">挂衣多</label></span><span class="tag-chip"><input type="radio" name="clothesStyle" value="equal" id="cs3"><label for="cs3">两者平均</label></span></div></div>
+            <div class="form-group"><label>是否需要梳妆台？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="是否需要梳妆台" value="yes" id="vn1"><label for="vn1">需要</label></span><span class="tag-chip"><input type="radio" name="是否需要梳妆台" value="no" id="vn2"><label for="vn2">不需要</label></span></div></div>
+            <div class="form-group"><label>叠衣还是挂衣多？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="叠衣还是挂衣多" value="fold" id="cs1"><label for="cs1">叠衣多</label></span><span class="tag-chip"><input type="radio" name="叠衣还是挂衣多" value="hang" id="cs2"><label for="cs2">挂衣多</label></span><span class="tag-chip"><input type="radio" name="叠衣还是挂衣多" value="equal" id="cs3"><label for="cs3">两者平均</label></span></div></div>
           </div>
           <div class="form-group"><label>主卧色调偏好</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="bedroomColor" value="warm" id="bc1"><label for="bc1">暖色系</label></span><span class="tag-chip"><input type="radio" name="bedroomColor" value="beige" id="bc2"><label for="bc2">米色系</label></span><span class="tag-chip"><input type="radio" name="bedroomColor" value="cool" id="bc3"><label for="bc3">冷色系</label></span><span class="tag-chip"><input type="radio" name="bedroomColor" value="neutral" id="bc4"><label for="bc4">中性色</label></span></div></div>
           <div class="form-row">
@@ -1288,13 +1288,13 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
             <div class="form-group">
               <label>展示需求</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="checkbox" name="display" value="bag" id="dp1"><label for="dp1">包包展示</label></span>
-                <span class="tag-chip"><input type="checkbox" name="display" value="jewelry" id="dp2"><label for="dp2">首饰展示</label></span>
-                <span class="tag-chip"><input type="checkbox" name="display" value="shoes" id="dp3"><label for="dp3">鞋子展示</label></span>
+                <span class="tag-chip"><input type="checkbox" name="展示需求" value="bag" id="dp1"><label for="dp1">包包展示</label></span>
+                <span class="tag-chip"><input type="checkbox" name="展示需求" value="jewelry" id="dp2"><label for="dp2">首饰展示</label></span>
+                <span class="tag-chip"><input type="checkbox" name="展示需求" value="shoes" id="dp3"><label for="dp3">鞋子展示</label></span>
               </div>
             </div>
           </div>
-          <div class="note-line-wrap"><input type="text" class="note-line" name="bedroomNote" placeholder="如有其他选择，请在此补充…"></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="卧室衣帽间备注" placeholder="如有其他选择，请在此补充…"></div>
         </div>
 
         <!-- Bathroom -->
@@ -1304,29 +1304,29 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
             <div class="form-group">
               <label>马桶类型</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="toilet" value="normal" id="tl1"><label for="tl1">普通马桶</label></span>
-                <span class="tag-chip"><input type="radio" name="toilet" value="wall" id="tl2"><label for="tl2">壁挂马桶</label></span>
-                <span class="tag-chip"><input type="radio" name="toilet" value="smart" id="tl3"><label for="tl3">智能马桶</label></span>
-                <span class="tag-chip"><input type="radio" name="toilet" value="squat" id="tl4"><label for="tl4">蹲便器</label></span>
+                <span class="tag-chip"><input type="radio" name="马桶类型" value="normal" id="tl1"><label for="tl1">普通马桶</label></span>
+                <span class="tag-chip"><input type="radio" name="马桶类型" value="wall" id="tl2"><label for="tl2">壁挂马桶</label></span>
+                <span class="tag-chip"><input type="radio" name="马桶类型" value="smart" id="tl3"><label for="tl3">智能马桶</label></span>
+                <span class="tag-chip"><input type="radio" name="马桶类型" value="squat" id="tl4"><label for="tl4">蹲便器</label></span>
               </div>
             </div>
             <div class="form-group">
               <label>是否需要浴缸？</label>
               <div class="tag-group">
-                <span class="tag-chip"><input type="radio" name="bathtub" value="yes" id="btu1"><label for="btu1">需要</label></span>
-                <span class="tag-chip"><input type="radio" name="bathtub" value="no" id="btu2"><label for="btu2">不需要</label></span>
+                <span class="tag-chip"><input type="radio" name="是否需要浴缸" value="yes" id="btu1"><label for="btu1">需要</label></span>
+                <span class="tag-chip"><input type="radio" name="是否需要浴缸" value="no" id="btu2"><label for="btu2">不需要</label></span>
               </div>
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>干湿分离</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="wetDry" value="yes" id="wd1"><label for="wd1">需要</label></span><span class="tag-chip"><input type="radio" name="wetDry" value="no" id="wd2"><label for="wd2">不需要</label></span><span class="tag-chip"><input type="radio" name="wetDry" value="flex" id="wd3"><label for="wd3">都可以</label></span></div></div>
-            <div class="form-group"><label>淋浴房类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="showerType" value="swing" id="st1"><label for="st1">平开门</label></span><span class="tag-chip"><input type="radio" name="showerType" value="slide" id="st2"><label for="st2">推拉门</label></span><span class="tag-chip"><input type="radio" name="showerType" value="glass" id="st3"><label for="st3">玻璃隔断</label></span></div></div>
+            <div class="form-group"><label>干湿分离</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="干湿分离" value="yes" id="wd1"><label for="wd1">需要</label></span><span class="tag-chip"><input type="radio" name="干湿分离" value="no" id="wd2"><label for="wd2">不需要</label></span><span class="tag-chip"><input type="radio" name="干湿分离" value="flex" id="wd3"><label for="wd3">都可以</label></span></div></div>
+            <div class="form-group"><label>淋浴房类型</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="淋浴房类型" value="swing" id="st1"><label for="st1">平开门</label></span><span class="tag-chip"><input type="radio" name="淋浴房类型" value="slide" id="st2"><label for="st2">推拉门</label></span><span class="tag-chip"><input type="radio" name="淋浴房类型" value="glass" id="st3"><label for="st3">玻璃隔断</label></span></div></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>是否需要壁龛？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="niche" value="yes" id="ni1"><label for="ni1">需要</label></span><span class="tag-chip"><input type="radio" name="niche" value="no" id="ni2"><label for="ni2">不需要</label></span></div></div>
-            <div class="form-group"><label>是否需要小便斗？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="urinal" value="yes" id="ur1"><label for="ur1">需要</label></span><span class="tag-chip"><input type="radio" name="urinal" value="no" id="ur2"><label for="ur2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要壁龛？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="是否需要壁龛" value="yes" id="ni1"><label for="ni1">需要</label></span><span class="tag-chip"><input type="radio" name="是否需要壁龛" value="no" id="ni2"><label for="ni2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要小便斗？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="是否需要小便斗" value="yes" id="ur1"><label for="ur1">需要</label></span><span class="tag-chip"><input type="radio" name="是否需要小便斗" value="no" id="ur2"><label for="ur2">不需要</label></span></div></div>
           </div>
-          <div class="note-line-wrap"><input type="text" class="note-line" name="bathroomNote" placeholder="如有其他选择，请在此补充…"></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="卫生间备注" placeholder="如有其他选择，请在此补充…"></div>
         </div>
 
         <!-- Balcony -->
@@ -1335,46 +1335,46 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
           <div class="form-group">
             <label>阳台改造方向</label>
             <div class="tag-group">
-              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="functional" id="bu1"><label for="bu1">功能型（洗衣晾晒）</label></span>
-              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="leisure" id="bu2"><label for="bu2">休闲/观景</label></span>
-              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="tea" id="bu3"><label for="bu3">泡茶区</label></span>
-              <span class="tag-chip"><input type="checkbox" name="balconyUse" value="garden" id="bu4"><label for="bu4">养花/绿植</label></span>
+              <span class="tag-chip"><input type="checkbox" name="阳台使用场景" value="functional" id="bu1"><label for="bu1">功能型（洗衣晾晒）</label></span>
+              <span class="tag-chip"><input type="checkbox" name="阳台使用场景" value="leisure" id="bu2"><label for="bu2">休闲/观景</label></span>
+              <span class="tag-chip"><input type="checkbox" name="阳台使用场景" value="tea" id="bu3"><label for="bu3">泡茶区</label></span>
+              <span class="tag-chip"><input type="checkbox" name="阳台使用场景" value="garden" id="bu4"><label for="bu4">养花/绿植</label></span>
             </div>
           </div>
           <div class="form-group">
             <label>洗衣设备</label>
             <div class="tag-group">
-              <span class="tag-chip"><input type="checkbox" name="laundry" value="front" id="la1"><label for="la1">滚筒洗衣机</label></span>
-              <span class="tag-chip"><input type="checkbox" name="laundry" value="top" id="la2"><label for="la2">波轮洗衣机</label></span>
-              <span class="tag-chip"><input type="checkbox" name="laundry" value="dryer" id="la3"><label for="la3">独立烘干机</label></span>
-              <span class="tag-chip"><input type="checkbox" name="laundry" value="combo" id="la4"><label for="la4">洗烘一体机</label></span>
-              <span class="tag-chip"><input type="checkbox" name="laundry" value="kidsWash" id="la5"><label for="la5">壁挂儿童洗衣机</label></span>
-              <span class="tag-chip"><input type="checkbox" name="laundry" value="rack" id="la6"><label for="la6">电动晾衣架</label></span>
+              <span class="tag-chip"><input type="checkbox" name="洗衣设备" value="front" id="la1"><label for="la1">滚筒洗衣机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="洗衣设备" value="top" id="la2"><label for="la2">波轮洗衣机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="洗衣设备" value="dryer" id="la3"><label for="la3">独立烘干机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="洗衣设备" value="combo" id="la4"><label for="la4">洗烘一体机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="洗衣设备" value="kidsWash" id="la5"><label for="la5">壁挂儿童洗衣机</label></span>
+              <span class="tag-chip"><input type="checkbox" name="洗衣设备" value="rack" id="la6"><label for="la6">电动晾衣架</label></span>
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>是否需要家政柜？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="utilityCabinet" value="yes" id="uc1"><label for="uc1">需要</label></span><span class="tag-chip"><input type="radio" name="utilityCabinet" value="no" id="uc2"><label for="uc2">不需要</label></span></div></div>
-            <div class="form-group"><label>是否需要扫拖机器人？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="robotVacuum" value="yes" id="rv1"><label for="rv1">需要</label></span><span class="tag-chip"><input type="radio" name="robotVacuum" value="no" id="rv2"><label for="rv2">不需要</label></span></div>
+            <div class="form-group"><label>是否需要家政柜？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="家政柜" value="yes" id="uc1"><label for="uc1">需要</label></span><span class="tag-chip"><input type="radio" name="家政柜" value="no" id="uc2"><label for="uc2">不需要</label></span></div></div>
+            <div class="form-group"><label>是否需要扫拖机器人？</label><div class="tag-group"><span class="tag-chip"><input type="radio" name="扫拖机器人" value="yes" id="rv1"><label for="rv1">需要</label></span><span class="tag-chip"><input type="radio" name="扫拖机器人" value="no" id="rv2"><label for="rv2">不需要</label></span></div>
           </div>
-          <div class="note-line-wrap"><input type="text" class="note-line" name="balconyNote" placeholder="如有其他选择，请在此补充…"></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="阳台空间备注" placeholder="如有其他选择，请在此补充…"></div>
         </div>
 
         <!-- Other Spaces -->
         <div class="room-card">
           <div class="room-card-title">其他功能区需求（可多选）</div>
           <div class="check-list">
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="study">书房 / 工作区</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="guest">客房</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="homeTheater">影音室</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="gym">健身房</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="esports">电竞房</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="teaRoom">茶室</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="wineCellar">酒窖/酒柜</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="mahjong">麻将房/棋牌室</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="pet">宠物专属空间</label>
-            <label class="check-item"><input type="checkbox" name="otherRooms" value="storage">独立储物间</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="study">书房 / 工作区</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="guest">客房</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="homeTheater">影音室</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="gym">健身房</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="esports">电竞房</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="teaRoom">茶室</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="wineCellar">酒窖/酒柜</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="mahjong">麻将房/棋牌室</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="pet">宠物专属空间</label>
+            <label class="check-item"><input type="checkbox" name="其他功能区需求" value="storage">独立储物间</label>
           </div>
-          <div class="note-line-wrap"><input type="text" class="note-line" name="otherRoomsNote" placeholder="如有其他选择，请在此补充…"></div>
+          <div class="note-line-wrap"><input type="text" class="note-line" name="其他功能区备注" placeholder="如有其他选择，请在此补充…"></div>
         </div>
       </div>
     </section>
@@ -1455,11 +1455,11 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
         <p style="font-size:0.84rem;color:var(--text-tertiary);margin-bottom:16px;">请回顾您目前居住空间中的体验，帮助我们发现那些"说不出来但很在意"的细节</p>
         <div class="form-group">
           <label>目前住得"不舒服、不合理"的地方<span class="hint">（列举若干条）</span></label>
-          <textarea name="uncomfortable" rows="4" placeholder="如：厨房台面太低做菜腰疼、卧室衣柜不够放两人的衣服、沙发旁边没有充电口……"></textarea>
+          <textarea name="生活不便之处" rows="4" placeholder="如：厨房台面太低做菜腰疼、卧室衣柜不够放两人的衣服、沙发旁边没有充电口……"></textarea>
         </div>
         <div class="form-group">
           <label>"好的、舒服的"希望保留的设计<span class="hint">（列举若干条）</span></label>
-          <textarea name="comfortable" rows="4" placeholder="如：现在的干湿分离很好用、阳台有洗手池很方便、客厅采光很满意……"></textarea>
+          <textarea name="满意之处" rows="4" placeholder="如：现在的干湿分离很好用、阳台有洗手池很方便、客厅采光很满意……"></textarea>
         </div>
 
         <div class="divider"></div>
@@ -1467,11 +1467,11 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
         <div class="form-row">
           <div class="form-group">
             <label>计划入住时间</label>
-            <input type="text" name="moveIn" placeholder="如：2026年12月，或越快越好">
+            <input type="text" name="预计入住时间" placeholder="如：2026年12月，或越快越好">
           </div>
           <div class="form-group">
             <label>了解我们的渠道</label>
-            <select name="source">
+            <select name="了解渠道">
               <option value="">请选择</option><option value="referral">朋友/邻居推荐</option><option value="social">小红书/抖音</option><option value="wechat">微信公众号</option><option value="search">搜索引擎</option><option value="community">小区看到工地</option><option value="other">其他</option>
             </select>
           </div>
@@ -1479,7 +1479,7 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
         <div class="form-group">
           <label>其他任何想告诉我们的</label>
-          <textarea name="additional" rows="3" placeholder="任何补充信息：特殊需求、顾虑、期望的沟通方式……"></textarea>
+          <textarea name="补充信息" rows="3" placeholder="任何补充信息：特殊需求、顾虑、期望的沟通方式……"></textarea>
         </div>
       </div>
     </section>
