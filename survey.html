@@ -1528,6 +1528,7 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
       <button type="button" class="btn-close" onclick="closeModal()">好的，知道了</button>
       <button type="button" class="btn-pdf" onclick="toggleSummary()" id="btnToggleSummary" style="margin-left:10px">查看提交内容</button>
       <button type="button" class="btn-pdf" onclick="saveAsPDF()" style="margin-left:10px">保存为 PDF</button>
+      <button type="button" class="btn-pdf" onclick="copySummary()" id="btnCopy" style="margin-left:10px">复制内容</button>
     </div>
   </div>
 </div>  </div>
@@ -1686,8 +1687,11 @@ function handleFiles(files) {
 const form = document.getElementById('surveyForm');
 const btnSubmit = document.getElementById('btnSubmit');
 const successModal = document.getElementById('successModal');
+const summaryArea = document.getElementById('summaryArea');
+const btnToggleSummary = document.getElementById('btnToggleSummary');
 
 form.addEventListener('submit', function(e) {
+  e.preventDefault(); // We handle everything in JS — no server dependency
 
   // Basic validation for required fields
   const requiredInputs = form.querySelectorAll('[required]');
@@ -1695,17 +1699,22 @@ form.addEventListener('submit', function(e) {
   requiredInputs.forEach(input => {
     if (input.type === 'radio') {
       const name = input.getAttribute('name');
-      if (!form.querySelector(`input[name="${name}"]:checked`)) valid = false;
+      if (!form.querySelector('input[name="' + name + '"]:checked')) valid = false;
     } else if (!input.value.trim()) {
       valid = false;
       input.style.borderBottomColor = '#C08070';
-      setTimeout(() => { input.style.borderBottomColor = ''; }, 2500);
+      setTimeout(function() { input.style.borderBottomColor = ''; }, 2500);
     }
   });
 
   if (!valid) {
-    e.preventDefault();
-    const firstInvalid = form.querySelector('input[required]:invalid, select[required]:invalid');
+    var firstInvalid = form.querySelector('input[required]:invalid, select[required]:invalid, textarea[required]:invalid');
+    if (!firstInvalid) {
+      // Fallback: find any empty required field
+      requiredInputs.forEach(function(inp) {
+        if (!firstInvalid && !inp.value.trim()) firstInvalid = inp;
+      });
+    }
     if (firstInvalid) {
       firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
       firstInvalid.focus();
@@ -1713,51 +1722,231 @@ form.addEventListener('submit', function(e) {
     return;
   }
 
-  // Save form data to sessionStorage for PDF download
-  try {
-    const fd = new FormData(form);
-    const data = {};
-    for (let [k, v] of fd.entries()) {
-      if (!['_next','_subject','_captcha','_template'].includes(k)) {
-        data[k] = v;
-      }
+  btnSubmit.classList.add('loading');
+  btnSubmit.disabled = true;
+
+  // Gather form data
+  var fd = new FormData(form);
+  var data = {};
+  for (var pair of fd.entries()) {
+    if (['_next','_subject','_captcha','_template'].indexOf(pair[0]) === -1) {
+      data[pair[0]] = pair[1];
     }
-    data._uploadedFiles = uploadedFiles.map(f => f.name);
-    sessionStorage.setItem('mofangFormData', JSON.stringify(data));
+  }
+  data._uploadedFiles = uploadedFiles.map(function(f) { return f.name; });
+  data._submitTime = new Date().toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'});
 
-    // Send to DingTalk (fire-and-forget, won't block form submit)
-    let dingMsg = '魔方设计 - 新客户需求调查表\n\n';
-    dingMsg += '【基本信息】\n';
-    dingMsg += '姓名：' + (data['姓名']||'-') + '\n';
-    dingMsg += '电话：' + (data['联系电话']||'-') + '\n';
-    dingMsg += '楼盘：' + (data['楼盘名称']||'-') + '\n';
-    dingMsg += '面积：' + (data['套内面积(平方米)']||'-') + '㎡\n';
-    dingMsg += '户型：' + (data['户型']||'-') + '\n';
-    dingMsg += '楼层/朝向：' + (data['楼层/朝向']||'-') + '\n\n';
-    dingMsg += '【风格偏好】\n';
-    dingMsg += '风格：' + (data['风格偏好']||'-') + '\n';
-    dingMsg += '装修模式：' + (data['装修模式']||'-') + '\n';
-    dingMsg += '施工费用：' + (data['施工+辅材费用']?'¥'+data['施工+辅材费用']:'-') + '\n';
-    dingMsg += '软装费用：' + (data['软装费用']?'¥'+data['软装费用']:'-') + '\n\n';
-    dingMsg += '提交时间：' + new Date().toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'});
+  // Save to sessionStorage for PDF download
+  try { sessionStorage.setItem('mofangFormData', JSON.stringify(data)); } catch(e) {}
 
+  // Populate and show success modal
+  populateSummary(data);
+  successModal.classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Fire-and-forget: try to send to FormSubmit email backup
+  // Uses no-cors mode (multipart/form-data = simple request, no preflight)
+  var fd2 = new FormData(form);
+  fetch('https://formsubmit.co/714162042@qq.com', {
+    method: 'POST',
+    body: fd2,
+    mode: 'no-cors'
+  }).catch(function(){});
+
+  // Fire-and-forget: try DingTalk notification
+  // Note: may be blocked by CORS since DingTalk requires application/json Content-Type
+  // Still worth trying — some browser configurations may allow it
+  var dingMsg = '魔方设计 - 新客户需求调查表\n\n';
+  dingMsg += '【基本信息】\n';
+  dingMsg += '姓名：' + (data['姓名']||'-') + '\n';
+  dingMsg += '电话：' + (data['联系电话']||'-') + '\n';
+  dingMsg += '楼盘：' + (data['楼盘名称']||'-') + '\n';
+  dingMsg += '面积：' + (data['套内面积(平方米)']||'-') + '㎡\n';
+  dingMsg += '户型：' + (data['户型']||'-') + '\n';
+  dingMsg += '楼层/朝向：' + (data['楼层/朝向']||'-') + '\n\n';
+  dingMsg += '【风格偏好】\n';
+  dingMsg += '风格：' + (data['风格偏好']||'-') + '\n';
+  dingMsg += '装修模式：' + (data['装修模式']||'-') + '\n';
+  dingMsg += '施工费用：' + (data['施工+辅材费用']?'¥'+data['施工+辅材费用']:'-') + '\n';
+  dingMsg += '软装费用：' + (data['软装费用']?'¥'+data['软装费用']:'-') + '\n\n';
+  dingMsg += '提交时间：' + data._submitTime;
+
+  try {
     fetch('https://oapi.dingtalk.com/robot/send?access_token=c9c0d002a4e198198675f8056c08c35acbea5e77563b98d308e0d841409f49ae', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ msgtype: 'text', text: { content: dingMsg } })
-    }).catch(function(){}); // silently ignore errors, email is the backup
-
-  } catch(err) {}
-
-  // Valid — let form submit natively
-  btnSubmit.classList.add('loading');
+    }).catch(function(){});
+  } catch(e) {}
 });
 
-// Show success modal on return from FormSubmit redirect
+function populateSummary(data) {
+  var html = '';
+  html += '<div style="margin-bottom:6px;font-weight:700;color:#7C9A6E">提交内容摘要</div>';
+
+  // Helper to get form field label text
+  function getFieldLabel(name) {
+    var el = form.querySelector('[name="' + name + '"]');
+    if (!el) return name;
+    var group = el.closest('.form-group');
+    if (group) {
+      var lbl = group.querySelector('label');
+      if (lbl) return lbl.textContent.replace(/\*/g, '').trim();
+    }
+    var fieldset = el.closest('.fieldset');
+    if (fieldset) {
+      var legend = fieldset.querySelector('.fieldset-title');
+      if (legend) return legend.textContent.trim();
+    }
+    return name;
+  }
+
+  // Helper to get checkbox/radio group values
+  function getCheckedValues(name) {
+    var checked = form.querySelectorAll('[name="' + name + '"]:checked');
+    var vals = [];
+    checked.forEach(function(cb) {
+      var chip = cb.closest('.tag-chip');
+      if (chip) {
+        var lbl = chip.querySelector('label');
+        if (lbl) vals.push(lbl.textContent.trim());
+      } else {
+        vals.push(cb.value);
+      }
+    });
+    return vals.join('、');
+  }
+
+  // Helper to add a field row
+  function addRow(label, value) {
+    if (value && value !== '-' && value !== 'undefined' && value !== '㎡') {
+      html += '<div style="display:flex;padding:2px 0"><span style="color:var(--text-secondary);min-width:90px;flex-shrink:0;font-size:12px">' + label + '</span><span style="color:var(--text);font-size:12px">' + value + '</span></div>';
+    }
+  }
+
+  // Section 1: Basic Info
+  html += '<div style="font-weight:600;color:var(--gold);margin-top:10px;margin-bottom:4px;font-size:13px">基本信息</div>';
+  addRow('姓名', data['姓名']);
+  addRow('电话', data['联系电话']);
+  addRow('楼盘', data['楼盘名称']);
+  addRow('职业', data['职业']);
+  addRow('面积', data['套内面积(平方米)'] + '㎡');
+  addRow('楼层/朝向', data['楼层/朝向']);
+  addRow('住房类型', data['住房类型']);
+  addRow('户型布局', data['户型布局']);
+  addRow('房屋状态', data['房屋状态']);
+  addRow('居住年限', data['居住年限']);
+  var reno = getCheckedValues('是否改造墙体');
+  addRow('改造墙体', reno);
+
+  // Section 2: Family
+  html += '<div style="font-weight:600;color:var(--gold);margin-top:10px;margin-bottom:4px;font-size:13px">家庭成员与生活</div>';
+  var family = [];
+  if (data['常住老人人数'] && data['常住老人人数'] !== '0') family.push('老人' + data['常住老人人数'] + '人');
+  if (data['常住成人人数'] && data['常住成人人数'] !== '0') family.push('成人' + data['常住成人人数'] + '人');
+  if (data['常住儿童人数'] && data['常住儿童人数'] !== '0') family.push('儿童' + data['常住儿童人数'] + '人');
+  if (family.length > 0) addRow('常住成员', family.join('、'));
+  addRow('工作节奏', getCheckedValues('工作节奏'));
+  addRow('个人兴趣', getCheckedValues('个人兴趣'));
+  addRow('家中宠物', getCheckedValues('家中宠物'));
+  addRow('留宿频率', getCheckedValues('亲友留宿频率'));
+  addRow('收纳需求', getCheckedValues('特殊收纳需求'));
+  addRow('旧家具', data['旧家具详情']);
+  addRow('忌讳', data['忌讳']);
+  addRow('讨厌元素', data['讨厌的元素/材质']);
+  addRow('现有遗憾', data['现有居所遗憾']);
+
+  // Section 3: Style
+  html += '<div style="font-weight:600;color:var(--gold);margin-top:10px;margin-bottom:4px;font-size:13px">风格与材料</div>';
+  addRow('风格偏好', getCheckedValues('偏好风格'));
+  addRow('墙面材料', getCheckedValues('墙面材料偏好'));
+  addRow('地面材料', getCheckedValues('地面材料偏好'));
+  addRow('天花形式', getCheckedValues('天花形式偏好'));
+  addRow('石材/瓷砖', getCheckedValues('石材/瓷砖偏好'));
+  addRow('设备偏好', getCheckedValues('空调设备偏好'));
+
+  // Section 4: Budget
+  html += '<div style="font-weight:600;color:var(--gold);margin-top:10px;margin-bottom:4px;font-size:13px">预算与补充</div>';
+  var modeMap = { half: '半包', full: '全包' };
+  addRow('装修模式', modeMap[data['装修模式']] || data['装修模式']);
+  addRow('施工费用', data['施工+辅材费用'] ? '¥' + data['施工+辅材费用'] : '');
+  addRow('软装费用', data['软装费用'] ? '¥' + data['软装费用'] : '');
+  addRow('入住时间', data['预计入住时间']);
+  addRow('补充信息', data['补充信息']);
+
+  html += '<div style="margin-top:10px;color:var(--text-tertiary);font-size:11px">提交时间：' + (data._submitTime || '') + '</div>';
+
+  summaryArea.innerHTML = html;
+
+  // Reset toggle state
+  summaryShown = false;
+  summaryArea.style.display = 'none';
+  btnToggleSummary.textContent = '查看提交内容';
+}
+
+var summaryShown = false;
+
+function toggleSummary() {
+  summaryShown = !summaryShown;
+  summaryArea.style.display = summaryShown ? 'block' : 'none';
+  btnToggleSummary.textContent = summaryShown ? '收起内容' : '查看提交内容';
+}
+
+function copySummary() {
+  var text = '';
+  var rows = summaryArea.querySelectorAll('div[style]');
+  rows.forEach(function(row) {
+    var spans = row.querySelectorAll('span');
+    if (spans.length >= 2) {
+      text += spans[0].textContent + ': ' + spans[1].textContent + '\n';
+    } else if (spans.length === 1 && row.style.fontWeight === '600') {
+      text += '\n【' + spans[0].textContent + '】\n';
+    }
+  });
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      var btn = document.getElementById('btnCopy');
+      var orig = btn.textContent;
+      btn.textContent = '已复制!';
+      btn.style.background = '#7C9A6E';
+      btn.style.color = '#fff';
+      setTimeout(function() {
+        btn.textContent = orig;
+        btn.style.background = '';
+        btn.style.color = '';
+      }, 2000);
+    }).catch(function() {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+
+  function fallbackCopy(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    alert('已复制提交内容到剪贴板');
+  }
+}
+
+// Show success modal on return from FormSubmit redirect (backward compatible)
 document.addEventListener('DOMContentLoaded', function() {
-  if (window.location.search.includes('sent=1')) {
+  if (window.location.search.indexOf('sent=1') !== -1) {
     window.history.replaceState({}, '', window.location.pathname);
-    setTimeout(() => {
+    var stored = sessionStorage.getItem('mofangFormData');
+    if (stored) {
+      try { populateSummary(JSON.parse(stored)); } catch(e) {}
+    }
+    setTimeout(function() {
+      summaryShown = true;
+      summaryArea.style.display = 'block';
+      btnToggleSummary.textContent = '收起内容';
       successModal.classList.add('show');
     }, 300);
   }
@@ -1766,6 +1955,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function closeModal() {
   successModal.classList.remove('show');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Re-enable submit button
+  btnSubmit.classList.remove('loading');
+  btnSubmit.disabled = false;
 }
 
 // ===== Save as PDF (print-friendly page) =====
@@ -1793,24 +1985,18 @@ function saveAsPDF() {
     + '<div class="divider"></div>';
 
   const sections = [
-    { title: '一、基本信息', keys: ['姓名','联系电话','楼盘/小区','面积','户型','朝向','楼层','房屋现状','居住年限','是否改造'] },
-    { title: '二、家庭成员与生活', keys: ['家庭成员','工作性质','爱好','宠物','留宿需求','收纳习惯','旧家具处理','忌讳色','讨厌的设计','其他遗憾'] },
-    { title: '三、风格与材料', keys: ['风格偏好','墙面材料','地面材料','天花处理','石材倾向','设备倾向'] },
-    { title: '四、空间需求', keys: [], spaces: ['玄关','客厅','餐厨','卧室衣帽间','卫生间','阳台','其他功能区'] },
-    { title: '五、预算与补充', keys: ['装修模式','施工+辅材费用','软装费用','入住时间','补充信息'] }
+    { title: '一、基本信息', keys: ['姓名','联系电话','楼盘名称','职业','套内面积(平方米)','楼层/朝向','住房类型','户型布局','房屋状态','居住年限','是否改造墙体'] },
+    { title: '二、家庭成员与生活', keys: ['常住老人人数','常住成人人数','常住儿童人数','工作节奏','工作节奏备注','个人兴趣','个人兴趣备注','家中宠物','家中宠物备注','亲友留宿频率','特殊收纳需求','特殊收纳需求备注','旧家具保留','旧家具详情','忌讳','讨厌的元素/材质','现有居所遗憾'] },
+    { title: '三、风格与材料', keys: ['偏好风格','墙面材料偏好','墙面材料备注','地面材料偏好','地面材料备注','天花形式偏好','天花形式备注','石材/瓷砖偏好','石材/瓷砖备注','空调设备偏好','空调设备备注'] },
+    { title: '四、空间需求', keys: ['进玄关习惯','玄关功能需求','是否介意入门直观全室','玄关空间备注','客厅主要用途','视听设备','饮品习惯','待客频率','地砖尺寸偏好','客厅空间备注','餐厨空间备注','卧室衣帽间备注','卫生间备注','阳台空间备注','其他功能区备注'] },
+    { title: '五、预算与补充', keys: ['装修模式','施工+辅材费用','软装费用','预计入住时间','补充信息'] }
   ];
 
-  sections.forEach(sec => {
+  sections.forEach(function(sec) {
     h += '<div class="section"><div class="section-title">' + sec.title + '</div>';
-    sec.keys.forEach(k => {
+    sec.keys.forEach(function(k) {
       if (data[k]) h += '<div class="row"><span class="row-label">' + k + '</span><span class="row-value">' + data[k] + '</span></div>';
     });
-    if (sec.spaces) {
-      sec.spaces.forEach(sp => {
-        if (data[sp]) h += '<div class="row"><span class="row-label">' + sp + '</span><span class="row-value">' + data[sp] + '</span></div>';
-        if (data[sp + '备注']) h += '<div class="row"><span class="row-label">' + sp + '备注</span><span class="row-value">' + data[sp + '备注'] + '</span></div>';
-      });
-    }
     h += '</div>';
   });
 
