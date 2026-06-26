@@ -892,10 +892,7 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     </div>
   </nav>
 
-  <form id="surveyForm" action="https://formsubmit.co/714162042@qq.com" method="POST" novalidate>
-    <input type="hidden" name="_subject" value="魔方设计 - 新客户需求调查表">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_template" value="table">
+  <form id="surveyForm" action="https://1410489691-gicj1y22l.ap-guangzhou.tencentcs.com" method="POST" novalidate>
     <input type="hidden" name="_next" value="https://mofangdesign.github.io/survey.html?sent=1">
     <input type="hidden" name="装修模式" id="hidBudgetMode" value="half">
     <input type="hidden" name="施工+辅材费用" id="hidConstruction" value="">
@@ -1517,14 +1514,18 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 
 <!-- ===== Success Modal ===== -->
 <div class="modal-overlay" id="successModal">
-  <div class="modal-card">
+  <div class="modal-card" style="max-width:560px">
     <div class="modal-check">
       <svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="none" stroke="#7C9A6E" stroke-width="2"/><path d="M8 14l5 5 7-10" fill="none" stroke="#7C9A6E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
     <h2>提交成功</h2>
     <p>感谢您选择魔方设计！我们已收到您的需求调查表。<br><br>提交后 <strong>24小时内</strong>，将有专人联系您，为您安排一对一沟通。<br><br>一砖一瓦落地美好，一朝一夕打磨品质。</p>
-    <button type="button" class="btn-close" onclick="closeModal()">好的，知道了</button>
-    <button type="button" class="btn-pdf" onclick="saveAsPDF()">保存为 PDF</button>
+    <div id="summaryArea" style="margin-top:18px;text-align:left;background:var(--gold-subtle);border-radius:8px;padding:16px;max-height:260px;overflow-y:auto;font-size:12.5px;line-height:1.7;color:var(--text);display:none"></div>
+    <div style="margin-top:18px">
+      <button type="button" class="btn-close" onclick="closeModal()">好的，知道了</button>
+      <button type="button" class="btn-pdf" onclick="toggleSummary()" id="btnToggleSummary" style="margin-left:10px">查看提交内容</button>
+      <button type="button" class="btn-pdf" onclick="saveAsPDF()" style="margin-left:10px">保存为 PDF</button>
+    </div>
   </div>
 </div>  </div>
 </div>
