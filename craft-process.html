@@ -340,8 +340,8 @@
       <h2>毛坯房装修<span>27步</span>全流程</h2>
       <p>从设计图纸到拎包入住，一目了然的装修通关地图</p>
     </div>
-    <div class="flow-card-wrap">
-      <svg class="flow-svg" viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg">
+    <div class="flow-card-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <svg class="flow-svg" viewBox="0 0 1600 630" xmlns="http://www.w3.org/2000/svg" style="min-width:1600px;width:100%;height:auto;display:block">
         <defs>
           <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#d4b46a"/>
@@ -353,133 +353,128 @@
           </linearGradient>
         </defs>
 
-        <!-- === LINES === -->
-        <!-- r=16 => rightEdge=cx+16, leftEdge=cx-16 -->
-        <!-- Gap: line starts +4 from edge, ends with space for 12px arrow -->
-        <g fill="none" stroke="#c8a45c" stroke-width="1.6" opacity="0.7">
+        <!-- === LINES (scale factor 1.45) === -->
+        <g fill="none" stroke="#c8a45c" stroke-width="2" opacity="0.7">
+          <!-- Row 1 → | y=95 | cx:80,300,520,740,960,1180,1400 -->
+          <line x1="106" y1="95" x2="274" y2="95"/>
+          <line x1="326" y1="95" x2="494" y2="95"/>
+          <line x1="546" y1="95" x2="714" y2="95"/>
+          <line x1="766" y1="95" x2="934" y2="95"/>
+          <line x1="986" y1="95" x2="1154" y2="95"/>
+          <line x1="1206" y1="95" x2="1374" y2="95"/>
 
-          <!-- Row 1 → | y=72 | cx:55,220,385,550,715,880,1045 -->
-          <line x1="75" y1="72" x2="200" y2="72"/>
-          <line x1="240" y1="72" x2="365" y2="72"/>
-          <line x1="405" y1="72" x2="530" y2="72"/>
-          <line x1="570" y1="72" x2="695" y2="72"/>
-          <line x1="735" y1="72" x2="860" y2="72"/>
-          <line x1="900" y1="72" x2="1025" y2="72"/>
+          <!-- Snake R1→R2: 07→08 -->
+          <path d="M1426,95 h14 q10,0 10,10 v135 q0,10 -10,10 h-66" stroke-linejoin="round"/>
 
-          <!-- Snake R1→R2: 07→08 | ←arrow tip=1065 (=rightEdge+4, same as straight lines) -->
-          <path d="M1061,72 h14 q10,0 10,10 v93 q0,10 -10,10 h-10" stroke-linejoin="round"/>
+          <!-- Row 2 ← | y=245 | cx:1400,1180,960,740,520,300,80 -->
+          <line x1="1374" y1="245" x2="1206" y2="245"/>
+          <line x1="1154" y1="245" x2="986" y2="245"/>
+          <line x1="934" y1="245" x2="766" y2="245"/>
+          <line x1="714" y1="245" x2="546" y2="245"/>
+          <line x1="494" y1="245" x2="326" y2="245"/>
+          <line x1="274" y1="245" x2="106" y2="245"/>
 
-          <!-- Row 2 ← | y=185 | flows: 08→09→10→11→12→13→14 -->
-          <line x1="1025" y1="185" x2="900" y2="185"/>
-          <line x1="860" y1="185" x2="735" y2="185"/>
-          <line x1="695" y1="185" x2="570" y2="185"/>
-          <line x1="530" y1="185" x2="405" y2="185"/>
-          <line x1="365" y1="185" x2="240" y2="185"/>
-          <line x1="200" y1="185" x2="75" y2="185"/>
+          <!-- Snake R2→R3: 14→15 -->
+          <path d="M54,245 h-14 q-10,0 -10,10 v135 q0,10 10,10 h66" stroke-linejoin="round"/>
 
-          <!-- Snake R2→R3: 14→15 | →arrow tip=35 (=leftEdge-4, same as straight lines) -->
-          <path d="M39,185 h-14 q-10,0 -10,10 v93 q0,10 10,10 h10" stroke-linejoin="round"/>
+          <!-- Row 3 → | y=395 | cx:80,300,520,740,960,1180,1400 -->
+          <line x1="106" y1="395" x2="274" y2="395"/>
+          <line x1="326" y1="395" x2="494" y2="395"/>
+          <line x1="546" y1="395" x2="714" y2="395"/>
+          <line x1="766" y1="395" x2="934" y2="395"/>
+          <line x1="986" y1="395" x2="1154" y2="395"/>
+          <line x1="1206" y1="395" x2="1374" y2="395"/>
 
-          <!-- Row 3 → | y=298 | cx:55,220,385,550,715,880,1045 -->
-          <line x1="75" y1="298" x2="200" y2="298"/>
-          <line x1="240" y1="298" x2="365" y2="298"/>
-          <line x1="405" y1="298" x2="530" y2="298"/>
-          <line x1="570" y1="298" x2="695" y2="298"/>
-          <line x1="735" y1="298" x2="860" y2="298"/>
-          <line x1="900" y1="298" x2="1025" y2="298"/>
+          <!-- Snake R3→R4: 21→22 -->
+          <path d="M1426,395 h14 q10,0 10,10 v135 q0,10 -10,10 h-226" stroke-linejoin="round"/>
 
-          <!-- Snake R3→R4: 21→22 | ←arrow tip=985 (=rightEdge+4, same as straight lines) -->
-          <path d="M1061,298 h14 q10,0 10,10 v93 q0,10 -10,10 h-90" stroke-linejoin="round"/>
-
-          <!-- Row 4 ← | y=411 | flows: 22→23→24→25→26→27 | cx: 140,305,470,635,800,965 -->
-          <line x1="945" y1="411" x2="820" y2="411"/>
-          <line x1="780" y1="411" x2="655" y2="411"/>
-          <line x1="615" y1="411" x2="490" y2="411"/>
-          <line x1="450" y1="411" x2="325" y2="411"/>
-          <line x1="285" y1="411" x2="160" y2="411"/>
+          <!-- Row 4 ← | y=545 | cx:1240,1020,800,580,360,140 -->
+          <line x1="1214" y1="545" x2="1046" y2="545"/>
+          <line x1="994" y1="545" x2="826" y2="545"/>
+          <line x1="774" y1="545" x2="606" y2="545"/>
+          <line x1="554" y1="545" x2="386" y2="545"/>
+          <line x1="334" y1="545" x2="166" y2="545"/>
         </g>
 
-        <!-- === ARROWHEADS (polygons drawn LAST, always on top) === -->
-        <!-- → triangle: (tip_x, cy), (tip_x-12, cy-5), (tip_x-12, cy+5) -->
-        <!-- ← triangle: (tip_x, cy), (tip_x+12, cy-5), (tip_x+12, cy+5) -->
+        <!-- === ARROWHEADS (14px) === -->
         <g fill="#d4b46a">
           <!-- Row 1 → arrows -->
-          <polygon points="200,72 188,67 188,77"/>
-          <polygon points="365,72 353,67 353,77"/>
-          <polygon points="530,72 518,67 518,77"/>
-          <polygon points="695,72 683,67 683,77"/>
-          <polygon points="860,72 848,67 848,77"/>
-          <polygon points="1025,72 1013,67 1013,77"/>
+          <polygon points="274,95 260,89 260,101"/>
+          <polygon points="494,95 480,89 480,101"/>
+          <polygon points="714,95 700,89 700,101"/>
+          <polygon points="934,95 920,89 920,101"/>
+          <polygon points="1154,95 1140,89 1140,101"/>
+          <polygon points="1374,95 1360,89 1360,101"/>
 
-          <!-- Snake R1→R2 arrow ← into 08 (tip=1065, 4px from rightEdge) -->
-          <polygon points="1065,185 1077,180 1077,190"/>
+          <!-- Snake R1→R2 arrow ← -->
+          <polygon points="1374,245 1388,239 1388,251"/>
 
           <!-- Row 2 ← arrows -->
-          <polygon points="900,185 912,180 912,190"/>
-          <polygon points="735,185 747,180 747,190"/>
-          <polygon points="570,185 582,180 582,190"/>
-          <polygon points="405,185 417,180 417,190"/>
-          <polygon points="240,185 252,180 252,190"/>
-          <polygon points="75,185 87,180 87,190"/>
+          <polygon points="1206,245 1220,239 1220,251"/>
+          <polygon points="986,245 1000,239 1000,251"/>
+          <polygon points="766,245 780,239 780,251"/>
+          <polygon points="546,245 560,239 560,251"/>
+          <polygon points="326,245 340,239 340,251"/>
+          <polygon points="106,245 120,239 120,251"/>
 
-          <!-- Snake R2→R3 arrow → into 15 (tip=35, 4px from leftEdge) -->
-          <polygon points="35,298 23,293 23,303"/>
+          <!-- Snake R2→R3 arrow → -->
+          <polygon points="106,395 92,389 92,401"/>
 
           <!-- Row 3 → arrows -->
-          <polygon points="200,298 188,293 188,303"/>
-          <polygon points="365,298 353,293 353,303"/>
-          <polygon points="530,298 518,293 518,303"/>
-          <polygon points="695,298 683,293 683,303"/>
-          <polygon points="860,298 848,293 848,303"/>
-          <polygon points="1025,298 1013,293 1013,303"/>
+          <polygon points="274,395 260,389 260,401"/>
+          <polygon points="494,395 480,389 480,401"/>
+          <polygon points="714,395 700,389 700,401"/>
+          <polygon points="934,395 920,389 920,401"/>
+          <polygon points="1154,395 1140,389 1140,401"/>
+          <polygon points="1374,395 1360,389 1360,401"/>
 
-          <!-- Snake R3→R4 arrow ← into 22 (tip=985, 4px from rightEdge) -->
-          <polygon points="985,411 997,406 997,416"/>
+          <!-- Snake R3→R4 arrow ← -->
+          <polygon points="1214,545 1228,539 1228,551"/>
 
           <!-- Row 4 ← arrows -->
-          <polygon points="820,411 832,406 832,416"/>
-          <polygon points="655,411 667,406 667,416"/>
-          <polygon points="490,411 502,406 502,416"/>
-          <polygon points="325,411 337,406 337,416"/>
-          <polygon points="160,411 172,406 172,416"/>
+          <polygon points="1046,545 1060,539 1060,551"/>
+          <polygon points="826,545 840,539 840,551"/>
+          <polygon points="606,545 620,539 620,551"/>
+          <polygon points="386,545 400,539 400,551"/>
+          <polygon points="166,545 180,539 180,551"/>
         </g>
 
-        <!-- === NODES === -->
+        <!-- === NODES (r=22, font=15px) === -->
         <g font-family="'PingFang SC','Microsoft YaHei',sans-serif">
-          <!-- Row 1 → | y=72 | 01-07 -->
-          <circle cx="55" cy="72" r="16" fill="url(#goldGradLight)"/><text x="55" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">01</text><text x="55" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">确定装修风格</text>
-          <circle cx="220" cy="72" r="16" fill="url(#goldGrad)"/><text x="220" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">02</text><text x="220" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">量房设计图纸</text>
-          <circle cx="385" cy="72" r="16" fill="url(#goldGradLight)"/><text x="385" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">03</text><text x="385" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">砸墙铲墙拆砌</text>
-          <circle cx="550" cy="72" r="16" fill="url(#goldGrad)"/><text x="550" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">04</text><text x="550" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">封阳台封窗</text>
-          <circle cx="715" cy="72" r="16" fill="url(#goldGradLight)"/><text x="715" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">05</text><text x="715" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">改造全屋水电</text>
-          <circle cx="880" cy="72" r="16" fill="url(#goldGrad)"/><text x="880" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">06</text><text x="880" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">下水隔音棉</text>
-          <circle cx="1045" cy="72" r="16" fill="url(#goldGradLight)"/><text x="1045" y="72" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">07</text><text x="1045" y="108" text-anchor="middle" fill="#b0b0b0" font-size="12">厨卫防水涂刷</text>
+          <!-- Row 1 → | y=95 | 01-07 -->
+          <circle cx="80" cy="95" r="22" fill="url(#goldGradLight)"/><text x="80" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">01</text><text x="80" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">确定装修风格</text>
+          <circle cx="300" cy="95" r="22" fill="url(#goldGrad)"/><text x="300" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">02</text><text x="300" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">量房设计图纸</text>
+          <circle cx="520" cy="95" r="22" fill="url(#goldGradLight)"/><text x="520" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">03</text><text x="520" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">砸墙铲墙拆砌</text>
+          <circle cx="740" cy="95" r="22" fill="url(#goldGrad)"/><text x="740" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">04</text><text x="740" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">封阳台封窗</text>
+          <circle cx="960" cy="95" r="22" fill="url(#goldGradLight)"/><text x="960" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">05</text><text x="960" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">改造全屋水电</text>
+          <circle cx="1180" cy="95" r="22" fill="url(#goldGrad)"/><text x="1180" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">06</text><text x="1180" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">下水隔音棉</text>
+          <circle cx="1400" cy="95" r="22" fill="url(#goldGradLight)"/><text x="1400" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">07</text><text x="1400" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">厨卫防水涂刷</text>
 
-          <!-- Row 2 ← | y=185 | 14-08 -->
-          <circle cx="55" cy="185" r="16" fill="url(#goldGrad)"/><text x="55" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">14</text><text x="55" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">刮腻子</text>
-          <circle cx="220" cy="185" r="16" fill="url(#goldGradLight)"/><text x="220" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">13</text><text x="220" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">全屋定制量尺</text>
-          <circle cx="385" cy="185" r="16" fill="url(#goldGrad)"/><text x="385" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">12</text><text x="385" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">木工进场做吊顶</text>
-          <circle cx="550" cy="185" r="16" fill="url(#goldGradLight)"/><text x="550" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">11</text><text x="550" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">贴地面保护膜</text>
-          <circle cx="715" cy="185" r="16" fill="url(#goldGrad)"/><text x="715" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">10</text><text x="715" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">全屋瓷砖美缝</text>
-          <circle cx="880" cy="185" r="16" fill="url(#goldGradLight)"/><text x="880" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">09</text><text x="880" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">铺贴全屋瓷砖</text>
-          <circle cx="1045" cy="185" r="16" fill="url(#goldGrad)"/><text x="1045" y="185" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">08</text><text x="1045" y="221" text-anchor="middle" fill="#b0b0b0" font-size="12">铺设地暖</text>
+          <!-- Row 2 ← | y=245 | 14-08 -->
+          <circle cx="80" cy="245" r="22" fill="url(#goldGrad)"/><text x="80" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">14</text><text x="80" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">刮腻子</text>
+          <circle cx="300" cy="245" r="22" fill="url(#goldGradLight)"/><text x="300" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">13</text><text x="300" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">全屋定制量尺</text>
+          <circle cx="520" cy="245" r="22" fill="url(#goldGrad)"/><text x="520" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">12</text><text x="520" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">木工进场做吊顶</text>
+          <circle cx="740" cy="245" r="22" fill="url(#goldGradLight)"/><text x="740" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">11</text><text x="740" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">贴地面保护膜</text>
+          <circle cx="960" cy="245" r="22" fill="url(#goldGrad)"/><text x="960" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">10</text><text x="960" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">全屋瓷砖美缝</text>
+          <circle cx="1180" cy="245" r="22" fill="url(#goldGradLight)"/><text x="1180" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">09</text><text x="1180" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">铺贴全屋瓷砖</text>
+          <circle cx="1400" cy="245" r="22" fill="url(#goldGrad)"/><text x="1400" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">08</text><text x="1400" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">铺设地暖</text>
 
-          <!-- Row 3 → | y=298 | 15-21 -->
-          <circle cx="55" cy="298" r="16" fill="url(#goldGradLight)"/><text x="55" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">15</text><text x="55" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">乳胶漆涂刷</text>
-          <circle cx="220" cy="298" r="16" fill="url(#goldGrad)"/><text x="220" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">16</text><text x="220" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">柜体安装</text>
-          <circle cx="385" cy="298" r="16" fill="url(#goldGradLight)"/><text x="385" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">17</text><text x="385" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">木门安装</text>
-          <circle cx="550" cy="298" r="16" fill="url(#goldGrad)"/><text x="550" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">18</text><text x="550" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">开关插座面板</text>
-          <circle cx="715" cy="298" r="16" fill="url(#goldGradLight)"/><text x="715" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">19</text><text x="715" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">灯具安装</text>
-          <circle cx="880" cy="298" r="16" fill="url(#goldGrad)"/><text x="880" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">20</text><text x="880" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">卫浴洁具安装</text>
-          <circle cx="1045" cy="298" r="16" fill="url(#goldGradLight)"/><text x="1045" y="298" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">21</text><text x="1045" y="334" text-anchor="middle" fill="#b0b0b0" font-size="12">五金挂件安装</text>
+          <!-- Row 3 → | y=395 | 15-21 -->
+          <circle cx="80" cy="395" r="22" fill="url(#goldGradLight)"/><text x="80" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">15</text><text x="80" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">乳胶漆涂刷</text>
+          <circle cx="300" cy="395" r="22" fill="url(#goldGrad)"/><text x="300" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">16</text><text x="300" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">柜体安装</text>
+          <circle cx="520" cy="395" r="22" fill="url(#goldGradLight)"/><text x="520" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">17</text><text x="520" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">木门安装</text>
+          <circle cx="740" cy="395" r="22" fill="url(#goldGrad)"/><text x="740" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">18</text><text x="740" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">开关插座面板</text>
+          <circle cx="960" cy="395" r="22" fill="url(#goldGradLight)"/><text x="960" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">19</text><text x="960" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">灯具安装</text>
+          <circle cx="1180" cy="395" r="22" fill="url(#goldGrad)"/><text x="1180" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">20</text><text x="1180" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">卫浴洁具安装</text>
+          <circle cx="1400" cy="395" r="22" fill="url(#goldGradLight)"/><text x="1400" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">21</text><text x="1400" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">五金挂件安装</text>
 
-          <!-- Row 4 ← | y=411 | 27-22 (6 nodes) -->
-          <circle cx="140" cy="411" r="16" fill="url(#goldGrad)"/><text x="140" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">27</text><text x="140" y="447" text-anchor="middle" fill="#c8a45c" font-size="12" font-weight="600">通风除醛·竣工·入住</text>
-          <circle cx="305" cy="411" r="16" fill="url(#goldGradLight)"/><text x="305" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">26</text><text x="305" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">窗帘安装</text>
-          <circle cx="470" cy="411" r="16" fill="url(#goldGrad)"/><text x="470" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">25</text><text x="470" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">家电安装</text>
-          <circle cx="635" cy="411" r="16" fill="url(#goldGradLight)"/><text x="635" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">24</text><text x="635" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">软装家具进场</text>
-          <circle cx="800" cy="411" r="16" fill="url(#goldGrad)"/><text x="800" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">23</text><text x="800" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">开荒保洁</text>
-          <circle cx="965" cy="411" r="16" fill="url(#goldGradLight)"/><text x="965" y="411" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="12" font-weight="700">22</text><text x="965" y="447" text-anchor="middle" fill="#b0b0b0" font-size="12">美缝修补</text>
+          <!-- Row 4 ← | y=545 | 27-22 (6 nodes) -->
+          <circle cx="140" cy="545" r="22" fill="url(#goldGrad)"/><text x="140" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">27</text><text x="140" y="590" text-anchor="middle" fill="#d4b46a" font-size="15" font-weight="600">通风除醛·竣工·入住</text>
+          <circle cx="360" cy="545" r="22" fill="url(#goldGradLight)"/><text x="360" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">26</text><text x="360" y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">窗帘安装</text>
+          <circle cx="580" cy="545" r="22" fill="url(#goldGrad)"/><text x="580" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">25</text><text x="580" y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">家电安装</text>
+          <circle cx="800" cy="545" r="22" fill="url(#goldGradLight)"/><text x="800" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">24</text><text x="800" y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">软装家具进场</text>
+          <circle cx="1020" cy="545" r="22" fill="url(#goldGrad)"/><text x="1020" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">23</text><text x="1020" y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">开荒保洁</text>
+          <circle cx="1240" cy="545" r="22" fill="url(#goldGradLight)"/><text x="1240" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">22</text><text x="1240" y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">美缝修补</text>
         </g>
       </svg>
     </div>
