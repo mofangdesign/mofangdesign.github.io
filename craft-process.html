@@ -148,7 +148,8 @@
     /* ===== Flow Card (Snake Pattern) ===== */
     .reno-section { padding:60px 30px; background:var(--bg); }
     .flow-card-wrap {
-      max-width:960px; margin:0 auto; padding:16px;
+      width:100%; margin:0 auto; padding:16px;
+      overflow-x:auto; -webkit-overflow-scrolling:touch;
     }
     .flow-svg {
       width:100%; height:auto; display:block;
@@ -335,7 +336,7 @@
       <p>从设计图纸到拎包入住，一目了然的装修通关地图</p>
     </div>
     <div class="flow-card-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-      <svg class="flow-svg" viewBox="0 0 1600 630" xmlns="http://www.w3.org/2000/svg" style="min-width:1600px;width:100%;height:auto;display:block">
+      <svg class="flow-svg" viewBox="0 0 1600 630" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
         <defs>
           <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#d4b46a"/>
