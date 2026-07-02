@@ -45,7 +45,8 @@
     /* ===== Mobile Nav ===== */
     .nav-mobile-toggle { display:none; background:none; border:none; color:var(--gold); font-size:24px; cursor:pointer; }
     @media(max-width:768px) {
-      .nav { padding:0 20px; }
+      .nav { padding:0 16px; }
+      .nav-logo { font-size:16px; letter-spacing:1px; white-space:nowrap; }
       .nav-links { display:none; }
       .nav-links.open { display:flex; flex-direction:column; position:absolute; top:64px; left:0; right:0; background:rgba(10,10,10,.98); padding:20px; gap:20px; border-bottom:1px solid var(--border); }
       .nav-mobile-toggle { display:block; }
@@ -309,7 +310,6 @@
       <a href="index.html#about">关于我们</a>
       <a href="index.html#contact">立即咨询</a>
     </div>
-    <a href="index.html#contact" class="nav-cta">预约咨询</a>
   </nav>
 
   <!-- Hero -->
