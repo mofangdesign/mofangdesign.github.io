@@ -1127,23 +1127,12 @@
             craftObserver.unobserve(img);
           }
         });
-      }, { rootMargin: '600px' });
+      }, { rootMargin: '200px' });
       document.querySelectorAll('.craft-gallery img[data-src]').forEach(function(img) {
         craftObserver.observe(img);
       });
-      // 后台预加载：可见缩略图加载后，逐步预加载其余的
-      setTimeout(function() {
-        var allImgs = document.querySelectorAll('.craft-gallery img[data-src]');
-        var idx = 0;
-        function bgNext() {
-          if (idx >= allImgs.length) return;
-          var src = allImgs[idx].getAttribute('data-src');
-          if (src) preloadCraftImage(src);
-          idx++;
-          setTimeout(bgNext, 80);
-        }
-        bgNext();
-      }, 1500);
+      // 后台预加载已关闭：避免消耗大量COS外网下行流量（流量大户）
+      // 现在改为纯懒加载，图片进入可视区域+200px才加载
     }
     function openPwModal() {
       document.getElementById('pwModal').classList.add('active');
