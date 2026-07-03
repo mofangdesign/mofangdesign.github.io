@@ -991,13 +991,7 @@
       document.querySelectorAll('.craft-card.expanded').forEach(c => c.classList.remove('expanded'));
       if (!isExpanded) {
         card.classList.add('expanded');
-        // 展开后立即预加载该卡片内全部缩略图
-        setTimeout(function() {
-          card.querySelectorAll('img[data-src]').forEach(function(img) {
-            var src = img.getAttribute('data-src');
-            if (src) preloadCraftImage(src);
-          });
-        }, 50);
+        // 不再预加载全部缩略图，改为懒加载（用户滚动看到时才加载）
       }
     }
 
@@ -1027,11 +1021,9 @@
       if (images.length === 0) return;
       lightboxStage = stageId;
       lightboxIndex = index;
-      // 立即预加载当前工序全部图片（优先级：当前→后续→前面）
-      for (var j = 0; j < images.length; j++) {
-        var idx = (index + j) % images.length;
-        preloadCraftImage(images[idx]);
-      }
+      // 轻量预加载：只预加载下一张，不再预加载全部
+      var nextIdx = (index + 1) % images.length;
+      if (nextIdx !== index) preloadCraftImage(images[nextIdx]);
       updateLightbox(images);
       document.getElementById('lightbox').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -1048,13 +1040,10 @@
         }
       };
       document.getElementById('lightbox-counter').textContent = `${lightboxIndex + 1} / ${images.length}`;
-      // 额外确保：预加载前后各2张
+      // 轻量预加载：只预加载下一张，不再预加载前后各2张
       var total = images.length;
-      for (var d = -2; d <= 2; d++) {
-        if (d === 0) continue;
-        var idx = (lightboxIndex + d + total) % total;
-        preloadCraftImage(images[idx]);
-      }
+      var nextIdx = (lightboxIndex + 1) % total;
+      if (nextIdx !== lightboxIndex) preloadCraftImage(images[nextIdx]);
     }
 
     function lightboxPrev() {
