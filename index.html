@@ -1173,13 +1173,7 @@ let currentImgIdx = 0;
 function openLightbox(i) {
   currentIndex = i;
   currentImgIdx = 0;
-  // 打开灯箱时立即预加载当前案例的全部图片
-  var p = portfolioData[i];
-  var allUrls = [];
-  for (var j = 0; j < p.images.length; j++) {
-    allUrls.push(p.images[j]);
-  }
-  preloadQueue(allUrls);
+  // 不再预加载全部图片，只加载当前点击的图片（普通懒加载）
   updateLightbox();
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -1220,15 +1214,13 @@ function updateLightbox() {
   lightboxDesc.textContent = `${p.cat} · ${p.style} · ${p.area}` + (p.desc ? ` — ${p.desc}` : '');
   lightboxPrev.style.opacity = (currentImgIdx === 0 && currentIndex === 0) ? '0.3' : '1';
   lightboxNext.style.opacity = (currentImgIdx === total - 1 && currentIndex === portfolioData.length - 1) ? '0.3' : '1';
-  
-  // 激进预加载：当前案例的全部图片 + 前后各2张（以当前图为中心扩散）
-  var queue = [];
-  // 当前图之后的图片
-  for (var j = 1; j < total; j++) {
-    queue.push(p.images[(currentImgIdx + j) % total]);
+
+  // 轻量预加载：只预加载下一张（用户翻页时更顺滑），不再预加载全部
+  var nextIdx = (currentImgIdx + 1) % total;
+  if (nextIdx !== currentImgIdx) {
+    var nextUrl = resolveUrl(p.images[nextIdx]);
+    if (!preloadCache[nextUrl]) preloadImage(nextUrl);
   }
-  // 异步逐张预加载
-  preloadQueue(queue);
 }
 
 // 异步队列预加载，避免同时发起大量请求
@@ -1601,7 +1593,7 @@ if (window.innerWidth >= 769) {
         }
       });
     }, {
-      rootMargin: '600px 0px', // 提前 600px 开始加载
+      rootMargin: '200px 0px', // 提前 200px 开始加载（减少不必要的提前加载）
       threshold: 0.01
     });
 
@@ -1609,34 +1601,10 @@ if (window.innerWidth >= 769) {
       imageObserver.observe(img);
     });
 
-    // === 后台渐进式预加载 ===
-    // 页面加载完后，在后台逐张预加载所有案例封面图
-    // 确保用户滚动到任何案例时封面已缓存
-    var _bgQueue = [];
-    var _bgRunning = false;
-    // 收集所有封面图URL
-    for (var k = 0; k < portfolioData.length; k++) {
-      _bgQueue.push(resolveUrl(portfolioData[k].images[0]));
-    }
-    // 使用 requestIdleCallback 在浏览器空闲时预加载
-    function bgPreloadNext() {
-      if (_bgQueue.length === 0) { _bgRunning = false; return; }
-      _bgRunning = true;
-      var url = _bgQueue.shift();
-      if (preloadCache[url]) { bgPreloadNext(); return; }
-      preloadImage(url).finally(function() {
-        setTimeout(bgPreloadNext, 100);
-      });
-    }
-    function startBgPreload() {
-      if (window.requestIdleCallback) {
-        requestIdleCallback(function() { bgPreloadNext(); });
-      } else {
-        setTimeout(bgPreloadNext, 2000);
-      }
-    }
-    // 等可见图片开始加载后，延迟1秒启动后台预加载
-    setTimeout(startBgPreload, 1000);
+    // === 后台渐进式预加载已关闭 ===
+    // 原因：会消耗大量COS外网下行流量，导致超出免费额度产生欠费
+    // 现在改为纯懒加载，只在图片进入可视区域时才加载
+    // 用户滚动到某案例时，该案例封面才加载（IntersectionObserver 已处理）
   } else {
     // 降级方案：直接加载所有图片
     document.querySelectorAll('img[data-src]').forEach(function(img) {
