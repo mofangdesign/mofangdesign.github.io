@@ -1223,29 +1223,10 @@ function updateLightbox() {
   }
 }
 
-// 异步队列预加载，避免同时发起大量请求
-var _preloadQueueRunning = false;
-var _preloadQueue = [];
-var _preloadQueued = {}; // 去重
-function preloadQueue(urls) {
-  for (var i = 0; i < urls.length; i++) {
-    var u = resolveUrl(urls[i]);
-    if (!_preloadQueued[u] && !preloadCache[u]) {
-      _preloadQueued[u] = true;
-      _preloadQueue.push(u);
-    }
-  }
-  if (!_preloadQueueRunning) processPreloadQueue();
-}
-function processPreloadQueue() {
-  if (_preloadQueue.length === 0) { _preloadQueueRunning = false; return; }
-  _preloadQueueRunning = true;
-  var url = _preloadQueue.shift();
-  preloadImage(url).finally(function() {
-    // 每张间隔50ms，避免阻塞主线程
-    setTimeout(processPreloadQueue, 50);
-  });
-}
+// 队列预加载已弃用（原为激进预加载，消耗大量COS流量）
+// 保留空函数避免引用错误，但实际不再预加载任何图片
+function preloadQueue(urls) { /* disabled to save COS traffic */ }
+function processPreloadQueue() { /* disabled */ }
 
 function closeLightbox() {
   lightbox.classList.remove('active');
