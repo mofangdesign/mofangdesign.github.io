@@ -470,6 +470,27 @@
     50% { box-shadow:0 8px 36px rgba(200,164,92,.5); }
   }
   @media (min-width:769px) { .fab-consult { width:auto; padding:0 24px; border-radius:28px; font-size:14px; gap:8px; letter-spacing:1px; } }
+
+  /* === HERO TITLE ANIMATION === */
+  .hero-title {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: heroTitleIn 1.2s ease-out 0.3s forwards;
+  }
+  @keyframes heroTitleIn {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .hero-title .hl {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: heroHlIn 0.8s ease-out 1.2s forwards;
+  }
+  @keyframes heroHlIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
 </style>
 </head>
 <body>
