@@ -1012,13 +1012,8 @@ var IMGURL_LOOKUP = (function(){
 })();
 
 function resolveUrl(url) {
-  // 优先使用 imgurl 图床地址（s3.bmp.ovh，国内访问快且稳定）
-  var path = url;
-  if (CDN_BASE && url.indexOf(CDN_BASE) === 0) {
-    path = url.substring(CDN_BASE.length);
-  }
-  var norm = path.replace(/\\/g, '/');
-  if (IMGURL_LOOKUP[norm]) return IMGURL_LOOKUP[norm];
+  // 优先使用 COS 地址（广州节点，速度快）
+  // 图床映射已禁用（图床图片未压缩，文件过大）
   return url;
 }
 
@@ -1043,14 +1038,7 @@ function imgRetry(img) {
   // 已经重试过了，不再循环
   if (imgRetryMark[src]) return;
   imgRetryMark[src] = true;
-  // 尝试匹配 fallback URL
-  var path = src;
-  if (CDN_BASE && src.indexOf(CDN_BASE) === 0) path = src.substring(CDN_BASE.length);
-  var norm = path.replace(/\\/g, '/');
-  var fallback = IMGURL_LOOKUP[norm];
-  if (fallback && fallback !== src) {
-    img.src = fallback;
-  }
+  // COS 图片加载失败时不使用图床 fallback（图床图片未压缩）
 }
 
 const portfolioData = [
