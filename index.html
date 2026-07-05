@@ -1012,8 +1012,11 @@ var IMGURL_LOOKUP = (function(){
 })();
 
 function resolveUrl(url) {
-  // 优先使用 COS 地址（广州节点，速度快）
-  // 图床映射已禁用（图床图片未压缩，文件过大）
+  // COS 路径需要对中文进行 URL 编码（否则返回 400）
+  if (url.indexOf(CDN_BASE) === 0) {
+    var path = url.substring(CDN_BASE.length);
+    return CDN_BASE + encodeURIComponent(path).replace(/%2F/g, '/');
+  }
   return url;
 }
 
