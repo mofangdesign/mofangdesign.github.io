@@ -128,11 +128,11 @@
     .service-step p { font-size:12px; color:var(--text-dim); line-height:1.6; }
 
     /* CTA */
-    .cta-section {
+      .cta-section {
       text-align:center; padding:80px 40px; background:linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
     }
     .cta-section h2 { font-size:32px; font-weight:300; margin-bottom:16px; }
-    .cta-section h2 span { color:var(--gold); font-weight:600; }
+    .cta-section h2 span { color:var(--gold); font-weight:600; white-space:nowrap; }
     .cta-section p { color:var(--text-dim); margin-bottom:32px; }
     .cta-btn {
       display:inline-block; padding:14px 40px; background:var(--gold); color:#0a0a0a;
@@ -154,6 +154,8 @@
       .service-timeline { flex-wrap:wrap; gap:20px; }
       .service-step { flex:0 0 33.33%; min-width:100px; }
       .service-step::after { display:none; }
+      .cta-section { padding:60px 20px; }
+      .cta-section h2 { font-size:24px; }
     }
   </style>
 </head>
