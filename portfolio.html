@@ -197,7 +197,7 @@
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">MAGIC CUBE · 魔方设计</div>
-  <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <button class="nav-mobile-toggle">☰</button>
   <div class="nav-links">
     <a href="index.html">首页</a>
     <a href="design-dimensions.html">设计维度</a>
@@ -270,8 +270,14 @@
 
 <script>
 // Mobile nav toggle
-document.querySelector('.nav-mobile-toggle').addEventListener('click', function(){
-  document.querySelector('.nav-links').classList.toggle('open');
+var pfNavToggle = document.querySelector('.nav-mobile-toggle');
+var pfNavLinks = document.querySelector('.nav-links');
+pfNavToggle.addEventListener('click', function(){
+  pfNavLinks.classList.toggle('open');
+});
+// Auto-close on link click
+pfNavLinks.querySelectorAll('a').forEach(function(a){
+  a.addEventListener('click', function(){ pfNavLinks.classList.remove('open'); });
 });
 
 // === CDN & URL RESOLVE ===
