@@ -106,13 +106,15 @@
     table.compare .yes { color:var(--gold); }
     table.compare .no { color:#666; }
 
-    /* Core dual list */
-    .core-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1000px; margin:0 auto; }
-    @media(max-width:768px){ .core-grid{ grid-template-columns:1fr; } }
-    .core-col h3 { font-size:18px; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
-    .core-col.we h3 { color:var(--gold); }
-    .core-col.you h3 { color:var(--gold-dark); }
-    .core-item { background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:14px; min-height:96px; }
+    /* Core dual list - row-based alignment */
+    .core-grid { display:flex; flex-direction:column; gap:16px; max-width:1000px; margin:0 auto; }
+    .core-headers { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:8px; }
+    .core-headers h3 { font-size:18px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+    .core-headers .h-we { color:var(--gold); }
+    .core-headers .h-you { color:var(--gold-dark); }
+    .core-row { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    @media(max-width:768px){ .core-headers{ grid-template-columns:1fr; } .core-row{ grid-template-columns:1fr; } }
+    .core-item { background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
     .core-item .ci-title { font-size:15px; font-weight:600; margin-bottom:4px; }
     .core-item .ci-desc { font-size:13px; color:var(--text-dim); }
 
@@ -329,24 +331,36 @@
     </div>
 
     <div class="core-grid">
-      <div class="core-col we">
-        <h3>我们托管 · 7 项</h3>
-        <div class="core-item"><div class="ci-title">1. 全案设计深化</div><div class="ci-desc">从方案到施工图细化落地，打通设计与施工壁垒，确保效果 1:1 还原。</div></div>
-        <div class="core-item"><div class="ci-title">2. 施工人工全包</div><div class="ci-desc">水电木瓦油全工种持证工人标准化配置，标配临时设施与成品保护。</div></div>
-        <div class="core-item"><div class="ci-title">3. 水电辅材统配</div><div class="ci-desc">严选国际品牌水管电线，含强弱电箱及开关面板，源头杜绝安全隐患。</div></div>
-        <div class="core-item"><div class="ci-title">4. 泥水辅材统配</div><div class="ci-desc">水泥、河沙、防水、背胶等全品类统一采购，杜绝偷工减料。</div></div>
-        <div class="core-item"><div class="ci-title">5. 油漆工程全包</div><div class="ci-desc">墙面基层处理、腻子、乳胶漆等环保认证产品及涂刷施工，按风格选色系，含全套成品保护。</div></div>
-        <div class="core-item"><div class="ci-title">6. 全程监理管控</div><div class="ci-desc">项目经理全程管理，关键节点验收，定期同步进度，对质量负责到底。</div></div>
-        <div class="core-item"><div class="ci-title">7. 后勤与成品保护</div><div class="ci-desc">入户门、电梯及公共区域全包裹保护，减少施工损耗与污染。</div></div>
+      <div class="core-headers">
+        <h3 class="h-we">我们托管 · 7 项</h3>
+        <h3 class="h-you">主材 · 6 类（自购或代购均可）</h3>
       </div>
-      <div class="core-col you">
-        <h3>主材 · 6 类（自购或代购均可）</h3>
+      <div class="core-row">
+        <div class="core-item"><div class="ci-title">1. 全案设计深化</div><div class="ci-desc">从方案到施工图细化落地，打通设计与施工壁垒，确保效果 1:1 还原。</div></div>
         <div class="core-item"><div class="ci-title">1. 瓷砖地砖</div><div class="ci-desc">客厅厨卫阳台墙地砖、门槛石、窗台石，建议提前规划避免返工。</div></div>
+      </div>
+      <div class="core-row">
+        <div class="core-item"><div class="ci-title">2. 施工人工全包</div><div class="ci-desc">水电木瓦油全工种持证工人标准化配置，标配临时设施与成品保护。</div></div>
         <div class="core-item"><div class="ci-title">2. 橱柜定制</div><div class="ci-desc">橱柜、台面、五金，提前规划厨房动线。</div></div>
+      </div>
+      <div class="core-row">
+        <div class="core-item"><div class="ci-title">3. 水电辅材统配</div><div class="ci-desc">严选国际品牌水管电线，含强弱电箱及开关面板，源头杜绝安全隐患。</div></div>
         <div class="core-item"><div class="ci-title">3. 卫浴洁具</div><div class="ci-desc">马桶、花洒、浴室柜、龙头等，按尺寸选款式。</div></div>
+      </div>
+      <div class="core-row">
+        <div class="core-item"><div class="ci-title">4. 泥水辅材统配</div><div class="ci-desc">水泥、河沙、防水、背胶等全品类统一采购，杜绝偷工减料。</div></div>
         <div class="core-item"><div class="ci-title">4. 室内门窗</div><div class="ci-desc">室内门、垭口套、窗套，按风格选材质。</div></div>
+      </div>
+      <div class="core-row">
+        <div class="core-item"><div class="ci-title">5. 油漆工程全包</div><div class="ci-desc">墙面基层处理、腻子、乳胶漆等环保认证产品及涂刷施工，按风格选色系，含全套成品保护。</div></div>
         <div class="core-item"><div class="ci-title">5. 灯具开关</div><div class="ci-desc">主灯、筒灯、射灯、开关插座，按布局规划点位。</div></div>
+      </div>
+      <div class="core-row">
+        <div class="core-item"><div class="ci-title">6. 全程监理管控</div><div class="ci-desc">项目经理全程管理，关键节点验收，定期同步进度，对质量负责到底。</div></div>
         <div class="core-item"><div class="ci-title">6. 软装陈设</div><div class="ci-desc">窗帘、地毯、挂画、家具软饰等，可委托我们整体搭配，统一审美。</div></div>
+      </div>
+      <div class="core-row">
+        <div class="core-item"><div class="ci-title">7. 后勤与成品保护</div><div class="ci-desc">入户门、电梯及公共区域全包裹保护，减少施工损耗与污染。</div></div>
       </div>
     </div>
   </section>
