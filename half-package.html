@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>半包服务 | 魔方设计 · 专注半包，所以更专业</title>
-  <meta name="description" content="魔方设计半包装修服务：施工+辅材+管理全程托管，主材由您亲自把关。预算可控、品质可控、省心省力。">
+  <meta name="description" content="魔方设计半包装修服务：施工+辅材+管理全程托管，主材您可自主采购，亦可委托我们代购。预算可控、品质可控、省心省力。">
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
@@ -84,6 +84,8 @@
     .split-card li { font-size:14px; color:var(--text-dim); padding:9px 0; border-bottom:1px dashed var(--border); display:flex; gap:8px; }
     .split-card li:last-child { border-bottom:none; }
     .split-card li::before { content:'·'; color:var(--gold); font-weight:700; }
+    .split-card li.opt { color:var(--gold); font-size:13px; font-weight:600; background:rgba(201,167,105,.08); border-radius:8px; padding:10px 12px !important; border-bottom:none; margin-top:6px; }
+    .split-card li.opt::before { content:''; }
 
     /* Feature cards (3 col) */
     .feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1000px; margin:0 auto; }
@@ -241,7 +243,7 @@
   <section class="hero">
     <div class="hero-badge">HALF-PACKAGE SERVICE</div>
     <h1>专注半包<br>所以更<span>专业</span></h1>
-    <p>施工 + 辅材 + 管理全程托管，主材由您亲自把关。<br>预算可控、品质可控、省心省力——把繁琐留给我们，把选择权留给您。</p>
+    <p>施工 + 辅材 + 管理全程托管，主材您可自主采购，也可委托我们代购。<br>预算可控、品质可控、省心省力——把繁琐留给我们，把选择权交还给您。</p>
     <div class="hero-stats">
       <div><div class="hero-stat-num">800-1200</div><div class="hero-stat-label">元/㎡ 半包造价</div></div>
       <div><div class="hero-stat-num">10年</div><div class="hero-stat-label">水电隐蔽工程质保</div></div>
@@ -254,13 +256,13 @@
     <div class="section-header">
       <div class="tag">WHAT IS HALF-PACKAGE</div>
       <h2>什么是<span>半包装修</span></h2>
-      <p>半包，是介于清包与全包之间的「黄金平衡」模式——您掌握核心主材的选择权，我们把施工与辅材的专业琐事全包了。</p>
+      <p>半包，是介于清包与全包之间的「黄金平衡」模式——主材您掌握选择权，也可交给我们代购；施工与辅材的专业琐事，由我们全包。</p>
     </div>
 
     <div class="two-col">
       <div class="split-card owner">
-        <h3>业主负责 · 主材采购</h3>
-        <div class="role">YOU · 品质选择权在您手中</div>
+        <h3>主材 · 灵活采购</h3>
+        <div class="role">YOU / US · 自购或委托代购均可</div>
         <ul>
           <li>瓷砖、地板、卫浴、橱柜</li>
           <li>灯具、定制柜体</li>
@@ -268,6 +270,7 @@
           <li>把控主材环保与预算</li>
           <li>花每一分钱都心中有数</li>
           <li>完全符合个人审美与需求</li>
+          <li class="opt">◆ 不想跑市场？亦可委托我们统一代购，品质价格双把关</li>
         </ul>
       </div>
       <div class="split-card we">
@@ -280,6 +283,7 @@
           <li>标准化施工 + 专业辅材配置</li>
           <li>持证工人规范作业</li>
           <li>从设计落地到隐蔽工程全程把控</li>
+          <li class="opt">◆ 主材代购服务（可选）：按您预算代采主材，统一验收把关</li>
         </ul>
       </div>
     </div>
@@ -305,10 +309,10 @@
     <div class="compare-wrap">
       <table class="compare">
         <tr><th>对比维度</th><th>半包模式</th><th>清包模式</th><th>全包模式</th></tr>
-        <tr><td>主材采购</td><td class="yes">业主自主选择，丰俭由人</td><td>业主全量采购，跑遍建材市场</td><td>公司一站式配齐</td></tr>
+        <tr><td>主材采购</td><td class="yes">自购或委托代购，丰俭由人</td><td>业主全量采购，跑遍建材市场</td><td>公司一站式配齐</td></tr>
         <tr><td>辅材供应</td><td class="yes">公司统一提供，性价比高</td><td>业主自购小物料</td><td>公司统一配送</td></tr>
         <tr><td>施工负责</td><td class="yes">专业团队，项目经理管理</td><td>零散工人，自行协调</td><td>全案托管，定期汇报</td></tr>
-        <tr><td>精力投入</td><td class="yes">仅需验收主材</td><td>耗费极大精力，全程监工</td><td>省心，偶尔验收</td></tr>
+        <tr><td>精力投入</td><td class="yes">自购验收 / 代购全托管</td><td>耗费极大精力，全程监工</td><td>省心，偶尔验收</td></tr>
         <tr><td>适合人群</td><td class="yes">追求品质、预算可控的主流业主</td><td>装修内行、时间充裕者</td><td>极忙上班族 /「懒人」业主</td></tr>
         <tr class="hl"><td>核心总结</td><td class="yes">黄金平衡 · 主流首选</td><td>极致省钱但极耗精力</td><td>省心但选择权弱化</td></tr>
       </table>
@@ -320,7 +324,7 @@
     <div class="section-header">
       <div class="tag">WHAT WE DO</div>
       <h2>半包服务<span>核心内容</span></h2>
-      <p>我们负责施工、辅材与管理的全程托管，您只需按需采购主材——分工清晰，各司其职。</p>
+      <p>我们负责施工、辅材与管理的全程托管，主材您可自主采购，也可委托我们代购——丰俭由人，灵活可控。</p>
     </div>
 
     <div class="core-grid">
@@ -334,7 +338,7 @@
         <div class="core-item"><div class="ci-title">6. 后勤与成品保护</div><div class="ci-desc">入户门、电梯及公共区域全包裹保护，减少施工损耗与污染。</div></div>
       </div>
       <div class="core-col you">
-        <h3>您采购 · 6 类主材</h3>
+        <h3>主材 · 6 类（自购或代购均可）</h3>
         <div class="core-item"><div class="ci-title">1. 瓷砖地砖</div><div class="ci-desc">客厅厨卫阳台墙地砖、门槛石、窗台石，建议提前规划避免返工。</div></div>
         <div class="core-item"><div class="ci-title">2. 底漆油漆</div><div class="ci-desc">腻子、乳胶漆等环保认证产品，按风格选色系。</div></div>
         <div class="core-item"><div class="ci-title">3. 橱柜定制</div><div class="ci-desc">橱柜、台面、五金，提前规划厨房动线。</div></div>
@@ -493,7 +497,7 @@
     <div class="section-header">
       <div class="tag">MATERIAL GUIDE</div>
       <h2>主材采购<span>避坑指南</span></h2>
-      <p>主材由您采购，我们提供详细采购时间表与专业建议，帮您合理规划、避开常见陷阱。</p>
+      <p>无论您自主采购还是委托我们代购，我们都提供详细采购时间表与专业避坑建议，帮您合理规划、避开常见陷阱。</p>
     </div>
     <div class="material-grid">
       <div class="material-card">
