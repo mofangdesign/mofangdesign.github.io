@@ -168,7 +168,7 @@
 
   <nav class="nav">
     <div class="nav-logo">MAGIC CUBE · 魔方设计</div>
-    <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <button class="nav-mobile-toggle">☰</button>
     <div class="nav-links">
       <a href="index.html">首页</a>
       <a href="design-dimensions.html" class="active">设计维度</a>
@@ -490,6 +490,16 @@
   </footer>
 
   <script>
+    // Mobile nav toggle
+    var ddNavToggle = document.querySelector('.nav-mobile-toggle');
+    var ddNavLinks = document.querySelector('.nav-links');
+    ddNavToggle.addEventListener('click', function(){
+      ddNavLinks.classList.toggle('open');
+    });
+    ddNavLinks.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){ ddNavLinks.classList.remove('open'); });
+    });
+
     window.addEventListener('scroll', function() {
       const nav = document.querySelector('.nav');
       nav.style.background = window.scrollY > 50 ? 'rgba(10,10,10,.96)' : 'rgba(10,10,10,.92)';
