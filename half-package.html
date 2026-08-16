@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>半包服务 | 魔方设计 · 专注半包，所以更专业</title>
+  <meta name="description" content="魔方设计半包装修服务：施工+辅材+管理全程托管，主材由您亲自把关。预算可控、品质可控、省心省力。">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --gold: #c8a45c; --gold-dark: #a8853a;
+      --bg: #0a0a0a; --bg-card: #111111; --bg-card2: #181818;
+      --text: #e8e8e8; --text-dim: #999999; --border: #222222;
+    }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family: 'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif;
+      background:var(--bg); color:var(--text); line-height:1.8;
+      padding-top:64px;
+    }
+    a { color:var(--gold); text-decoration:none; }
+
+    /* Nav */
+    .nav {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      background:rgba(10,10,10,.92); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px; height:64px;
+    }
+    .nav-logo { font-size:18px; font-weight:700; color:var(--gold); letter-spacing:2px; white-space:nowrap; }
+    .nav-links { display:flex; gap:28px; }
+    .nav-links a { color:var(--text-dim); font-size:14px; transition:color .3s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+    .nav-mobile-toggle { display:none; background:none; border:none; color:var(--gold); font-size:24px; cursor:pointer; }
+    @media(max-width:768px) {
+      .nav { padding:0 16px; }
+      .nav-logo { font-size:15px; letter-spacing:1px; }
+      .nav-links { display:none; }
+      .nav-links.open { display:flex; flex-direction:column; position:absolute; top:64px; left:0; right:0; background:rgba(10,10,10,.98); padding:20px; gap:20px; border-bottom:1px solid var(--border); }
+      .nav-mobile-toggle { display:block; }
+    }
+
+    /* Sub Nav (section anchors) */
+    .subnav {
+      position:sticky; top:64px; z-index:900;
+      background:rgba(10,10,10,.96); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    .subnav-inner { display:flex; gap:4px; overflow-x:auto; padding:10px 40px; max-width:1200px; margin:0 auto; scrollbar-width:none; }
+    .subnav-inner::-webkit-scrollbar { display:none; }
+    .subnav a { color:var(--text-dim); font-size:13px; padding:6px 14px; white-space:nowrap; border-radius:20px; transition:all .3s; }
+    .subnav a:hover, .subnav a.active { color:var(--gold); background:rgba(200,164,92,.1); }
+    @media(max-width:768px){ .subnav-inner{ padding:8px 16px; } .subnav a{ font-size:12px; padding:6px 10px; } }
+
+    /* Hero */
+    .hero { padding:100px 40px 70px; text-align:center; background:linear-gradient(180deg,#0a0a0a 0%,#111111 100%); }
+    .hero-badge { display:inline-block; padding:6px 20px; border:1px solid var(--gold); border-radius:20px; font-size:12px; color:var(--gold); letter-spacing:2px; margin-bottom:24px; }
+    .hero h1 { font-size:48px; font-weight:300; margin-bottom:20px; }
+    .hero h1 span { color:var(--gold); font-weight:600; }
+    .hero p { color:var(--text-dim); font-size:16px; max-width:680px; margin:0 auto 40px; }
+    .hero-stats { display:flex; justify-content:center; gap:60px; margin-top:40px; flex-wrap:wrap; }
+    .hero-stat-num { font-size:34px; font-weight:700; color:var(--gold); }
+    .hero-stat-label { font-size:13px; color:var(--text-dim); margin-top:4px; }
+
+    /* Section */
+    .section { padding:80px 40px; scroll-margin-top:130px; }
+    .section-alt { background:var(--bg-card); }
+    .section-header { text-align:center; margin-bottom:56px; }
+    .section-header .tag { display:inline-block; font-size:11px; letter-spacing:3px; color:var(--gold); margin-bottom:12px; }
+    .section-header h2 { font-size:34px; font-weight:300; }
+    .section-header h2 span { color:var(--gold); font-weight:600; }
+    .section-header p { color:var(--text-dim); margin-top:16px; max-width:600px; margin-left:auto; margin-right:auto; }
+
+    /* Two col split */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1000px; margin:0 auto 40px; }
+    @media(max-width:768px){ .two-col{ grid-template-columns:1fr; } }
+    .split-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:32px; }
+    .split-card.owner { border-top:3px solid var(--gold); }
+    .split-card.we { border-top:3px solid var(--gold-dark); }
+    .split-card h3 { font-size:19px; margin-bottom:8px; color:var(--text); }
+    .split-card .role { font-size:12px; color:var(--gold); margin-bottom:18px; letter-spacing:1px; }
+    .split-card ul { list-style:none; padding:0; }
+    .split-card li { font-size:14px; color:var(--text-dim); padding:9px 0; border-bottom:1px dashed var(--border); display:flex; gap:8px; }
+    .split-card li:last-child { border-bottom:none; }
+    .split-card li::before { content:'·'; color:var(--gold); font-weight:700; }
+
+    /* Feature cards (3 col) */
+    .feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1000px; margin:0 auto; }
+    @media(max-width:768px){ .feature-grid{ grid-template-columns:1fr; } }
+    .feature-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:32px 28px; transition:all .35s; }
+    .feature-card:hover { border-color:rgba(200,164,92,.3); transform:translateY(-3px); }
+    .feature-card .ic { width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:22px; color:var(--gold); }
+    .feature-card h3 { font-size:17px; margin-bottom:10px; }
+    .feature-card p { font-size:14px; color:var(--text-dim); }
+
+    /* Compare table */
+    .compare-wrap { max-width:900px; margin:50px auto 0; overflow-x:auto; }
+    table.compare { width:100%; border-collapse:collapse; font-size:13px; min-width:600px; }
+    table.compare th, table.compare td { border:1px solid var(--border); padding:12px 14px; text-align:center; }
+    table.compare th { background:var(--bg-card2); font-weight:500; color:var(--text); }
+    table.compare td:first-child, table.compare th:first-child { text-align:left; color:var(--text); }
+    table.compare tr.hl td { background:rgba(200,164,92,.06); }
+    table.compare .yes { color:var(--gold); }
+    table.compare .no { color:#666; }
+
+    /* Core dual list */
+    .core-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1000px; margin:0 auto; }
+    @media(max-width:768px){ .core-grid{ grid-template-columns:1fr; } }
+    .core-col h3 { font-size:18px; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+    .core-col.we h3 { color:var(--gold); }
+    .core-col.you h3 { color:var(--gold-dark); }
+    .core-item { background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+    .core-item .ci-title { font-size:15px; font-weight:600; margin-bottom:4px; }
+    .core-item .ci-desc { font-size:13px; color:var(--text-dim); }
+
+    /* Timeline */
+    .service-timeline { display:flex; justify-content:center; gap:0; position:relative; max-width:1000px; margin:0 auto 50px; flex-wrap:wrap; }
+    .service-step { flex:1; min-width:90px; text-align:center; position:relative; padding:0 8px; margin-bottom:24px; }
+    .service-step::after { content:''; position:absolute; top:28px; left:50%; width:100%; height:2px; background:var(--border); z-index:0; }
+    .service-step:last-child::after { display:none; }
+    .service-icon { width:56px; height:56px; border-radius:50%; background:var(--bg-card2); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; position:relative; z-index:1; transition:all .3s; font-size:15px; font-weight:700; color:var(--gold); }
+    .service-step:hover .service-icon { border-color:var(--gold); background:rgba(200,164,92,.1); }
+    .service-step h3 { font-size:14px; font-weight:600; margin-bottom:4px; }
+    .service-step p { font-size:11px; color:var(--text-dim); line-height:1.5; }
+
+    /* Expandable cards (STEP detail + FAQ) */
+    .expand-list { max-width:900px; margin:0 auto; }
+    .design-card {
+      background:var(--bg-card2); border:1px solid var(--border); border-radius:14px;
+      padding:22px 26px; margin-bottom:14px; cursor:pointer; transition:all .35s;
+    }
+    .design-card:hover { border-color:rgba(200,164,92,.3); }
+    .design-card.expanded { border-color:var(--gold); }
+    .design-card-head { display:flex; align-items:center; gap:14px; }
+    .design-card .step-no { width:34px; height:34px; border-radius:50%; background:rgba(200,164,92,.1); color:var(--gold); font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .design-card h3 { font-size:16px; font-weight:600; flex:1; }
+    .design-card .toggle { color:var(--text-dim); font-size:13px; transition:transform .3s; }
+    .design-card.expanded .toggle { transform:rotate(180deg); color:var(--gold); }
+    .design-card-body { max-height:0; overflow:hidden; transition:max-height .5s ease, margin .3s; }
+    .design-card.expanded .design-card-body { max-height:800px; margin-top:16px; }
+    .design-card-body-inner { padding-top:16px; border-top:1px solid var(--border); font-size:14px; color:var(--text-dim); line-height:2; }
+    .design-card-body-inner strong { color:var(--text); }
+    .design-card-body-inner li { margin-left:18px; margin-bottom:6px; }
+
+    /* 8 grid craft */
+    .craft-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; max-width:1000px; margin:0 auto; }
+    @media(max-width:768px){ .craft-grid{ grid-template-columns:repeat(2,1fr); } }
+    .craft-item { background:var(--bg-card2); border:1px solid var(--border); border-radius:14px; padding:24px 18px; text-align:center; transition:all .35s; }
+    .craft-item:hover { border-color:rgba(200,164,92,.3); transform:translateY(-3px); }
+    .craft-item .cnum { font-size:13px; color:var(--gold); font-weight:700; }
+    .craft-item h3 { font-size:15px; margin:10px 0 8px; }
+    .craft-item p { font-size:12px; color:var(--text-dim); line-height:1.7; }
+
+    /* Material list */
+    .material-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; max-width:1000px; margin:0 auto; }
+    @media(max-width:768px){ .material-grid{ grid-template-columns:1fr; } }
+    .material-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:14px; padding:22px 24px; }
+    .material-card h3 { font-size:16px; margin-bottom:12px; color:var(--gold); }
+    .material-card .m-row { font-size:13px; color:var(--text-dim); margin-bottom:8px; line-height:1.7; }
+    .material-card .m-row b { color:var(--text); }
+
+    /* FAQ */
+    .faq-item { background:var(--bg-card2); border:1px solid var(--border); border-radius:14px; margin-bottom:14px; overflow:hidden; }
+    .faq-q { padding:20px 26px; cursor:pointer; display:flex; align-items:center; gap:14px; font-size:15px; font-weight:600; }
+    .faq-q .qmark { width:30px; height:30px; border-radius:50%; background:rgba(200,164,92,.1); color:var(--gold); font-size:13px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .faq-q .faq-toggle { margin-left:auto; color:var(--text-dim); transition:transform .3s; }
+    .faq-item.expanded .faq-toggle { transform:rotate(180deg); color:var(--gold); }
+    .faq-a { max-height:0; overflow:hidden; transition:max-height .5s ease; }
+    .faq-item.expanded .faq-a { max-height:400px; }
+    .faq-a-inner { padding:0 26px 20px 70px; font-size:14px; color:var(--text-dim); line-height:1.9; }
+
+    /* Why us + slogan */
+    .slogan-banner { text-align:center; padding:50px 40px; margin:0 auto 60px; max-width:900px; background:linear-gradient(135deg,rgba(200,164,92,.12),rgba(200,164,92,.03)); border:1px solid rgba(200,164,92,.25); border-radius:16px; }
+    .slogan-banner .big { font-size:30px; font-weight:300; color:var(--gold); letter-spacing:1px; }
+    .slogan-banner .big b { font-weight:700; }
+
+    /* Guarantee */
+    .guarantee-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1000px; margin:0 auto; }
+    @media(max-width:768px){ .guarantee-grid{ grid-template-columns:1fr; } }
+    .guarantee-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:14px; padding:26px 24px; transition:all .35s; }
+    .guarantee-card:hover { border-color:rgba(200,164,92,.3); transform:translateY(-3px); }
+    .guarantee-card .gnum { font-size:13px; color:var(--gold); font-weight:700; margin-bottom:8px; }
+    .guarantee-card h3 { font-size:17px; margin-bottom:10px; }
+    .guarantee-card p { font-size:13px; color:var(--text-dim); }
+    .warranty-bar { display:flex; justify-content:center; gap:40px; margin-top:40px; flex-wrap:wrap; }
+    .warranty-bar .wb { text-align:center; }
+    .warranty-bar .wb-num { font-size:26px; font-weight:700; color:var(--gold); }
+    .warranty-bar .wb-label { font-size:12px; color:var(--text-dim); margin-top:2px; }
+
+    /* CTA + footer */
+    .cta-section { text-align:center; padding:80px 40px; background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg) 100%); }
+    .cta-section h2 { font-size:30px; font-weight:300; margin-bottom:16px; }
+    .cta-section h2 span { color:var(--gold); font-weight:600; white-space:nowrap; }
+    .cta-section p { color:var(--text-dim); margin-bottom:28px; }
+    .cta-btn { display:inline-block; padding:14px 40px; background:var(--gold); color:#0a0a0a; border-radius:4px; font-size:15px; font-weight:600; transition:all .3s; }
+    .cta-btn:hover { background:var(--gold-dark); transform:translateY(-2px); box-shadow:0 8px 24px rgba(200,164,92,.3); }
+    .footer { text-align:center; padding:40px; border-top:1px solid var(--border); color:var(--text-dim); font-size:13px; }
+
+    @media(max-width:768px){
+      .hero { padding:70px 20px 50px; }
+      .hero h1 { font-size:28px; }
+      .section { padding:60px 20px; }
+      .section-header h2 { font-size:24px; }
+      .hero-stats { gap:32px; }
+      .cta-section { padding:60px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">MAGIC CUBE · 魔方设计</div>
+    <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="index.html">作品案例</a>
+      <a href="design-dimensions.html">设计维度</a>
+      <a href="craft-process.html">工艺流程</a>
+      <a href="half-package.html" class="active">半包服务</a>
+      <a href="index.html#about">关于我们</a>
+      <a href="index.html#contact">立即咨询</a>
+    </div>
+  </nav>
+
+  <!-- SUB NAV -->
+  <div class="subnav">
+    <div class="subnav-inner" id="subnav">
+      <a href="#b1" class="active">认识半包</a>
+      <a href="#b2">服务核心</a>
+      <a href="#b3">施工流程</a>
+      <a href="#b4">八大工艺</a>
+      <a href="#b5">主材避坑</a>
+      <a href="#b6">常见问题</a>
+      <a href="#b7">选择我们</a>
+      <a href="#b8">服务保障</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">HALF-PACKAGE SERVICE</div>
+    <h1>专注半包<br>所以更<span>专业</span></h1>
+    <p>施工 + 辅材 + 管理全程托管，主材由您亲自把关。<br>预算可控、品质可控、省心省力——把繁琐留给我们，把选择权留给您。</p>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">800-1200</div><div class="hero-stat-label">元/㎡ 半包造价</div></div>
+      <div><div class="hero-stat-num">10年</div><div class="hero-stat-label">水电隐蔽工程质保</div></div>
+      <div><div class="hero-stat-num">60-70</div><div class="hero-stat-label">天 标准工期</div></div>
+    </div>
+  </section>
+
+  <!-- B1 认识半包装修 -->
+  <section class="section" id="b1">
+    <div class="section-header">
+      <div class="tag">WHAT IS HALF-PACKAGE</div>
+      <h2>什么是<span>半包装修</span></h2>
+      <p>半包，是介于清包与全包之间的「黄金平衡」模式——您掌握核心主材的选择权，我们把施工与辅材的专业琐事全包了。</p>
+    </div>
+
+    <div class="two-col">
+      <div class="split-card owner">
+        <h3>业主负责 · 主材采购</h3>
+        <div class="role">YOU · 品质选择权在您手中</div>
+        <ul>
+          <li>瓷砖、地板、卫浴、橱柜</li>
+          <li>灯具、定制柜体</li>
+          <li>全程掌握品质选择权</li>
+          <li>把控主材环保与预算</li>
+          <li>花每一分钱都心中有数</li>
+          <li>完全符合个人审美与需求</li>
+        </ul>
+      </div>
+      <div class="split-card we">
+        <h3>我们负责 · 施工 + 辅材</h3>
+        <div class="role">US · 专业落地全托管</div>
+        <ul>
+          <li>拆除、水电改造</li>
+          <li>木工、瓦工、油漆</li>
+          <li>管线铺设</li>
+          <li>标准化施工 + 专业辅材配置</li>
+          <li>持证工人规范作业</li>
+          <li>从设计落地到隐蔽工程全程把控</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="ic">¥</div>
+        <h3>性价比之选</h3>
+        <p>有效控制成本，避免预算超支，价格透明无隐形消费，每一分钱都花在刀刃上。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic">✓</div>
+        <h3>品质全程可控</h3>
+        <p>源头把控材料质量，品牌型号亲自把关，拒绝以次充好与偷工减料，为家人健康护航。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic">✺</div>
+        <h3>专业省心省力</h3>
+        <p>释放您的装修精力，无需为繁琐的施工细节和材料采购跑腿，享受「甩手掌控」体验。</p>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <table class="compare">
+        <tr><th>对比维度</th><th>半包模式</th><th>清包模式</th><th>全包模式</th></tr>
+        <tr><td>主材采购</td><td class="yes">业主自主选择，丰俭由人</td><td>业主全量采购，跑遍建材市场</td><td>公司一站式配齐</td></tr>
+        <tr><td>辅材供应</td><td class="yes">公司统一提供，性价比高</td><td>业主自购小物料</td><td>公司统一配送</td></tr>
+        <tr><td>施工负责</td><td class="yes">专业团队，项目经理管理</td><td>零散工人，自行协调</td><td>全案托管，定期汇报</td></tr>
+        <tr><td>精力投入</td><td class="yes">仅需验收主材</td><td>耗费极大精力，全程监工</td><td>省心，偶尔验收</td></tr>
+        <tr><td>适合人群</td><td class="yes">追求品质、预算可控的主流业主</td><td>装修内行、时间充裕者</td><td>极忙上班族 /「懒人」业主</td></tr>
+        <tr class="hl"><td>核心总结</td><td class="yes">黄金平衡 · 主流首选</td><td>极致省钱但极耗精力</td><td>省心但选择权弱化</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- B2 半包服务核心内容 -->
+  <section class="section section-alt" id="b2">
+    <div class="section-header">
+      <div class="tag">WHAT WE DO</div>
+      <h2>半包服务<span>核心内容</span></h2>
+      <p>我们负责施工、辅材与管理的全程托管，您只需按需采购主材——分工清晰，各司其职。</p>
+    </div>
+
+    <div class="core-grid">
+      <div class="core-col we">
+        <h3>我们托管 · 6 项</h3>
+        <div class="core-item"><div class="ci-title">1. 全案设计深化</div><div class="ci-desc">从方案到施工图细化落地，打通设计与施工壁垒，确保效果 1:1 还原。</div></div>
+        <div class="core-item"><div class="ci-title">2. 施工人工全包</div><div class="ci-desc">水电木瓦油全工种持证工人标准化配置，标配临时设施与成品保护。</div></div>
+        <div class="core-item"><div class="ci-title">3. 水电辅材统配</div><div class="ci-desc">严选国际品牌水管电线，含强弱电箱及开关面板，源头杜绝安全隐患。</div></div>
+        <div class="core-item"><div class="ci-title">4. 泥水辅材统配</div><div class="ci-desc">水泥、河沙、防水、背胶等全品类统一采购，杜绝偷工减料。</div></div>
+        <div class="core-item"><div class="ci-title">5. 全程监理管控</div><div class="ci-desc">项目经理全程管理，关键节点验收，定期同步进度，对质量负责到底。</div></div>
+        <div class="core-item"><div class="ci-title">6. 后勤与成品保护</div><div class="ci-desc">入户门、电梯及公共区域全包裹保护，减少施工损耗与污染。</div></div>
+      </div>
+      <div class="core-col you">
+        <h3>您采购 · 6 类主材</h3>
+        <div class="core-item"><div class="ci-title">1. 瓷砖地砖</div><div class="ci-desc">客厅厨卫阳台墙地砖、门槛石、窗台石，建议提前规划避免返工。</div></div>
+        <div class="core-item"><div class="ci-title">2. 底漆油漆</div><div class="ci-desc">腻子、乳胶漆等环保认证产品，按风格选色系。</div></div>
+        <div class="core-item"><div class="ci-title">3. 橱柜定制</div><div class="ci-desc">橱柜、台面、五金，提前规划厨房动线。</div></div>
+        <div class="core-item"><div class="ci-title">4. 卫浴洁具</div><div class="ci-desc">马桶、花洒、浴室柜、龙头等，按尺寸选款式。</div></div>
+        <div class="core-item"><div class="ci-title">5. 室内门窗</div><div class="ci-desc">室内门、垭口套、窗套，按风格选材质。</div></div>
+        <div class="core-item"><div class="ci-title">6. 灯具开关</div><div class="ci-desc">主灯、筒灯、射灯、开关插座，按布局规划点位。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B3 装修施工全流程 -->
+  <section class="section" id="b3">
+    <div class="section-header">
+      <div class="tag">CONSTRUCTION FLOW</div>
+      <h2>装修施工<span>全流程</span></h2>
+      <p>标准化施工体系覆盖九大核心节点，从设计交底到竣工验收层层递进，以精细化管理保障工程品质与交付时效。</p>
+    </div>
+
+    <div class="service-timeline">
+      <div class="service-step"><div class="service-icon">01</div><h3>设计交底</h3><p>方案确认·现场勘测</p></div>
+      <div class="service-step"><div class="service-icon">02</div><h3>主体拆改</h3><p>拆除非承重墙</p></div>
+      <div class="service-step"><div class="service-icon">03</div><h3>水电改造</h3><p>开槽布管穿线</p></div>
+      <div class="service-step"><div class="service-icon">04</div><h3>防水工程</h3><p>三遍涂刷·闭水</p></div>
+      <div class="service-step"><div class="service-icon">05</div><h3>泥瓦工程</h3><p>找平·瓷砖铺贴</p></div>
+      <div class="service-step"><div class="service-icon">06</div><h3>木工工程</h3><p>吊顶·背景墙</p></div>
+      <div class="service-step"><div class="service-icon">07</div><h3>油漆工程</h3><p>挂网·腻子·面漆</p></div>
+      <div class="service-step"><div class="service-icon">08</div><h3>安装工程</h3><p>主材安装</p></div>
+      <div class="service-step"><div class="service-icon">09</div><h3>竣工验收</h3><p>开荒保洁·交付</p></div>
+    </div>
+
+    <div class="expand-list">
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">01</div><h3>设计交底与现场勘测</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>精准量房·数据为王</strong>：实测实量，绘制精准平面布局图与实景图，为设计提供可靠依据。</li>
+          <li><strong>方案确认·达成共识</strong>：面对面沟通设计方案、预算明细、材料品牌型号，签订正式合同。</li>
+          <li><strong>现场定位·直观呈现</strong>：现场标记水电点位、插座、开关、灯具位置，让未来的家动工前「身临其境」。</li>
+          <li><strong>拆改界定与安全规范</strong>：明确拆改范围、承重墙位置，制定施工安全规范。</li>
+          <li><strong>物业报备与合规开工</strong>：协助办理装修备案、物业报备、垃圾清运手续，合法合规无后顾之忧。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">02</div><h3>主体拆改</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>非承重墙拆除</strong>：拆除多余墙体、门洞，打通空间阻隔，优化采光通风，最大化空间利用率。</li>
+          <li><strong>旧屋铲除清理</strong>：铲除原有腻子层及老旧瓷砖，根除空鼓、返潮、脱落隐患，奠定平整基础。</li>
+          <li><strong>新建墙体与包管</strong>：按图新建墙体，厨卫下水管道红砖或隔音棉包裹，降低排水噪音。</li>
+          <li><strong>垃圾日清日结</strong>：拆改垃圾每日分类整理、定点堆放、及时清运，保持现场整洁。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">03</div><h3>水电改造</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>横平竖直分色</strong>：强弱电、热水冷水管分色标识，强弱电间距≥30cm，避免信号干扰。</li>
+          <li><strong>水电顶地分离</strong>：强电走顶、弱电走地，热水管走顶、冷水管走地，便于维修减少隐患。</li>
+          <li><strong>开槽规范固定</strong>：开槽宽度≥管径+2cm，深度≥管径+1cm，线管固定间距≤80cm，水管≤60cm。</li>
+          <li><strong>同底科室布局</strong>：强弱电箱、水表、电表、阀门集中布局，便于维护互不干扰。</li>
+          <li><strong>严苛打压测试</strong>：水管打压 0.8MPa，30 分钟压降≤0.05MPa；电路绝缘≥0.5MΩ，安全可靠。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">04</div><h3>防水工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>基层处理·坚实平整</strong>：清理浮灰油污，修补裂缝空鼓，阴阳角做圆弧处理，确保防水层附着牢固。</li>
+          <li><strong>三遍涂刷·薄涂多遍</strong>：墙面地面分三遍涂刷，每遍方向交叉、干透再刷，厚度均匀，杜绝漏刷起皮。</li>
+          <li><strong>关键区域·加强处理</strong>：管根、地漏、阴阳角加铺无纺布加强层，卫生间墙面防水≥1.8m，厨房≥0.3m。</li>
+          <li><strong>闭水试验·滴水不漏</strong>：蓄水 48 小时，水位下降≤0.5cm、楼下无渗漏方为合格。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">05</div><h3>泥瓦工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>基层找平·坚实打底</strong>：清理后水泥砂浆找平，控制平整度与坡度，为铺贴打下稳固基础。</li>
+          <li><strong>瓷砖薄贴·牢固不空</strong>：采用瓷砖胶薄贴工艺，齿形刮刀均匀上料、揉压密实，粘结力强不易空鼓脱落。</li>
+          <li><strong>留缝勾缝·整齐美观</strong>：按砖型预留均匀伸缩缝，干后专用勾缝剂填缝，防霉防污、线条利落。</li>
+          <li><strong>铺贴验收·平整达标</strong>：空鼓锤逐块检测，靠尺查平整度与接缝高低差，确保铺贴如镜。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">06</div><h3>木工工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>轻钢龙骨·防火防潮</strong>：吊顶主龙骨采用轻钢龙骨，相较木龙骨更安全耐用，杜绝下沉开裂。</li>
+          <li><strong>石膏板 V 型整板</strong>：接缝做 V 型槽处理，整板套割转角避免应力集中，钉眼防锈，从源头防开裂。</li>
+          <li><strong>背景墙与柜体·精准放样</strong>：按图弹线定位，背景墙基层、定制柜体框架现场制作，尺寸精准咬合严密。</li>
+          <li><strong>现场家具·细节收口</strong>：现场制作家具注重收口拼缝，边角圆润、线条平直，与整体风格统一。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">07</div><h3>油漆工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>墙面基层处理·挂网防裂</strong>：挂网防裂增强附着力，从根源杜绝开裂空鼓。</li>
+          <li><strong>三遍腻子批刮·精细打磨</strong>：遵循「找平-精平-找平」三步法，每遍干透细砂纸打磨，墙面如镜。</li>
+          <li><strong>阴阳角垂直平直</strong>：专用靠尺校准，误差≤2mm，打造利落空间棱角。</li>
+          <li><strong>环保面漆涂刷·色泽饱满</strong>：先抗碱封闭底漆，再两遍面漆，薄涂多遍，无流挂无漏刷。</li>
+          <li><strong>全效成品保护·洁净施工</strong>：家具门窗开关面板全覆盖保护，完工清理现场。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">08</div><h3>安装工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>主材进场·有序安装</strong>：橱柜、木门、地板、洁具、灯具按节点有序进场，避免交叉污染与工期冲突。</li>
+          <li><strong>橱柜卫浴·精准对位</strong>：橱柜浴室柜水平校准、与水电点位对接；台面接缝打磨平整，龙头安装无渗漏。</li>
+          <li><strong>木门地板·收口细腻</strong>：木门垂直方正、开合顺畅；地板留伸缩缝、拼缝严密，踢脚线与门套过渡自然。</li>
+          <li><strong>灯具开关·通电调试</strong>：全屋通电逐项调试，功能正常无隐患，点亮新家。</li>
+        </div></div>
+      </div>
+
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">09</div><h3>竣工验收</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>水电隐蔽工程验收</strong>：点位数量、位置、功能测试，打压与绝缘测试记录齐全。</li>
+          <li><strong>防水闭水专项验收</strong>：闭水 48 小时，水位下降≤0.5cm，楼下无渗漏。</li>
+          <li><strong>泥木工艺细节验收</strong>：瓷砖平整度、空鼓率、缝隙均匀度；木工吊顶柜体垂直度平整度。</li>
+          <li><strong>油漆墙面验收</strong>：平整度、垂直度、阴阳角方正度，漆面无流挂无漏刷。</li>
+          <li><strong>开荒保洁与维保</strong>：精细化开荒保洁，交付钥匙，签订维保协议进入质保期。</li>
+          <li style="color:var(--gold)"><strong>验收核心原则</strong>：务必详阅验收单，发现问题立即要求整改，严禁未确认即签字。</li>
+        </div></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:30px;color:var(--text-dim);font-size:14px;max-width:760px;margin-left:auto;margin-right:auto;">
+      <p style="margin-bottom:8px"><b style="color:var(--gold)">工期保障</b> · 科学排期，明确各节点工期，避免延期</p>
+      <p style="margin-bottom:8px"><b style="color:var(--gold)">标准管控</b> · 严格执行施工规范，关键节点验收，不合格立即整改</p>
+      <p><b style="color:var(--gold)">品质交付</b> · 从材料到施工全流程把控，交付前整体保洁与成品保护</p>
+    </div>
+  </section>
+
+  <!-- B4 八大精工工艺标准 -->
+  <section class="section section-alt" id="b4">
+    <div class="section-header">
+      <div class="tag">CRAFT STANDARDS</div>
+      <h2>八大<span>精工工艺标准</span></h2>
+      <p>每一道工序，都经得起检验。八大核心工艺，构筑放心工程的品质底线。</p>
+    </div>
+    <div class="craft-grid">
+      <div class="craft-item"><div class="cnum">01</div><h3>水电横平竖直</h3><p>强弱电分色标识，横平竖直，间距规范，避免信号干扰与安全隐患。</p></div>
+      <div class="craft-item"><div class="cnum">02</div><h3>防水三遍涂刷</h3><p>墙面地面基层处理，三遍涂刷防水涂料，闭水试验 48 小时，确保滴水不漏。</p></div>
+      <div class="craft-item"><div class="cnum">03</div><h3>瓷砖薄贴工艺</h3><p>采用薄贴法，粘结力强，不易空鼓脱落，节省空间，提升利用率。</p></div>
+      <div class="craft-item"><div class="cnum">04</div><h3>轻钢龙骨吊顶</h3><p>采用轻钢龙骨，防火防潮，不易变形，使用寿命长，安全性高。</p></div>
+      <div class="craft-item"><div class="cnum">05</div><h3>墙面挂网防裂</h3><p>墙面基层处理，挂网防裂，增强附着力，从根源杜绝开裂空鼓隐患。</p></div>
+      <div class="craft-item"><div class="cnum">06</div><h3>石膏板 V 型整板</h3><p>石膏板接缝 V 型处理，整板套割，避免开裂，确保吊顶平整。</p></div>
+      <div class="craft-item"><div class="cnum">07</div><h3>阴阳角精准找直</h3><p>阴阳角专用靠尺校准，误差控制在 2mm 以内，打造利落空间棱角。</p></div>
+      <div class="craft-item"><div class="cnum">08</div><h3>全效成品保护</h3><p>入户门、地面、家具、门窗等成品全覆盖保护，避免施工造成损坏。</p></div>
+    </div>
+  </section>
+
+  <!-- B5 主材采购避坑指南 -->
+  <section class="section" id="b5">
+    <div class="section-header">
+      <div class="tag">MATERIAL GUIDE</div>
+      <h2>主材采购<span>避坑指南</span></h2>
+      <p>主材由您采购，我们提供详细采购时间表与专业建议，帮您合理规划、避开常见陷阱。</p>
+    </div>
+    <div class="material-grid">
+      <div class="material-card">
+        <h3>瓷砖地砖</h3>
+        <div class="m-row"><b>采购时机</b>：水电改造完成后即可定样，泥瓦阶段前到货</div>
+        <div class="m-row"><b>避坑要点</b>：核对吸水率、耐磨等级；厨卫选防滑砖；计算损耗预留 5%-8%</div>
+        <div class="m-row"><b>建议</b>：同批次购买避免色差，先拿小样看实物再下单</div>
+      </div>
+      <div class="material-card">
+        <h3>底漆油漆</h3>
+        <div class="m-row"><b>采购时机</b>：油漆工程前，与施工方确认色号与用量</div>
+        <div class="m-row"><b>避坑要点</b>：认准十环认证等环保标识；底漆面漆配套使用</div>
+        <div class="m-row"><b>建议</b>：按风格选色，先试刷小面积看实际效果再大面积</div>
+      </div>
+      <div class="material-card">
+        <h3>橱柜定制</h3>
+        <div class="m-row"><b>采购时机</b>：水电前完成测量与方案，避免点位冲突</div>
+        <div class="m-row"><b>避坑要点</b>：确认台面、五金品牌；注意地柜高度与动线；问清增项</div>
+        <div class="m-row"><b>建议</b>：提前规划水槽、灶具、电器的嵌入尺寸</div>
+      </div>
+      <div class="material-card">
+        <h3>卫浴洁具</h3>
+        <div class="m-row"><b>采购时机</b>：水电前定好款式，确保点位与坑距匹配</div>
+        <div class="m-row"><b>避坑要点</b>：马桶量准坑距（305/400mm）；花洒看水压适配</div>
+        <div class="m-row"><b>建议</b>：龙头角阀一起备齐，避免后期补买不匹配</div>
+      </div>
+      <div class="material-card">
+        <h3>室内门窗</h3>
+        <div class="m-row"><b>采购时机</b>：泥木阶段前测量下单，定制周期较长</div>
+        <div class="m-row"><b>避坑要点</b>：确认开启方向、材质（实木/复合）；垭口套尺寸留余</div>
+        <div class="m-row"><b>建议</b>：与地板、踢脚线收口方式提前对齐</div>
+      </div>
+      <div class="material-card">
+        <h3>灯具开关</h3>
+        <div class="m-row"><b>采购时机</b>：水电前规划点位，安装阶段前到货</div>
+        <div class="m-row"><b>避坑要点</b>：核对负载功率；智能灯具确认协议；开关留双控</div>
+        <div class="m-row"><b>建议</b>：按空间功能分层布光，预留足够插座点位</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B6 常见问题 -->
+  <section class="section section-alt" id="b6">
+    <div class="section-header">
+      <div class="tag">FAQ</div>
+      <h2>装修常见<span>问题解答</span></h2>
+      <p>您关心的，我们都想到了。点击展开看详细解答。</p>
+    </div>
+    <div class="expand-list" id="faqList">
+      <div class="faq-item">
+        <div class="faq-q"><div class="qmark">Q</div>半包造价大概多少？<div class="faq-toggle">▾</div></div>
+        <div class="faq-a"><div class="faq-a-inner">根据户型面积和工艺要求，半包造价约在 <b>800-1200 元/㎡</b>，具体根据您的需求和材料选择调整。预算透明可查，让您每一分钱都花得明白。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="qmark">Q</div>主材何时采购最适宜？<div class="faq-toggle">▾</div></div>
+        <div class="faq-a"><div class="faq-a-inner">建议在水电改造完成后开始采购主材，避免提前占用资金，也避免延误工期。我们会提供详细的主材采购时间表，帮您合理规划采购节点。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="qmark">Q</div>施工期间需要频繁去工地吗？<div class="faq-toggle">▾</div></div>
+        <div class="faq-a"><div class="faq-a-inner">不需要。项目经理会定期同步施工进度与现场照片，关键节点提前通知您到场验收，您只需在关键节点到场即可，无需频繁跑工地。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="qmark">Q</div>标准装修工期是多久？<div class="faq-toggle">▾</div></div>
+        <div class="faq-a"><div class="faq-a-inner">常规 100㎡ 左右三居室，标准工期约 <b>60-70 天</b>，具体会按户型复杂度、天气等调整。合同中明确工期与延期责任，专人严格把控进度，确保按时交付。</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><div class="qmark">Q</div>装修售后质保有多久？<div class="faq-toggle">▾</div></div>
+        <div class="faq-a"><div class="faq-a-inner">隐蔽工程（水电改造）质保 <b>10 年</b>，防水工程质保 <b>5 年</b>，基础装修质保 <b>2 年</b>。质保期内任何质量问题免费上门维修，并提供终身维护保养服务。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B7 为什么选择我们 -->
+  <section class="section" id="b7">
+    <div class="section-header">
+      <div class="tag">WHY US</div>
+      <h2>为什么<span>选择我们</span></h2>
+      <p>十年匠心沉淀，把每一个细节做到位，让您安心托付。</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="ic">⚒</div>
+        <h3>专业团队</h3>
+        <p>汇聚 10 年以上施工经验的资深工匠，全员持证上岗，定期开展工艺与服务培训，从源头保障工程质量。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic">¥</div>
+        <h3>透明报价</h3>
+        <p>清单式报价详细到螺丝钉，拒绝隐形消费与恶意增项，所有变动需业主签字确认，明明白白消费。</p>
+      </div>
+      <div class="feature-card">
+        <div class="ic">✓</div>
+        <h3>品质保障</h3>
+        <p>严格执行八大精工标准，五大工种层层验收，关键节点邀请业主把关，竣工后提供超长质保。</p>
+      </div>
+    </div>
+    <div class="slogan-banner">
+      <div class="big">专注半包，所以更<b>专业</b></div>
+    </div>
+  </section>
+
+  <!-- B8 无忧服务保障体系 -->
+  <section class="section section-alt" id="b8">
+    <div class="section-header">
+      <div class="tag">GUARANTEE</div>
+      <h2>无忧<span>服务保障体系</span></h2>
+      <p>从设计到售后，六维度构建安全防线，让您安心托付、居住无忧。</p>
+    </div>
+    <div class="guarantee-grid">
+      <div class="guarantee-card"><div class="gnum">01</div><h3>设计保障</h3><p>方案确认后 100% 出图并开工，拒绝施工中随意变更，确保方案与预期完美契合。</p></div>
+      <div class="guarantee-card"><div class="gnum">02</div><h3>材料保障</h3><p>严选一线品牌辅材，材料进场经业主验收签字，货不对板一律砸掉，环保指标达标。</p></div>
+      <div class="guarantee-card"><div class="gnum">03</div><h3>工艺保障</h3><p>严格执行八大精工标准，遵循国家与行业规范，每道工序有标准可依、有迹可循。</p></div>
+      <div class="guarantee-card"><div class="gnum">04</div><h3>工期保障</h3><p>科学制定排期表，按计划推进，非不可抗力逾期按合同约定赔付，不拖沓不延误。</p></div>
+      <div class="guarantee-card"><div class="gnum">05</div><h3>质量保障</h3><p>严苛节点验收制度，监理全程跟进，每道工序经业主签字方可进入下道，不合格立即整改。</p></div>
+      <div class="guarantee-card"><div class="gnum">06</div><h3>售后保障</h3><p>水电质保 10 年、防水 5 年、基础装修 2 年，提供终身维护保养服务，居住无忧。</p></div>
+    </div>
+    <div class="warranty-bar">
+      <div class="wb"><div class="wb-num">10年</div><div class="wb-label">水电隐蔽工程质保</div></div>
+      <div class="wb"><div class="wb-num">5年</div><div class="wb-label">防水工程质保</div></div>
+      <div class="wb"><div class="wb-num">2年</div><div class="wb-label">基础装修质保</div></div>
+      <div class="wb"><div class="wb-num">终身</div><div class="wb-label">维护保养服务</div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>把繁琐留给我们<br>把<span>选择权</span>留给您</h2>
+    <p>免费上门量房，为您量身定制半包全案方案</p>
+    <a href="index.html#contact" class="cta-btn">预约免费量房 →</a>
+  </section>
+
+  <footer class="footer">
+    <p>© 广州市魔方设计装饰有限公司 · 广州番禺 · 家装工装全案落地</p>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    document.querySelector('.nav-mobile-toggle').addEventListener('click', function(){
+      document.querySelector('.nav-links').classList.toggle('open');
+    });
+
+    // Expandable cards (STEP detail)
+    document.querySelectorAll('.design-card').forEach(function(card){
+      card.addEventListener('click', function(){ card.classList.toggle('expanded'); });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('#faqList .faq-q').forEach(function(q){
+      q.addEventListener('click', function(){
+        q.parentElement.classList.toggle('expanded');
+      });
+    });
+
+    // Subnav scrollspy
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll('#subnav a'));
+    var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+    function onScroll(){
+      var pos = window.scrollY + 160;
+      var idx = 0;
+      sections.forEach(function(sec, i){
+        if(sec && sec.offsetTop <= pos) idx = i;
+      });
+      navLinks.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+    }
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+  </script>
+</body>
+</html>
