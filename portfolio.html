@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>作品案例 | 魔方设计 · 家装工装全案落地</title>
+<meta name="description" content="魔方设计作品案例集，涵盖家装别墅、大平层、自建房、工装商业空间等15+落地项目，现代简约、新中式、轻奢、日式原木等多元风格。">
+<style>
+  *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; font-size:16px; }
+  body {
+    font-family:"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
+    background:#0a0a0a; color:#ddd; line-height:1.7; overflow-x:hidden;
+  }
+  a { text-decoration:none; color:inherit; }
+  img { max-width:100%; display:block; }
+  .no-save {
+    -webkit-user-select:none; user-select:none;
+    -webkit-touch-callout:none;
+  }
+
+  /* === NAV === */
+  .nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:rgba(10,10,10,.92); backdrop-filter:blur(12px);
+    border-bottom:1px solid #222;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 40px; height:64px;
+  }
+  .nav-logo { font-size:18px; font-weight:700; color:#c8a45c; letter-spacing:2px; white-space:nowrap; }
+  .nav-links { display:flex; gap:28px; }
+  .nav-links a { color:#999; font-size:14px; transition:color .3s; }
+  .nav-links a:hover, .nav-links a.active { color:#c8a45c; }
+  .nav-mobile-toggle { display:none; background:none; border:none; color:#c8a45c; font-size:24px; cursor:pointer; }
+  @media(max-width:768px) {
+    .nav { padding:0 16px; }
+    .nav-logo { font-size:15px; letter-spacing:1px; }
+    .nav-links { display:none; }
+    .nav-links.open { display:flex; flex-direction:column; position:absolute; top:64px; left:0; right:0; background:rgba(10,10,10,.98); padding:20px; gap:20px; border-bottom:1px solid #222; }
+    .nav-mobile-toggle { display:block; }
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height:50vh; display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden; padding:120px 24px 80px;
+    text-align:center;
+  }
+  .hero-bg {
+    position:absolute; inset:0; z-index:0;
+    background:radial-gradient(ellipse at 50% 30%, rgba(200,164,92,.08) 0%, transparent 60%),
+               radial-gradient(ellipse at 70% 80%, rgba(200,164,92,.04) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display:inline-block; padding:6px 22px; border:1px solid #c8a45c; border-radius:20px;
+    font-size:12px; color:#c8a45c; letter-spacing:3px; margin-bottom:24px;
+  }
+  .hero h1 { font-size:clamp(32px,5vw,52px); font-weight:700; color:#f5f5f5; margin-bottom:16px; }
+  .hero h1 span { color:#c8a45c; }
+  .hero p { color:#999; font-size:16px; max-width:600px; margin:0 auto; }
+
+  /* === SECTION === */
+  .section { padding:60px 24px; }
+  .container { max-width:1280px; margin:0 auto; }
+  @media(max-width:768px) { .section { padding:40px 16px; } }
+
+  /* === FILTER === */
+  .filter-bar {
+    display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-bottom:48px;
+  }
+  .filter-btn {
+    padding:8px 20px; font-size:13px; color:#888; background:transparent;
+    border:1px solid #2a2a2a; border-radius:4px; transition:all .3s; cursor:pointer;
+    letter-spacing:1px;
+  }
+  .filter-btn:hover { border-color:#555; color:#ccc; }
+  .filter-btn.active { background:#c8a45c; color:#0a0a0a; border-color:#c8a45c; }
+
+  /* === PORTFOLIO GRID === */
+  .portfolio-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+  }
+  .portfolio-item {
+    position:relative; aspect-ratio:4/3; overflow:hidden; cursor:pointer;
+    background:#1a1a1a; border-radius:2px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(200,164,92,.2);
+  }
+  .portfolio-item.hidden { display:none; }
+  .portfolio-img {
+    width:100%; height:100%; object-fit:cover; transition:transform .6s, opacity .5s;
+    background:#1a1a1a; opacity:0;
+  }
+  .portfolio-img.loaded { opacity:1; }
+  .portfolio-item:hover .portfolio-img { transform:scale(1.05); }
+  .portfolio-overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,.8) 0%, transparent 60%);
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:20px; opacity:0; transition:opacity .4s;
+  }
+  .portfolio-item:hover .portfolio-overlay { opacity:1; }
+  .portfolio-cat {
+    font-size:11px; color:#c8a45c; letter-spacing:2px; margin-bottom:4px;
+  }
+  .portfolio-name { font-size:17px; font-weight:600; color:#f5f5f5; }
+  .portfolio-info { font-size:12px; color:#aaa; margin-top:4px; }
+  .portfolio-badge {
+    position:absolute; top:8px; right:8px; z-index:5;
+    background:rgba(0,0,0,.7); color:#c8a45c; font-size:11px;
+    padding:3px 8px; border-radius:3px; letter-spacing:1px;
+  }
+
+  @media(max-width:768px) {
+    .hero { min-height:40vh; padding:100px 16px 60px; }
+    .hero h1 { font-size:28px; }
+    .portfolio-grid { grid-template-columns:repeat(2,1fr); gap:4px; }
+    .portfolio-overlay { opacity:1; padding:12px; }
+    .portfolio-name { font-size:14px; }
+    .portfolio-item:last-child:nth-child(odd) { grid-column:1/-1; aspect-ratio:16/7; }
+    .filter-btn { padding:7px 14px; font-size:12px; }
+  }
+
+  /* === LIGHTBOX === */
+  .lightbox {
+    position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.95);
+    display:none; align-items:center; justify-content:center;
+    backdrop-filter:blur(8px);
+  }
+  .lightbox.active { display:flex; }
+  .lightbox-close {
+    position:absolute; top:20px; right:24px; font-size:32px; color:#fff;
+    background:none; border:none; cursor:pointer; z-index:10000;
+    touch-action: manipulation;
+  }
+  .lightbox-content {
+    max-width:90vw; max-height:85vh; display:flex; flex-direction:column; align-items:center;
+  }
+  .lightbox-img-wrap { position:relative; display:inline-block; line-height:0; }
+  .lightbox-img-wrap::after {
+    content:''; position:absolute; inset:0; z-index:2;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 40px,
+      rgba(200,164,92,.04) 40px, rgba(200,164,92,.04) 42px
+    );
+  }
+  .lightbox-img { max-width:100%; max-height:70vh; object-fit:contain; border-radius:2px; }
+  .lightbox-info { text-align:center; margin-top:20px; }
+  .lightbox-info h3 { font-size:22px; color:#f5f5f5; margin-bottom:4px; }
+  .lightbox-info p { font-size:14px; color:#888; }
+  .lightbox-nav {
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-size:40px; color:#fff; background:rgba(0,0,0,.4); border:none;
+    cursor:pointer; padding:16px 20px; transition:all .3s; border-radius:4px;
+    line-height:1; z-index:10001;
+  }
+  .lightbox-nav:hover { color:#c8a45c; background:rgba(0,0,0,.7); }
+  .lightbox-prev { left:16px; }
+  .lightbox-next { right:16px; }
+
+  @media(max-width:768px) {
+    #lightboxPrev, #lightboxNext { display:none !important; }
+    .lightbox-bottom-nav {
+      display:flex; gap:12px; margin-top:12px; justify-content:center; width:100%;
+    }
+    .lightbox-bottom-nav .lightbox-nav {
+      position:static; transform:none;
+      font-size:18px; padding:12px 28px;
+      background:rgba(255,255,255,.12); border-radius:6px;
+      color:#fff; border:none; cursor:pointer; flex:1; max-width:160px;
+    }
+    .lightbox-img { max-height:55vh; }
+    .lightbox-content { max-height:90vh; overflow-y:auto; padding:0 12px 16px; }
+  }
+  @media(min-width:769px) { .lightbox-bottom-nav { display:none; } }
+
+  /* === CTA === */
+  .cta-section { text-align:center; padding:80px 24px; background:linear-gradient(180deg,#111 0%,#0a0a0a 100%); }
+  .cta-section h2 { font-size:30px; font-weight:300; margin-bottom:16px; color:#f5f5f5; }
+  .cta-section h2 span { color:#c8a45c; font-weight:600; white-space:nowrap; }
+  .cta-section p { color:#999; margin-bottom:28px; }
+  .cta-btn {
+    display:inline-block; padding:14px 40px; background:#c8a45c; color:#0a0a0a;
+    border-radius:4px; font-size:15px; font-weight:600; transition:all .3s;
+  }
+  .cta-btn:hover { background:#dab86e; transform:translateY(-2px); box-shadow:0 8px 24px rgba(200,164,92,.3); }
+
+  /* === FOOTER === */
+  .footer { text-align:center; padding:40px; border-top:1px solid #222; color:#666; font-size:13px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">MAGIC CUBE · 魔方设计</div>
+  <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+  <div class="nav-links">
+    <a href="index.html">首页</a>
+    <a href="design-dimensions.html">设计维度</a>
+    <a href="craft-process.html">工艺流程</a>
+    <a href="half-package.html">半包服务</a>
+    <a href="portfolio.html" class="active">作品案例</a>
+    <a href="index.html#contact">立即咨询</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">PORTFOLIO</div>
+  <h1>全部<span>作品案例</span></h1>
+  <p>家装工装全覆盖 · 15+ 落地项目 · 多元风格呈现<br>点击查看高清实景图</p>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="section" id="portfolio">
+  <div class="container">
+    <div class="filter-bar" id="filterBar"></div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext">&#8250;</button>
+  <div class="lightbox-content">
+    <div class="lightbox-img-wrap">
+      <img class="lightbox-img no-save" id="lightboxImg" src="" alt="" draggable="false">
+    </div>
+    <div class="lightbox-info">
+      <h3 id="lightboxTitle"></h3>
+      <p id="lightboxDesc"></p>
+    </div>
+    <div class="lightbox-bottom-nav">
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrevMobile">&#8249; 上一张</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNextMobile">下一张 &#8250;</button>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>喜欢我们的<span>设计风格</span>？</h2>
+  <p>免费上门量房，为您量身定制专属方案</p>
+  <a href="index.html#contact" class="cta-btn">预约免费量房 →</a>
+</section>
+
+<footer class="footer">
+  <p>© 广州市魔方设计装饰有限公司 · 广州番禺 · 家装工装全案落地</p>
+</footer>
+
+<script>
+// Mobile nav toggle
+document.querySelector('.nav-mobile-toggle').addEventListener('click', function(){
+  document.querySelector('.nav-links').classList.toggle('open');
+});
+
+// === CDN & URL RESOLVE ===
+var CDN_BASE = 'https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/';
+
+function resolveUrl(url) {
+  if (url.indexOf(CDN_BASE) === 0) {
+    var path = url.substring(CDN_BASE.length);
+    return CDN_BASE + encodeURIComponent(path).replace(/%2F/g, '/');
+  }
+  return url;
+}
+
+function imgRetry(img) {
+  var src = img.src || img.dataset.src || '';
+  if (img._retryMark) return;
+  img._retryMark = true;
+  var fb = 'https://cdn.jsdelivr.net/gh/mofangdesign/mofangdesign.github.io@main/' + src.replace(CDN_BASE,'');
+  if (fb !== src) img.src = fb;
+}
+
+// === DATA ===
+var portfolioData = [
+  { id:1, cat:'家装', style:'现代轻奢', name:'中信山语湖', area:'560㎡', desc:'560㎡临湖别墅，全景落地窗引景入室。开放式客餐厅设计，大理石与木饰面冷暖交织，地下娱乐层配备影音室与酒窖。', images:[
+    CDN_BASE+'cases/中信山语湖/微信图片_2026-03-15_200208_495.jpg',
+    CDN_BASE+'cases/中信山语湖/微信图片_2026-03-15_200219_168.jpg',
+    CDN_BASE+'cases/中信山语湖/微信图片_2026-03-15_200237_071.jpg'
+  ]},
+  { id:2, cat:'家装', style:'现代简约', name:'云山壹号', area:'500㎡', desc:'500㎡山景大平层，极简白调为底，木纹温润点缀。客餐厅一体化延展视觉空间，主卧套房配备独立衣帽间。', images:[
+    CDN_BASE+'cases/云山壹号/微信图片_20240513151702.jpg',
+    CDN_BASE+'cases/云山壹号/微信图片_20240513151705.jpg',
+    CDN_BASE+'cases/云山壹号/微信图片_20240513151706.jpg'
+  ]},
+  { id:3, cat:'家装', style:'新中式', name:'云梯山庄', area:'750㎡', desc:'750㎡山庄别墅，将东方意境融入现代居住。屏风、木格栅、青石板层层递进，庭前院落与室内虚实相生。', images:[
+    CDN_BASE+'cases/云梯山庄/微信图片_20250519104214.jpg',
+    CDN_BASE+'cases/云梯山庄/微信图片_20250519104239.jpg'
+  ]},
+  { id:4, cat:'家装', style:'新中式', name:'亚运城山海湾', area:'240㎡', desc:'240㎡江景大宅，新中式风格致敬东方雅致生活。客厅对称布局配以实木家具，背景墙以山水纹大理石铺陈。', images:[
+    CDN_BASE+'cases/亚运城山海湾/03.jpg',
+    CDN_BASE+'cases/亚运城山海湾/05.jpg',
+    CDN_BASE+'cases/亚运城山海湾/08.jpg'
+  ]},
+  { id:5, cat:'工装', style:'现代轻奢', name:'正升星荟·美容院', area:'240㎡', desc:'240㎡高端美容会所，以柔和弧形线条消解空间棱角。包间私密性设计，灯光层次丰富，营造专属宁静时光。', images:[
+    CDN_BASE+'cases/亭岗正升星荟店-美容院/休息室_output.jpg',
+    CDN_BASE+'cases/亭岗正升星荟店-美容院/卫生间_output.jpg',
+    CDN_BASE+'cases/亭岗正升星荟店-美容院/双人包间002_output.jpg',
+    CDN_BASE+'cases/亭岗正升星荟店-美容院/总_output.jpg'
+  ]},
+  { id:6, cat:'工装', style:'现代简约', name:'匹克球运动馆', area:'230㎡', desc:'230㎡运动场馆，现代简约赋能专业运动体验。场地动线流畅，专业运动地板搭配防眩光照明。', images:[
+    CDN_BASE+'cases/天河匹克球/000.jpg',
+    CDN_BASE+'cases/天河匹克球/222.jpg'
+  ]},
+  { id:7, cat:'工装', style:'现代简约', name:'惠州饭堂', area:'1200㎡', desc:'1200㎡大型员工食堂，现代简约提升用餐体验。取餐区动线科学规划，模块化座椅灵活适应高峰人流。', images:[
+    CDN_BASE+'cases/惠州饭堂/微信图片_20240516112143.jpg',
+    CDN_BASE+'cases/惠州饭堂/微信图片_20240516112144.jpg'
+  ]},
+  { id:8, cat:'家装', style:'现代简约', name:'湛江自建房', area:'500㎡', desc:'500㎡自建房外观设计，现代简约重塑乡村建筑形态。白色外墙搭配深色线条，大面积采光窗引入自然光线。', images:[
+    CDN_BASE+'cases/湛江自建房/微信图片_2026-03-17_201112_202.jpg',
+    CDN_BASE+'cases/湛江自建房/微信图片_20260317201053.jpg'
+  ]},
+  { id:9, cat:'家装', style:'现代简约', name:'缦云广州', area:'200㎡', desc:'200㎡都市精装大平层，现代简约诠释高品质居住。客餐厅开放式布局引入充足采光，主卧酒店式套房标准。', images:[
+    CDN_BASE+'cases/缦云广州/微信图片_20250329144618.jpg',
+    CDN_BASE+'cases/缦云广州/微信图片_20250410174455.jpg',
+    CDN_BASE+'cases/缦云广州/微信图片_20250410174456.jpg'
+  ]},
+  { id:10, cat:'家装', style:'现代简约', name:'自建房别墅', area:'600㎡', desc:'600㎡自建房内部空间设计，现代简约兼顾实用与美学。首层公共区域开阔通透，露台与阳台穿插其中。', images:[
+    CDN_BASE+'cases/自建房别墅/第10页-17.jpg',
+    CDN_BASE+'cases/自建房别墅/第11页-20.jpg',
+    CDN_BASE+'cases/自建房别墅/第12页-23.jpg',
+    CDN_BASE+'cases/自建房别墅/第14页-28.jpg',
+    CDN_BASE+'cases/自建房别墅/第15页-30.jpg',
+    CDN_BASE+'cases/自建房别墅/第16页-33.jpg'
+  ]},
+  { id:11, cat:'家装', style:'现代简约', name:'自建房外观', area:'500㎡', desc:'500㎡自建房外观及庭院设计，极简白搭配深色线条勾勒建筑轮廓。前庭后院因地制宜，露台阳光房层层递进。', images:[
+    CDN_BASE+'cases/自建房外观/微信图片_2026-03-17_201232_227.jpg',
+    CDN_BASE+'cases/自建房外观/微信图片_2026-03-17_201239_775.jpg',
+    CDN_BASE+'cases/自建房外观/微信图片_2026-03-17_201251_901.jpg',
+    CDN_BASE+'cases/自建房外观设计/056e6675ce41830c9590f9438c2ca5d3.jpg',
+    CDN_BASE+'cases/自建房外观设计/0f16d8939fc3f6295241e2dab72c776a.jpg',
+    CDN_BASE+'cases/自建房外观设计/37bb94c6fc2e12fc4f947b451d3d8793.jpg',
+    CDN_BASE+'cases/自建房外观设计/85462f07b9459bee5bacf2d21aa2d65d.jpg',
+    CDN_BASE+'cases/自建房外观设计/fada9719f2bcc0f65ae7f4c471f74207.jpg'
+  ]},
+  { id:12, cat:'工装', style:'现代简约', name:'西方大院', area:'240㎡', desc:'240㎡商业院落改造，现代简约延续建筑原有肌理。院落景观与室内互为借景，打造具有辨识度的商业地标。', images:[
+    CDN_BASE+'cases/西方大院/1d7db295bc5d46e5b1d0a40bc633bed.jpg',
+    CDN_BASE+'cases/西方大院/2d0111ca660991d2cb038e7f8004efc.jpg',
+    CDN_BASE+'cases/西方大院/59c3c1ec4ed6d9033b0ee47e4850d3d.jpg'
+  ]},
+  { id:13, cat:'家装', style:'现代简约', name:'金海岸', area:'80㎡', desc:'80㎡紧凑户型，现代简约实现小空间大利用。客餐厅一体化延展视觉，嵌入式收纳保持整洁通透。', images:[
+    CDN_BASE+'cases/金海岸/微信图片_20250117155700.jpg',
+    CDN_BASE+'cases/金海岸/微信图片_20250117155703.jpg'
+  ]},
+  { id:14, cat:'家装', style:'日式原木', name:'雅居乐上善若水', area:'230㎡', desc:'230㎡日式原木风住宅，以"上善若水"为灵感。全屋原木家具搭配留白墙面，榻榻米茶室与开放式厨房相邻。', images:[
+    CDN_BASE+'cases/雅居乐上善若水/微信图片_202111010840301.jpg',
+    CDN_BASE+'cases/雅居乐上善若水/微信图片_202111010840302.jpg'
+  ]},
+  { id:15, cat:'家装', style:'现代简约', name:'花都别墅', area:'700㎡', desc:'700㎡现代简约别墅，纯净白调与温润木饰面构建空间底色。挑空客厅引光入室，旋转楼梯成为视觉焦点。', images:[
+    CDN_BASE+'cases/花都别墅/微信图片_20250519104218.jpg',
+    CDN_BASE+'cases/花都别墅/微信图片_20250519104231.jpg',
+    CDN_BASE+'cases/花都别墅/微信图片_20250519104234.jpg'
+  ]},
+];
+
+// === FILTERS ===
+var styles = ['全部', '家装', '工装', '现代简约', '新中式', '现代轻奢', '日式原木'];
+var filterBar = document.getElementById('filterBar');
+styles.forEach(function(s,i){
+  var btn = document.createElement('button');
+  btn.className = 'filter-btn' + (i===0?' active':'');
+  btn.textContent = s;
+  btn.addEventListener('click', function(){
+    filterBar.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    filterPortfolio(s);
+  });
+  filterBar.appendChild(btn);
+});
+
+function filterPortfolio(filter) {
+  var items = document.querySelectorAll('.portfolio-item');
+  items.forEach(function(item){
+    var cat = item.dataset.category;
+    var st = item.dataset.style;
+    if (filter === '全部') { item.classList.remove('hidden'); return; }
+    if (filter === '家装' || filter === '工装') {
+      item.classList.toggle('hidden', cat !== filter);
+    } else {
+      item.classList.toggle('hidden', st !== filter);
+    }
+  });
+}
+
+// === RENDER ===
+var portfolioGrid = document.getElementById('portfolioGrid');
+portfolioData.forEach(function(p,i){
+  var imgCount = p.images.length;
+  var coverImg = p.images[0];
+  var item = document.createElement('div');
+  item.className = 'portfolio-item';
+  item.dataset.category = p.cat;
+  item.dataset.style = p.style;
+  item.dataset.index = i;
+  item.innerHTML =
+    '<img class="portfolio-img no-save" data-src="'+resolveUrl(coverImg)+'" src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'%3E%3C/svg%3E" alt="'+p.name+'" draggable="false" decoding="async" onerror="imgRetry(this)">' +
+    (imgCount > 1 ? '<div class="portfolio-badge">'+imgCount+'张</div>' : '') +
+    '<div class="portfolio-overlay">' +
+      '<div class="portfolio-cat">'+p.cat+' · '+p.style+'</div>' +
+      '<div class="portfolio-name">'+p.name+'</div>' +
+      '<div class="portfolio-info">'+p.area+'</div>' +
+    '</div>';
+  item.addEventListener('click', function(){ openLightbox(i); });
+  portfolioGrid.appendChild(item);
+});
+
+// Lazy load images via IntersectionObserver
+if ('IntersectionObserver' in window) {
+  var imgObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        var img = entry.target.querySelector('.portfolio-img');
+        if (img && img.dataset.src) {
+          img.src = img.dataset.src;
+          img.onload = function(){ img.classList.add('loaded'); };
+          img.onerror = function(){ imgRetry(img); img.classList.add('loaded'); };
+          imgObserver.unobserve(entry.target);
+        }
+      }
+    });
+  }, { rootMargin: '100px' });
+  document.querySelectorAll('.portfolio-item').forEach(function(el){ imgObserver.observe(el); });
+} else {
+  // Fallback: load all immediately
+  document.querySelectorAll('.portfolio-img[data-src]').forEach(function(img){
+    img.src = img.dataset.src;
+    img.onload = function(){ img.classList.add('loaded'); };
+  });
+}
+
+// === LIGHTBOX ===
+var lightbox = document.getElementById('lightbox');
+var lightboxImg = document.getElementById('lightboxImg');
+var lightboxTitle = document.getElementById('lightboxTitle');
+var lightboxDesc = document.getElementById('lightboxDesc');
+var currentIndex = 0;
+var currentImgIdx = 0;
+
+function openLightbox(i) {
+  currentIndex = i;
+  currentImgIdx = 0;
+  updateLightbox();
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+var preloadCache = {};
+function preloadImage(src) {
+  if (preloadCache[src]) return Promise.resolve();
+  return new Promise(function(resolve, reject){
+    var img = new Image();
+    img.onload = function(){ preloadCache[src] = true; resolve(); };
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+function updateLightbox() {
+  var p = portfolioData[currentIndex];
+  var total = p.images.length;
+  var fullSrc = resolveUrl(p.images[currentImgIdx]);
+  if (!preloadCache[fullSrc]) lightboxImg.style.opacity = '0.3';
+  preloadImage(fullSrc).then(function(){
+    lightboxImg.src = fullSrc;
+    lightboxImg.style.opacity = '1';
+  }).catch(function(){
+    lightboxImg.src = fullSrc;
+    lightboxImg.style.opacity = '1';
+  });
+  lightboxTitle.textContent = p.name + (total > 1 ? ' ('+(currentImgIdx+1)+'/'+total+')' : '');
+  lightboxDesc.textContent = p.cat + ' · ' + p.style + ' · ' + p.area + (p.desc ? ' — '+p.desc : '');
+  document.getElementById('lightboxPrev').style.opacity = (currentImgIdx === 0 && currentIndex === 0) ? '0.3' : '1';
+  document.getElementById('lightboxNext').style.opacity = (currentImgIdx === total - 1 && currentIndex === portfolioData.length - 1) ? '0.3' : '1';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+
+function nextLightbox() {
+  var p = portfolioData[currentIndex];
+  if (currentImgIdx < p.images.length - 1) {
+    currentImgIdx++;
+  } else if (currentIndex < portfolioData.length - 1) {
+    currentIndex++; currentImgIdx = 0;
+  }
+  updateLightbox();
+}
+function prevLightbox() {
+  var p = portfolioData[currentIndex];
+  if (currentImgIdx > 0) {
+    currentImgIdx--;
+  } else if (currentIndex > 0) {
+    currentIndex--; currentImgIdx = portfolioData[currentIndex].images.length - 1;
+  }
+  updateLightbox();
+}
+
+document.getElementById('lightboxPrev').addEventListener('click', prevLightbox);
+document.getElementById('lightboxNext').addEventListener('click', nextLightbox);
+document.getElementById('lightboxPrevMobile').addEventListener('click', prevLightbox);
+document.getElementById('lightboxNextMobile').addEventListener('click', nextLightbox);
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e){
+  if (!lightbox.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') nextLightbox();
+  if (e.key === 'ArrowLeft') prevLightbox();
+});
+
+// Click overlay to close
+lightbox.addEventListener('click', function(e){
+  if (e.target === lightbox) closeLightbox();
+});
+</script>
+</body>
+</html>
