@@ -58,10 +58,12 @@
   /* === NAV === */
   .nav {
     position:fixed; top:0; left:0; right:0; z-index:1000;
-    padding:16px 0; transition:all .4s;
+    padding:0 40px; height:64px; transition:all .4s;
+    display:flex; align-items:center; justify-content:space-between;
+    background:rgba(10,10,10,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid #1a1a1a;
   }
-  .nav.scrolled { background:rgba(10,10,10,.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); padding:8px 0; }
-  .nav .container { display:flex; align-items:center; justify-content:space-between; }
+  .nav.scrolled { padding:0 40px; }
   .nav-logo { display:flex; align-items:center; gap:10px; }
   .nav-logo img { height:36px; flex-shrink:0; }
   .nav-logo span { font-size:20px; font-weight:800; color:#f5f5f5; letter-spacing:2px; }
@@ -77,6 +79,7 @@
 
   @media (max-width:768px) {
     .menu-toggle { display:flex; }
+    .nav { padding:0 16px; }
     .nav-links {
       position:fixed; top:0; right:-100%; width:75%; height:100vh;
       background:rgba(10,10,10,.98); flex-direction:column; justify-content:center;
@@ -497,7 +500,6 @@
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <div class="container">
     <a href="#hero" class="nav-logo">
       <img src="logo-mf.png" alt="魔方设计">
       <span>魔方设计</span>
@@ -513,7 +515,6 @@
       <li><a href="portfolio.html">作品案例</a></li>
       <li><a href="#contact">立即咨询</a></li>
     </ul>
-  </div>
 </nav>
 
 <!-- HERO -->
