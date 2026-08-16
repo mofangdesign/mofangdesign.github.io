@@ -51,7 +51,19 @@
     .subnav-inner::-webkit-scrollbar { display:none; }
     .subnav a { color:var(--text-dim); font-size:13px; padding:6px 14px; white-space:nowrap; border-radius:20px; transition:all .3s; }
     .subnav a:hover, .subnav a.active { color:var(--gold); background:rgba(200,164,92,.1); }
-    @media(max-width:768px){ .subnav-inner{ padding:8px 16px; } .subnav a{ font-size:12px; padding:6px 10px; } }
+    @media(max-width:768px){
+      .subnav-inner{ padding:8px 16px; } .subnav a{ font-size:12px; padding:6px 10px; }
+      /* Mobile: subnav collapsible */
+      .subnav { position:relative; top:auto; }
+      .subnav.collapsed .subnav-inner { display:none; }
+      .subnav-toggle { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; padding:10px 16px; background:rgba(10,10,10,.96); color:var(--text-dim); font-size:12px; border-bottom:1px solid var(--border); cursor:pointer; }
+      .subnav-toggle::after { content:'▼'; font-size:10px; transition:transform .3s; }
+      .subnav.collapsed .subnav-toggle::after { transform:rotate(-90deg); }
+      .subnav:not(.collapsed) .subnav-inner { display:flex; }
+    }
+    @media(min-width:769px){
+      .subnav-toggle { display:none; }
+    }
 
     /* Hero */
     .hero { padding:100px 40px 70px; text-align:center; background:linear-gradient(180deg,#0a0a0a 0%,#111111 100%); }
@@ -65,6 +77,7 @@
 
     /* Section */
     .section { padding:80px 40px; scroll-margin-top:130px; }
+    @media(max-width:768px){ .section{ scroll-margin-top:80px; } }
     .section-alt { background:var(--bg-card); }
     .section-header { text-align:center; margin-bottom:56px; }
     .section-header .tag { display:inline-block; font-size:11px; letter-spacing:3px; color:var(--gold); margin-bottom:12px; }
@@ -209,8 +222,24 @@
       .hero h1 { font-size:28px; }
       .section { padding:60px 20px; }
       .section-header h2 { font-size:24px; }
-      .hero-stats { gap:32px; }
+      .hero-stats { gap:24px; flex-wrap:wrap; }
+      .hero-stat-num { font-size:26px; }
       .cta-section { padding:60px 20px; }
+      /* Compare table: allow horizontal scroll on mobile */
+      .compare-wrap { margin:30px -20px; padding:0 16px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+      table.compare { min-width:500px; }
+      /* Feature cards tighter on mobile */
+      .feature-card { padding:24px 20px; }
+      .feature-card .ic { width:40px; height:40px; font-size:18px; }
+      /* Guarantee cards */
+      .guarantee-card { padding:20px 18px; }
+      /* Stats row */
+      .stat-card { padding:18px 14px; min-width:90px; max-width:160px; }
+      .stat-card .stat-num { font-size:28px; }
+      /* Split card */
+      .split-card { padding:24px 20px; }
+      /* Core item */
+      .core-item { padding:14px 16px; }
     }
   </style>
 </head>
@@ -219,7 +248,7 @@
   <!-- NAV -->
   <nav class="nav">
     <div class="nav-logo">MAGIC CUBE · 魔方设计</div>
-    <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <button class="nav-mobile-toggle">☰</button>
     <div class="nav-links">
       <a href="index.html">首页</a>
       <a href="design-dimensions.html">设计维度</a>
@@ -231,7 +260,8 @@
   </nav>
 
   <!-- SUB NAV -->
-  <div class="subnav">
+  <div class="subnav collapsed" id="subnavWrap">
+    <div class="subnav-toggle" onclick="document.getElementById('subnavWrap').classList.toggle('collapsed')">快速导航</div>
     <div class="subnav-inner" id="subnav">
       <a href="#b1" class="active">认识半包</a>
       <a href="#b2">服务核心</a>
@@ -510,8 +540,14 @@
 
   <script>
     // Mobile nav toggle
-    document.querySelector('.nav-mobile-toggle').addEventListener('click', function(){
-      document.querySelector('.nav-links').classList.toggle('open');
+    var navToggle = document.querySelector('.nav-mobile-toggle');
+    var navLinksEl = document.querySelector('.nav-links');
+    navToggle.addEventListener('click', function(){
+      navLinksEl.classList.toggle('open');
+    });
+    // Auto-close mobile nav when clicking a link
+    navLinksEl.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){ navLinksEl.classList.remove('open'); });
     });
 
     // Expandable cards (STEP detail)
@@ -527,15 +563,15 @@
     });
 
     // Subnav scrollspy
-    var navLinks = Array.prototype.slice.call(document.querySelectorAll('#subnav a'));
-    var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+    var subnavLinks = Array.prototype.slice.call(document.querySelectorAll('#subnav a'));
+    var sections = subnavLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); });
     function onScroll(){
-      var pos = window.scrollY + 160;
+      var pos = window.scrollY + (window.innerWidth <= 768 ? 90 : 160);
       var idx = 0;
       sections.forEach(function(sec, i){
         if(sec && sec.offsetTop <= pos) idx = i;
       });
-      navLinks.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
+      subnavLinks.forEach(function(a, i){ a.classList.toggle('active', i === idx); });
     }
     window.addEventListener('scroll', onScroll);
     onScroll();
