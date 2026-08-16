@@ -301,6 +301,18 @@
       .service-step p { display:none; }
       .design-card { padding:18px 16px; }
     }
+
+    /* 八大工艺 - 带图卡片 */
+    .craft-img-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; max-width:1100px; margin:0 auto; }
+    .craft-img-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:all .35s; }
+    .craft-img-card:hover { border-color:rgba(200,164,92,.35); transform:translateY(-3px); }
+    .craft-img-card .thumb { position:relative; width:100%; aspect-ratio:4/3; overflow:hidden; background:rgba(200,164,92,.05); }
+    .craft-img-card .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .craft-img-card .cic-body { padding:18px 18px 22px; position:relative; }
+    .craft-img-card .cic-num { position:absolute; top:-18px; left:18px; width:36px; height:36px; border-radius:10px; background:var(--gold); color:#0a0a0a; font-weight:700; font-size:15px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(200,164,92,.3); }
+    .craft-img-card h3 { font-size:16px; margin:6px 0 8px; color:var(--text); }
+    .craft-img-card p { font-size:13px; color:var(--text-dim); line-height:1.6; }
+    @media(max-width:768px){ .craft-img-grid{ grid-template-columns:repeat(2,1fr); gap:14px; } }
   </style>
 </head>
 <body>
@@ -473,46 +485,38 @@
       <h2>八大<span>精工工艺标准</span></h2>
       <p>每一道工序，都经得起检验。八大核心工艺，构筑放心工程的品质底线。</p>
     </div>
-    <div class="craft-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px; max-width:1100px; margin:0 auto;">
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">01</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">水电横平竖直</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">强弱电分色标识，横平竖直，间距规范，避免信号干扰与安全隐患。</p>
+    <div class="craft-img-grid">
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/water.jpg" alt="水电工艺" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">01</div><h3>水电横平竖直</h3><p>强弱电分色标识，横平竖直，间距规范，避免信号干扰与安全隐患。</p></div>
       </div>
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">02</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">防水三遍涂刷</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">墙面地面基层处理，三遍涂刷防水涂料，闭水试验 48 小时，确保滴水不漏。</p>
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/water.jpg" alt="防水工艺" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">02</div><h3>防水三遍涂刷</h3><p>墙面地面基层处理，三遍涂刷防水涂料，闭水试验 48 小时，确保滴水不漏。</p></div>
       </div>
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">03</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">瓷砖薄贴工艺</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">采用薄贴法，粘结力强，不易空鼓脱落，节省空间，提升利用率。</p>
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/tile.jpg" alt="瓷砖工艺" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">03</div><h3>瓷砖薄贴工艺</h3><p>采用薄贴法，粘结力强，不易空鼓脱落，节省空间，提升利用率。</p></div>
       </div>
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">04</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">轻钢龙骨吊顶</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">采用轻钢龙骨，防火防潮，不易变形，使用寿命长，安全性高。</p>
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/wood.jpg" alt="吊顶工艺" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">04</div><h3>轻钢龙骨吊顶</h3><p>采用轻钢龙骨，防火防潮，不易变形，使用寿命长，安全性高。</p></div>
       </div>
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">05</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">墙面挂网防裂</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">墙面基层处理，挂网防裂，增强附着力，从根源杜绝开裂空鼓隐患。</p>
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/paint.jpg" alt="墙面工艺" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">05</div><h3>墙面挂网防裂</h3><p>墙面基层处理，挂网防裂，增强附着力，从根源杜绝开裂空鼓隐患。</p></div>
       </div>
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">06</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">石膏板 V 型整板</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">石膏板接缝 V 型处理，整板套割，避免开裂，确保吊顶平整。</p>
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/wood.jpg" alt="石膏板工艺" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">06</div><h3>石膏板 V 型整板</h3><p>石膏板接缝 V 型处理，整板套割，避免开裂，确保吊顶平整。</p></div>
       </div>
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">07</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">阴阳角精准找直</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">阴阳角专用靠尺校准，误差控制在 2mm 以内，打造利落空间棱角。</p>
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/paint.jpg" alt="阴阳角工艺" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">07</div><h3>阴阳角精准找直</h3><p>阴阳角专用靠尺校准，误差控制在 2mm 以内，打造利落空间棱角。</p></div>
       </div>
-      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:28px 20px; text-align:center; transition:all .3s;">
-        <div style="width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:700; color:var(--gold);">08</div>
-        <h3 style="font-size:16px; margin-bottom:8px; color:var(--text);">全效成品保护</h3>
-        <p style="font-size:13px; color:var(--text-dim); line-height:1.6;">入户门、地面、家具、门窗等成品全覆盖保护，避免施工造成损坏。</p>
+      <div class="craft-img-card">
+        <div class="thumb"><img src="https://mofangdesign-1410489691.cos.ap-guangzhou.myqcloud.com/craft-process/crafts/protect.jpg" alt="成品保护" loading="lazy"></div>
+        <div class="cic-body"><div class="cic-num">08</div><h3>全效成品保护</h3><p>入户门、地面、家具、门窗等成品全覆盖保护，避免施工造成损坏。</p></div>
       </div>
     </div>
   </section>
