@@ -89,7 +89,7 @@
 
     /* Feature cards (3 col) */
     .feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1000px; margin:0 auto; }
-    @media(max-width:768px){ .feature-grid{ grid-template-columns:1fr; } }
+    @media(max-width:768px){ .feature-grid{ grid-template-columns:1fr; } .stats-row{ gap:12px; } .stat-card{ padding:18px 16px; min-width:100px; } .stat-card .stat-num{ font-size:28px; } .stat-card .stat-num span{ font-size:14px; } }
     .feature-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:32px 28px; transition:all .35s; }
     .feature-card:hover { border-color:rgba(200,164,92,.3); transform:translateY(-3px); }
     .feature-card .ic { width:48px; height:48px; border-radius:12px; background:rgba(200,164,92,.08); display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:22px; color:var(--gold); }
@@ -173,9 +173,12 @@
     .faq-a-inner { padding:0 26px 20px 70px; font-size:14px; color:var(--text-dim); line-height:1.9; }
 
     /* Why us + slogan */
-    .slogan-banner { text-align:center; padding:50px 40px; margin:0 auto 60px; max-width:900px; background:linear-gradient(135deg,rgba(200,164,92,.12),rgba(200,164,92,.03)); border:1px solid rgba(200,164,92,.25); border-radius:16px; }
-    .slogan-banner .big { font-size:30px; font-weight:300; color:var(--gold); letter-spacing:1px; }
-    .slogan-banner .big b { font-weight:700; }
+    /* Stats row - compact cards */
+    .stats-row { display:flex; gap:16px; justify-content:center; margin-top:40px; flex-wrap:wrap; }
+    .stat-card { background:linear-gradient(135deg,rgba(200,164,92,.1),rgba(200,164,92,.03)); border:1px solid rgba(200,164,92,.2); border-radius:12px; padding:24px 32px; text-align:center; min-width:140px; flex:1; max-width:200px; }
+    .stat-card .stat-num { font-size:36px; font-weight:700; color:var(--gold); line-height:1; }
+    .stat-card .stat-num span { font-size:18px; font-weight:400; }
+    .stat-card .stat-label { font-size:13px; color:var(--text-dim); margin-top:8px; }
 
     /* Guarantee */
     .guarantee-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1000px; margin:0 auto; }
@@ -443,8 +446,10 @@
         <p>严格执行八大精工标准，五大工种层层验收，关键节点邀请业主把关，竣工后提供超长质保。</p>
       </div>
     </div>
-    <div class="slogan-banner">
-      <div class="big">专注半包，所以更<b>专业</b></div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">10<span>年+</span></div><div class="stat-label">行业深耕经验</div></div>
+      <div class="stat-card"><div class="stat-num">500<span>+</span></div><div class="stat-label">落地服务案例</div></div>
+      <div class="stat-card"><div class="stat-num">98<span>%</span></div><div class="stat-label">客户好评推荐</div></div>
     </div>
   </section>
 
