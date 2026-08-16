@@ -147,17 +147,8 @@
 
     /* ===== Flow Card (Snake Pattern) ===== */
     .reno-section { padding:60px 30px; background:var(--bg); max-width:1400px; margin:0 auto; }
-    .flow-card-wrap {
-      width:100%; max-width:1000px; margin:0 auto; padding:16px;
-      overflow-x:auto; -webkit-overflow-scrolling:touch;
-    }
-    .flow-svg {
-      width:100%; height:auto; display:block;
-    }
-
     @media(max-width:768px) {
       .reno-section { padding:40px 16px; max-width:none; }
-      .flow-card-wrap { padding:8px; }
     }
 
     /* ===== Lightbox ===== */
@@ -289,6 +280,37 @@
       .craft-dot { left:12px; }
       .craft-card { margin-left:44px; }
     }
+
+    /* ===== 9步施工全流程（来自半包服务页，替换原27步SVG） ===== */
+    .service-timeline { display:flex; justify-content:center; gap:0; position:relative; max-width:1000px; margin:0 auto 50px; flex-wrap:wrap; }
+    .service-step { flex:1; min-width:90px; text-align:center; position:relative; padding:0 8px; margin-bottom:24px; }
+    .service-step::after { content:''; position:absolute; top:28px; left:50%; width:100%; height:2px; background:var(--border); z-index:0; }
+    .service-step:last-child::after { display:none; }
+    .service-icon { width:56px; height:56px; border-radius:50%; background:var(--bg-card2); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; position:relative; z-index:1; transition:all .3s; font-size:15px; font-weight:700; color:var(--gold); }
+    .service-step:hover .service-icon { border-color:var(--gold); background:rgba(200,164,92,.1); }
+    .service-step h3 { font-size:14px; font-weight:600; margin-bottom:4px; }
+    .service-step p { font-size:11px; color:var(--text-dim); line-height:1.5; }
+
+    .expand-list { max-width:900px; margin:0 auto; }
+    .design-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:14px; padding:22px 26px; margin-bottom:14px; cursor:pointer; transition:all .35s; }
+    .design-card:hover { border-color:rgba(200,164,92,.3); }
+    .design-card.expanded { border-color:var(--gold); }
+    .design-card-head { display:flex; align-items:center; gap:14px; }
+    .design-card .step-no { width:34px; height:34px; border-radius:50%; background:rgba(200,164,92,.1); color:var(--gold); font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .design-card h3 { font-size:16px; font-weight:600; flex:1; }
+    .design-card .toggle { color:var(--text-dim); font-size:13px; transition:transform .3s; }
+    .design-card.expanded .toggle { transform:rotate(180deg); color:var(--gold); }
+    .design-card-body { max-height:0; overflow:hidden; transition:max-height .5s ease, margin .3s; }
+    .design-card.expanded .design-card-body { max-height:800px; margin-top:16px; }
+    .design-card-body-inner { padding-top:16px; border-top:1px solid var(--border); font-size:14px; color:var(--text-dim); line-height:2; }
+    .design-card-body-inner strong { color:var(--text); }
+    .design-card-body-inner li { margin-left:18px; margin-bottom:6px; }
+    @media(max-width:768px) {
+      .service-timeline { gap:4px; }
+      .service-step { min-width:74px; }
+      .service-step p { display:none; }
+      .design-card { padding:18px 16px; }
+    }
   </style>
 </head>
 <body>
@@ -312,15 +334,15 @@
   <section class="hero">
     <div class="hero-badge">透 明 施 工 · 匠 心 工 艺</div>
     <h1>看得见的标准<br><span>放心把家交给我们</span></h1>
-    <p>从毛坯到精装——27步全流程一目了然。7大施工阶段，100+项验收标准，点击展开查看工艺细节与实拍图片。</p>
+    <p>从设计交底到竣工验收——九大核心节点层层递进，标准化施工体系一目了然。点击展开查看每个阶段的工艺细节。</p>
     <div class="hero-stats">
       <div>
-        <div class="hero-stat-num">27</div>
+        <div class="hero-stat-num">9</div>
         <div class="hero-stat-label">步装修全流程</div>
       </div>
       <div>
-        <div class="hero-stat-num">100+</div>
-        <div class="hero-stat-label">项工艺验收标准</div>
+        <div class="hero-stat-num">7</div>
+        <div class="hero-stat-label">大施工阶段</div>
       </div>
       <div>
         <div class="hero-stat-num">365天</div>
@@ -329,152 +351,130 @@
     </div>
   </section>
 
-  <!-- 27-Step Renovation Flow (Snake SVG) -->
+    <!-- 装修施工全流程 (9步，来自半包服务页) -->
   <section class="reno-section">
     <div class="section-header">
-      <div class="tag">RENOVATION FLOW</div>
-      <h2>毛坯房装修<span>27步</span>全流程</h2>
-      <p>从设计图纸到拎包入住，一目了然的装修通关地图</p>
+      <div class="tag">CONSTRUCTION FLOW</div>
+      <h2>装修施工<span>全流程</span></h2>
+      <p>标准化施工体系覆盖九大核心节点，从设计交底到竣工验收层层递进，以精细化管理保障工程品质与交付时效。</p>
     </div>
-    <div class="flow-card-wrap" style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-      <svg class="flow-svg" viewBox="18 0 1444 630" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
-        <defs>
-          <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#d4b46a"/>
-            <stop offset="100%" stop-color="#9a7428"/>
-          </linearGradient>
-          <linearGradient id="goldGradLight" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#e0c880"/>
-            <stop offset="100%" stop-color="#b8923b"/>
-          </linearGradient>
-        </defs>
 
-        <!-- === LINES (scale factor 1.45) === -->
-        <g fill="none" stroke="#c8a45c" stroke-width="2" opacity="0.7">
-          <!-- Row 1 → | y=95 | cx:80,300,520,740,960,1180,1400 -->
-          <line x1="106" y1="95" x2="274" y2="95"/>
-          <line x1="326" y1="95" x2="494" y2="95"/>
-          <line x1="546" y1="95" x2="714" y2="95"/>
-          <line x1="766" y1="95" x2="934" y2="95"/>
-          <line x1="986" y1="95" x2="1154" y2="95"/>
-          <line x1="1206" y1="95" x2="1374" y2="95"/>
+    <div class="service-timeline">
+      <div class="service-step"><div class="service-icon">01</div><h3>设计交底</h3><p>方案确认·现场勘测</p></div>
+      <div class="service-step"><div class="service-icon">02</div><h3>主体拆改</h3><p>拆除非承重墙</p></div>
+      <div class="service-step"><div class="service-icon">03</div><h3>水电改造</h3><p>开槽布管穿线</p></div>
+      <div class="service-step"><div class="service-icon">04</div><h3>防水工程</h3><p>三遍涂刷·闭水</p></div>
+      <div class="service-step"><div class="service-icon">05</div><h3>泥瓦工程</h3><p>找平·瓷砖铺贴</p></div>
+      <div class="service-step"><div class="service-icon">06</div><h3>木工工程</h3><p>吊顶·背景墙</p></div>
+      <div class="service-step"><div class="service-icon">07</div><h3>油漆工程</h3><p>挂网·腻子·面漆</p></div>
+      <div class="service-step"><div class="service-icon">08</div><h3>安装工程</h3><p>主材安装</p></div>
+      <div class="service-step"><div class="service-icon">09</div><h3>竣工验收</h3><p>开荒保洁·交付</p></div>
+    </div>
 
-          <!-- Snake R1→R2: 07→08 -->
-          <path d="M1426,95 h14 q10,0 10,10 v135 q0,10 -10,10 h-62" stroke-linejoin="round"/>
+    <div class="expand-list">
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">01</div><h3>设计交底与现场勘测</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>精准量房·数据为王</strong>：实测实量，绘制精准平面布局图与实景图，为设计提供可靠依据。</li>
+          <li><strong>方案确认·达成共识</strong>：面对面沟通设计方案、预算明细、材料品牌型号，签订正式合同。</li>
+          <li><strong>现场定位·直观呈现</strong>：现场标记水电点位、插座、开关、灯具位置，让未来的家动工前「身临其境」。</li>
+          <li><strong>拆改界定与安全规范</strong>：明确拆改范围、承重墙位置，制定施工安全规范。</li>
+          <li><strong>物业报备与合规开工</strong>：协助办理装修备案、物业报备、垃圾清运手续，合法合规无后顾之忧。</li>
+        </div></div>
+      </div>
 
-          <!-- Row 2 ← | y=245 | cx:1400,1180,960,740,520,300,80 -->
-          <line x1="1374" y1="245" x2="1206" y2="245"/>
-          <line x1="1154" y1="245" x2="986" y2="245"/>
-          <line x1="934" y1="245" x2="766" y2="245"/>
-          <line x1="714" y1="245" x2="546" y2="245"/>
-          <line x1="494" y1="245" x2="326" y2="245"/>
-          <line x1="274" y1="245" x2="106" y2="245"/>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">02</div><h3>主体拆改</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>非承重墙拆除</strong>：拆除多余墙体、门洞，打通空间阻隔，优化采光通风，最大化空间利用率。</li>
+          <li><strong>旧屋铲除清理</strong>：铲除原有腻子层及老旧瓷砖，根除空鼓、返潮、脱落隐患，奠定平整基础。</li>
+          <li><strong>新建墙体与包管</strong>：按图新建墙体，厨卫下水管道红砖或隔音棉包裹，降低排水噪音。</li>
+          <li><strong>垃圾日清日结</strong>：拆改垃圾每日分类整理、定点堆放、及时清运，保持现场整洁。</li>
+        </div></div>
+      </div>
 
-          <!-- Snake R2→R3: 14→15 -->
-          <path d="M54,245 h-14 q-10,0 -10,10 v135 q0,10 10,10 h18" stroke-linejoin="round"/>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">03</div><h3>水电改造</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>横平竖直分色</strong>：强弱电、热水冷水管分色标识，强弱电间距≥30cm，避免信号干扰。</li>
+          <li><strong>水电顶地分离</strong>：强电走顶、弱电走地，热水管走顶、冷水管走地，便于维修减少隐患。</li>
+          <li><strong>开槽规范固定</strong>：开槽宽度≥管径+2cm，深度≥管径+1cm，线管固定间距≤80cm，水管≤60cm。</li>
+          <li><strong>同底科室布局</strong>：强弱电箱、水表、电表、阀门集中布局，便于维护互不干扰。</li>
+          <li><strong>严苛打压测试</strong>：水管打压 0.8MPa，30 分钟压降≤0.05MPa；电路绝缘≥0.5MΩ，安全可靠。</li>
+        </div></div>
+      </div>
 
-          <!-- Row 3 → | y=395 | cx:80,300,520,740,960,1180,1400 -->
-          <line x1="106" y1="395" x2="274" y2="395"/>
-          <line x1="326" y1="395" x2="494" y2="395"/>
-          <line x1="546" y1="395" x2="714" y2="395"/>
-          <line x1="766" y1="395" x2="934" y2="395"/>
-          <line x1="986" y1="395" x2="1154" y2="395"/>
-          <line x1="1206" y1="395" x2="1374" y2="395"/>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">04</div><h3>防水工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>基层处理·坚实平整</strong>：清理浮灰油污，修补裂缝空鼓，阴阳角做圆弧处理，确保防水层附着牢固。</li>
+          <li><strong>三遍涂刷·薄涂多遍</strong>：墙面地面分三遍涂刷，每遍方向交叉、干透再刷，厚度均匀，杜绝漏刷起皮。</li>
+          <li><strong>关键区域·加强处理</strong>：管根、地漏、阴阳角加铺无纺布加强层，卫生间墙面防水≥1.8m，厨房≥0.3m。</li>
+          <li><strong>闭水试验·滴水不漏</strong>：蓄水 48 小时，水位下降≤0.5cm、楼下无渗漏方为合格。</li>
+        </div></div>
+      </div>
 
-          <!-- Snake R3→R4: 21→22 -->
-          <path d="M1426,395 h14 q10,0 10,10 v135 q0,10 -10,10 h-222" stroke-linejoin="round"/>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">05</div><h3>泥瓦工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>基层找平·坚实打底</strong>：清理后水泥砂浆找平，控制平整度与坡度，为铺贴打下稳固基础。</li>
+          <li><strong>瓷砖薄贴·牢固不空</strong>：采用瓷砖胶薄贴工艺，齿形刮刀均匀上料、揉压密实，粘结力强不易空鼓脱落。</li>
+          <li><strong>留缝勾缝·整齐美观</strong>：按砖型预留均匀伸缩缝，干后专用勾缝剂填缝，防霉防污、线条利落。</li>
+          <li><strong>铺贴验收·平整达标</strong>：空鼓锤逐块检测，靠尺查平整度与接缝高低差，确保铺贴如镜。</li>
+        </div></div>
+      </div>
 
-          <!-- Row 4 ← | y=545 | cx:1240,1020,800,580,360,140 -->
-          <line x1="1214" y1="545" x2="1046" y2="545"/>
-          <line x1="994" y1="545" x2="826" y2="545"/>
-          <line x1="774" y1="545" x2="606" y2="545"/>
-          <line x1="554" y1="545" x2="386" y2="545"/>
-          <line x1="334" y1="545" x2="166" y2="545"/>
-        </g>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">06</div><h3>木工工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>轻钢龙骨·防火防潮</strong>：吊顶主龙骨采用轻钢龙骨，相较木龙骨更安全耐用，杜绝下沉开裂。</li>
+          <li><strong>石膏板 V 型整板</strong>：接缝做 V 型槽处理，整板套割转角避免应力集中，钉眼防锈，从源头防开裂。</li>
+          <li><strong>背景墙与柜体·精准放样</strong>：按图弹线定位，背景墙基层、定制柜体框架现场制作，尺寸精准咬合严密。</li>
+          <li><strong>现场家具·细节收口</strong>：现场制作家具注重收口拼缝，边角圆润、线条平直，与整体风格统一。</li>
+        </div></div>
+      </div>
 
-        <!-- === ARROWHEADS (14px) === -->
-        <g fill="#d4b46a">
-          <!-- Row 1 → arrows -->
-          <polygon points="274,95 260,89 260,101"/>
-          <polygon points="494,95 480,89 480,101"/>
-          <polygon points="714,95 700,89 700,101"/>
-          <polygon points="934,95 920,89 920,101"/>
-          <polygon points="1154,95 1140,89 1140,101"/>
-          <polygon points="1374,95 1360,89 1360,101"/>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">07</div><h3>油漆工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>墙面基层处理·挂网防裂</strong>：挂网防裂增强附着力，从根源杜绝开裂空鼓。</li>
+          <li><strong>三遍腻子批刮·精细打磨</strong>：遵循「找平-精平-找平」三步法，每遍干透细砂纸打磨，墙面如镜。</li>
+          <li><strong>阴阳角垂直平直</strong>：专用靠尺校准，误差≤2mm，打造利落空间棱角。</li>
+          <li><strong>环保面漆涂刷·色泽饱满</strong>：先抗碱封闭底漆，再两遍面漆，薄涂多遍，无流挂无漏刷。</li>
+          <li><strong>全效成品保护·洁净施工</strong>：家具门窗开关面板全覆盖保护，完工清理现场。</li>
+        </div></div>
+      </div>
 
-          <!-- Snake R1→R2 arrow ← -->
-          <polygon points="1378,245 1392,239 1392,251"/>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">08</div><h3>安装工程</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>主材进场·有序安装</strong>：橱柜、木门、地板、洁具、灯具按节点有序进场，避免交叉污染与工期冲突。</li>
+          <li><strong>橱柜卫浴·精准对位</strong>：橱柜浴室柜水平校准、与水电点位对接；台面接缝打磨平整，龙头安装无渗漏。</li>
+          <li><strong>木门地板·收口细腻</strong>：木门垂直方正、开合顺畅；地板留伸缩缝、拼缝严密，踢脚线与门套过渡自然。</li>
+          <li><strong>灯具开关·通电调试</strong>：全屋通电逐项调试，功能正常无隐患，点亮新家。</li>
+        </div></div>
+      </div>
 
-          <!-- Row 2 ← arrows -->
-          <polygon points="1206,245 1220,239 1220,251"/>
-          <polygon points="986,245 1000,239 1000,251"/>
-          <polygon points="766,245 780,239 780,251"/>
-          <polygon points="546,245 560,239 560,251"/>
-          <polygon points="326,245 340,239 340,251"/>
-          <polygon points="106,245 120,239 120,251"/>
+      <div class="design-card">
+        <div class="design-card-head"><div class="step-no">09</div><h3>竣工验收</h3><div class="toggle">▾</div></div>
+        <div class="design-card-body"><div class="design-card-body-inner">
+          <li><strong>水电隐蔽工程验收</strong>：点位数量、位置、功能测试，打压与绝缘测试记录齐全。</li>
+          <li><strong>防水闭水专项验收</strong>：闭水 48 小时，水位下降≤0.5cm，楼下无渗漏。</li>
+          <li><strong>泥木工艺细节验收</strong>：瓷砖平整度、空鼓率、缝隙均匀度；木工吊顶柜体垂直度平整度。</li>
+          <li><strong>油漆墙面验收</strong>：平整度、垂直度、阴阳角方正度，漆面无流挂无漏刷。</li>
+          <li><strong>开荒保洁与维保</strong>：精细化开荒保洁，交付钥匙，签订维保协议进入质保期。</li>
+          <li style="color:var(--gold)"><strong>验收核心原则</strong>：务必详阅验收单，发现问题立即要求整改，严禁未确认即签字。</li>
+        </div></div>
+      </div>
+    </div>
 
-          <!-- Snake R2→R3 arrow → -->
-          <polygon points="58,395 72,389 72,401"/>
-
-          <!-- Row 3 → arrows -->
-          <polygon points="274,395 260,389 260,401"/>
-          <polygon points="494,395 480,389 480,401"/>
-          <polygon points="714,395 700,389 700,401"/>
-          <polygon points="934,395 920,389 920,401"/>
-          <polygon points="1154,395 1140,389 1140,401"/>
-          <polygon points="1374,395 1360,389 1360,401"/>
-
-          <!-- Snake R3→R4 arrow ← -->
-          <polygon points="1218,545 1232,539 1232,551"/>
-
-          <!-- Row 4 ← arrows -->
-          <polygon points="1046,545 1060,539 1060,551"/>
-          <polygon points="826,545 840,539 840,551"/>
-          <polygon points="606,545 620,539 620,551"/>
-          <polygon points="386,545 400,539 400,551"/>
-          <polygon points="166,545 180,539 180,551"/>
-        </g>
-
-        <!-- === NODES (r=22, font=15px) === -->
-        <g font-family="'PingFang SC','Microsoft YaHei',sans-serif">
-          <!-- Row 1 → | y=95 | 01-07 -->
-          <circle cx="80"  cy="95" r="22" fill="url(#goldGradLight)"/><text x="80"  y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">01</text><text x="80"  y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">量房设计图纸</text>
-          <circle cx="300" cy="95" r="22" fill="url(#goldGrad)"/><text x="300" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">02</text><text x="300" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">确定装修风格</text>
-          <circle cx="520" cy="95" r="22" fill="url(#goldGradLight)"/><text x="520" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">03</text><text x="520" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">砸墙铲墙拆砌</text>
-          <circle cx="740" cy="95" r="22" fill="url(#goldGrad)"/><text x="740" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">04</text><text x="740" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">砌墙批荡</text>
-          <circle cx="960" cy="95" r="22" fill="url(#goldGradLight)"/><text x="960" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">05</text><text x="960" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">封阳台封窗</text>
-          <circle cx="1180" cy="95" r="22" fill="url(#goldGrad)"/><text x="1180" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">06</text><text x="1180" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">改造全屋水电</text>
-          <circle cx="1400" cy="95" r="22" fill="url(#goldGradLight)"/><text x="1400" y="95" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">07</text><text x="1400" y="140" text-anchor="middle" fill="#d0d0d0" font-size="15">厨卫防水涂刷</text>
-
-          <!-- Row 2 ← | y=245 | 14-08 -->
-          <circle cx="80"  cy="245" r="22" fill="url(#goldGrad)"/><text x="80"  y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">14</text><text x="80"  y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">刮腻子</text>
-          <circle cx="300" cy="245" r="22" fill="url(#goldGradLight)"/><text x="300" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">13</text><text x="300" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">全屋定制量尺</text>
-          <circle cx="520" cy="245" r="22" fill="url(#goldGrad)"/><text x="520" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">12</text><text x="520" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">木工进场做吊顶</text>
-          <circle cx="740" cy="245" r="22" fill="url(#goldGradLight)"/><text x="740" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">11</text><text x="740" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">贴地面保护膜</text>
-          <circle cx="960" cy="245" r="22" fill="url(#goldGrad)"/><text x="960" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">10</text><text x="960" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">全屋瓷砖美缝</text>
-          <circle cx="1180" cy="245" r="22" fill="url(#goldGradLight)"/><text x="1180" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">09</text><text x="1180" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">铺贴全屋瓷砖</text>
-          <circle cx="1400" cy="245" r="22" fill="url(#goldGrad)"/><text x="1400" y="245" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">08</text><text x="1400" y="290" text-anchor="middle" fill="#d0d0d0" font-size="15">铺设地暖</text>
-
-          <!-- Row 3 → | y=395 | 15-21 -->
-          <circle cx="80"  cy="395" r="22" fill="url(#goldGradLight)"/><text x="80"  y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">15</text><text x="80"  y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">乳胶漆涂刷</text>
-          <circle cx="300" cy="395" r="22" fill="url(#goldGrad)"/><text x="300" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">16</text><text x="300" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">柜体安装</text>
-          <circle cx="520" cy="395" r="22" fill="url(#goldGradLight)"/><text x="520" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">17</text><text x="520" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">木门安装</text>
-          <circle cx="740" cy="395" r="22" fill="url(#goldGrad)"/><text x="740" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">18</text><text x="740" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">开关插座面板</text>
-          <circle cx="960" cy="395" r="22" fill="url(#goldGradLight)"/><text x="960" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">19</text><text x="960" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">灯具安装</text>
-          <circle cx="1180" cy="395" r="22" fill="url(#goldGrad)"/><text x="1180" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">20</text><text x="1180" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">卫浴洁具安装</text>
-          <circle cx="1400" cy="395" r="22" fill="url(#goldGradLight)"/><text x="1400" y="395" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">21</text><text x="1400" y="440" text-anchor="middle" fill="#d0d0d0" font-size="15">五金挂件安装</text>
-
-          <!-- Row 4 ← | y=545 | 27-22 (6 nodes) -->
-          <circle cx="140"  cy="545" r="22" fill="url(#goldGrad)"/><text x="140"  y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">27</text><text x="140"  y="590" text-anchor="middle" fill="#d4b46a" font-size="15" font-weight="600">通风除醛·竣工·入住</text>
-          <circle cx="360"  cy="545" r="22" fill="url(#goldGradLight)"/><text x="360"  y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">26</text><text x="360"  y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">窗帘安装</text>
-          <circle cx="580"  cy="545" r="22" fill="url(#goldGrad)"/><text x="580"  y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">25</text><text x="580"  y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">家电安装</text>
-          <circle cx="800"  cy="545" r="22" fill="url(#goldGradLight)"/><text x="800"  y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">24</text><text x="800"  y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">软装家具进场</text>
-          <circle cx="1020" cy="545" r="22" fill="url(#goldGrad)"/><text x="1020" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">23</text><text x="1020" y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">开荒保洁</text>
-          <circle cx="1240" cy="545" r="22" fill="url(#goldGradLight)"/><text x="1240" y="545" text-anchor="middle" dominant-baseline="central" fill="#0a0a0a" font-size="15" font-weight="700">22</text><text x="1240" y="590" text-anchor="middle" fill="#d0d0d0" font-size="15">美缝修补</text>
-        </g>
-      </svg>
+    <div style="text-align:center;margin-top:30px;color:var(--text-dim);font-size:14px;max-width:760px;margin-left:auto;margin-right:auto;">
+      <p style="margin-bottom:8px"><b style="color:var(--gold)">工期保障</b> · 科学排期，明确各节点工期，避免延期</p>
+      <p style="margin-bottom:8px"><b style="color:var(--gold)">标准管控</b> · 严格执行施工规范，关键节点验收，不合格立即整改</p>
+      <p><b style="color:var(--gold)">品质交付</b> · 从材料到施工全流程把控，交付前整体保洁与成品保护</p>
     </div>
   </section>
+
 
   <!-- Craft Process -->
   <section class="section section-alt">
@@ -995,6 +995,11 @@
         // 不再预加载全部缩略图，改为懒加载（用户滚动看到时才加载）
       }
     }
+
+    // 施工全流程：可展开详情卡（来自半包服务页）
+    document.querySelectorAll('.design-card').forEach(function(card){
+      card.addEventListener('click', function(){ card.classList.toggle('expanded'); });
+    });
 
     // Lightbox
     let lightboxStage = '';
