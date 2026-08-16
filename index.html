@@ -196,14 +196,11 @@
   }
 
   @media (max-width:768px) {
-    .portfolio-grid { grid-template-columns:repeat(2,1fr); gap:4px; }
+    .portfolio-grid { grid-template-columns:1fr; gap:12px; }
     .portfolio-overlay { opacity:1; padding:12px; }
     .portfolio-name { font-size:14px; }
     /* 最后一个奇数项占满整行 */
     .portfolio-item:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio:16/7; }
-  }
-  @media (max-width:480px) {
-    .portfolio-grid { grid-template-columns:1fr 1fr; }
   }
 
   /* === LIGHTBOX === */
