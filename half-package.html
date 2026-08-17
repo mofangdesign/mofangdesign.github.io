@@ -241,6 +241,24 @@
       /* Core item */
       .core-item { padding:14px 16px; }
     }
+
+  /* === MOBILE FAB (可拖拽) === */
+  .fab-consult {
+    position:fixed; z-index:900;
+    width:56px; height:56px; background:#c8a45c; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px rgba(200,164,92,.3);
+    color:#0a0a0a; font-weight:700;
+    animation:pulse 2s ease-in-out infinite;
+    bottom:24px; right:24px;
+    transition:left .25s ease, right .25s ease, bottom .25s ease;
+    touch-action:none; -webkit-user-select:none; user-select:none;
+  }
+  .fab-consult.dragging { transition:none !important; box-shadow:0 12px 32px rgba(200,164,92,.5); }
+  @keyframes pulse {
+    0%,100% { box-shadow:0 8px 24px rgba(200,164,92,.3); }
+    50% { box-shadow:0 8px 36px rgba(200,164,92,.5); }
+  }
   </style>
 </head>
 <body>
@@ -576,5 +594,50 @@
     window.addEventListener('scroll', onScroll);
     onScroll();
   </script>
+
+<!-- FAB -->
+<a href="#contact" class="fab-consult" title="立即咨询">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</a>
+
+<!-- FAB 拖拽（仅移动端） -->
+<script>
+(function(){
+  var fab = document.querySelector('.fab-consult');
+  if (!fab) return;
+  if (window.innerWidth > 768) return;
+  var dragging = false, startX, startY, initLeft, initTop;
+  var fabSize = 56, bottomMargin = 24;
+  function initPosition() { fab.style.right='24px'; fab.style.left='auto'; fab.style.bottom=bottomMargin+'px'; fab.style.top='auto'; }
+  initPosition();
+  function getPos(e){ var t=e.touches?e.touches[0]:e; return{x:t.clientX,y:t.clientY}; }
+  function onDown(e){
+    var pos=getPos(e); startX=pos.x; startY=pos.y; dragging=false;
+    var rect=fab.getBoundingClientRect(); initLeft=rect.left; initTop=rect.top;
+    fab.style.right='auto'; fab.style.top=initTop+'px'; fab.style.left=initLeft+'px';
+    document.addEventListener('touchmove',onMove,{passive:false}); document.addEventListener('touchend',onUp);
+    document.addEventListener('mousemove',onMove,{passive:false}); document.addEventListener('mouseup',onUp);
+  }
+  function onMove(e){
+    e.preventDefault(); var pos=getPos(e), dx=pos.x-startX, dy=pos.y-startY;
+    if(!dragging&&(Math.abs(dx)>5||Math.abs(dy)>5)){dragging=true;fab.classList.add('dragging');}
+    if(!dragging)return;
+    var nl=initLeft+dx, nt=initTop+dy, ww=window.innerWidth, wh=window.innerHeight;
+    nl=Math.max(0,Math.min(ww-fabSize,nl)); nt=Math.max(0,Math.min(wh-fabSize-bottomMargin,nt));
+    fab.style.left=nl+'px'; fab.style.top=nt+'px';
+  }
+  function onUp(){
+    document.removeEventListener('touchmove',onMove); document.removeEventListener('touchend',onUp);
+    document.removeEventListener('mousemove',onMove); document.removeEventListener('mouseup',onUp);
+    fab.classList.remove('dragging');
+    if(!dragging){initPosition();return;}
+    var rect=fab.getBoundingClientRect(), ww=window.innerWidth, cx=rect.left+fabSize/2, snapR=cx>ww/2;
+    fab.classList.remove('dragging');
+    if(snapR){fab.style.left='auto';fab.style.right='16px';}else{fab.style.right='auto';fab.style.left='16px';}
+    fab.style.top=rect.top+'px'; fab.style.bottom='auto';
+  }
+  fab.addEventListener('touchstart',onDown,{passive:true}); fab.addEventListener('mousedown',onDown);
+})();
+</script>
 </body>
 </html>
