@@ -456,14 +456,21 @@
   }
   .fade-in.visible { opacity:1; transform:translateY(0); }
 
-  /* === MOBILE FAB === */
+  /* === MOBILE FAB (可拖拽) === */
   .fab-consult {
-    position:fixed; bottom:24px; right:24px; z-index:900;
+    position:fixed; z-index:900;
     width:56px; height:56px; background:#c8a45c; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 8px 24px rgba(200,164,92,.3);
     color:#0a0a0a; font-size:22px; font-weight:700;
     animation:pulse 2s ease-in-out infinite;
+    /* 移动端：初始位置由JS设置，支持拖拽 */
+    bottom:24px; right:24px;
+    transition:left .25s ease, right .25s ease, bottom .25s ease;
+    touch-action:none; -webkit-user-select:none; user-select:none;
+  }
+  .fab-consult.dragging {
+    transition:none !important; box-shadow:0 12px 32px rgba(200,164,92,.5);
   }
   @keyframes pulse {
     0%,100% { box-shadow:0 8px 24px rgba(200,164,92,.3); }
@@ -1603,6 +1610,119 @@ if (window.innerWidth >= 769) {
       img.onerror = imgRetry;
     });
   }
+})();
+</script>
+
+<!-- FAB 拖拽（仅移动端） -->
+<script>
+(function(){
+  var fab = document.querySelector('.fab-consult');
+  if (!fab) return;
+
+  var isMobile = window.innerWidth <= 768;
+  if (!isMobile) return; // 桌面端不启用拖拽
+
+  var dragging = false, startX, startY, initLeft, initTop;
+  var fabSize = 56;
+  var bottomMargin = 24;
+
+  // 初始化位置到右下角
+  function initPosition() {
+    fab.style.right = '24px';
+    fab.style.left = 'auto';
+    fab.style.bottom = bottomMargin + 'px';
+    fab.style.top = 'auto';
+  }
+  initPosition();
+
+  function getPos(e) {
+    var t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX, y: t.clientY };
+  }
+
+  function onDown(e) {
+    // 忽略点击（只响应拖拽超过阈值）
+    var pos = getPos(e);
+    startX = pos.x; startY = pos.y;
+    dragging = false;
+
+    var rect = fab.getBoundingClientRect();
+    initLeft = rect.left;
+    initTop = rect.top;
+
+    // 切换为 left/top 定位
+    fab.style.right = 'auto';
+    fab.style.top = initTop + 'px';
+    fab.style.left = initLeft + 'px';
+
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onUp);
+    document.addEventListener('mousemove', onMove, { passive: false });
+    document.addEventListener('mouseup', onUp);
+  }
+
+  function onMove(e) {
+    e.preventDefault();
+    var pos = getPos(e);
+    var dx = pos.x - startX;
+    var dy = pos.y - startY;
+
+    // 超过5px才算开始拖拽
+    if (!dragging && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+      dragging = true;
+      fab.classList.add('dragging');
+    }
+    if (!dragging) return;
+
+    var newLeft = initLeft + dx;
+    var newTop = initTop + dy;
+
+    // 边界限制
+    var winW = window.innerWidth;
+    var winH = window.innerHeight;
+    newLeft = Math.max(0, Math.min(winW - fabSize, newLeft));
+    newTop = Math.max(0, Math.min(winH - fabSize - bottomMargin, newTop));
+
+    fab.style.left = newLeft + 'px';
+    fab.style.top = newTop + 'px';
+  }
+
+  function onUp(e) {
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onUp);
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+
+    fab.classList.remove('dragging');
+
+    if (!dragging) {
+      // 是点击，恢复初始定位方式并跳转
+      initPosition();
+      return;
+    }
+
+    // 吸附到最近的左右边缘
+    var rect = fab.getBoundingClientRect();
+    var winW = window.innerWidth;
+    var centerX = rect.left + fabSize / 2;
+    var snapRight = (centerX > winW / 2);
+
+    fab.classList.remove('dragging');
+
+    if (snapRight) {
+      fab.style.left = 'auto';
+      fab.style.right = '16px';
+    } else {
+      fab.style.right = 'auto';
+      fab.style.left = '16px';
+    }
+    // 保持垂直位置不变（用top）
+    fab.style.top = rect.top + 'px';
+    fab.style.bottom = 'auto';
+  }
+
+  fab.addEventListener('touchstart', onDown, { passive: true });
+  fab.addEventListener('mousedown', onDown);
 })();
 </script>
 
